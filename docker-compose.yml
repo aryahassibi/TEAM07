@@ -6,7 +6,7 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD="yes"  # Allows MySQL to run without a password
       - MYSQL_DATABASE=${DB_NAME}
-      - TZ=Europe/Istnabul
+      - TZ=Europe/Istanbul
     ports:
       - "3307:3306"  # Map port 3306 in the container to 3307 on your host to avoid conflicts
     volumes:
