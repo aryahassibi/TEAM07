@@ -1,6 +1,7 @@
 CREATE DATABASE ECOMMERCE;
 USE ECOMMERCE;
 
+-- Create dependent tables first
 CREATE TABLE Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -22,6 +23,38 @@ CREATE TABLE Managers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE Products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    origin VARCHAR(100),
+    roast_level ENUM('Light', 'Medium', 'Dark', 'French', 'Espresso') NOT NULL,
+    bean_type ENUM('Arabica', 'Robusta', 'Liberica', 'Blend') NOT NULL,
+    grind_type ENUM('Whole Bean', 'Ground', 'Pods', 'Other') DEFAULT 'Whole Bean',
+    flavor_profile VARCHAR(255),
+    processing_method ENUM('Washed', 'Natural', 'Honey-processed', 'Other') DEFAULT 'Other',
+    caffeine_content ENUM('High', 'Decaf', 'Half-Caf') DEFAULT 'High',
+    category_id INT,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    warranty_status BOOLEAN DEFAULT FALSE,    
+    distributor_info TEXT,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE CASCADE
+);
+
+CREATE TABLE DeliveryOptions (
+    delivery_option_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    cost DECIMAL(10, 2) NOT NULL,
+    description TEXT
+);
+
+-- Now create tables that reference the above tables
 CREATE TABLE Address (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -71,34 +104,10 @@ CREATE TABLE Invoices (
     invoice_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     user_id INT,
-    invoice_pdf BLOB,
+    invoice_pdf BLOB,  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Categories (
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT
-);
-
-CREATE TABLE Products (
-    product_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    origin VARCHAR(100),
-    roast_level ENUM('Light', 'Medium', 'Dark', 'French', 'Espresso') NOT NULL,
-    bean_type ENUM('Arabica', 'Robusta', 'Liberica', 'Blend') NOT NULL,
-    grind_type ENUM('Whole Bean', 'Ground', 'Pods', 'Other') DEFAULT 'Whole Bean',
-    flavor_profile VARCHAR(255),
-    processing_method ENUM('Washed', 'Natural', 'Honey-processed', 'Other') DEFAULT 'Other',
-    caffeine_content ENUM('High', 'Decaf', 'Half-Caf') DEFAULT 'High',
-    category_id INT,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    warranty_status BOOLEAN DEFAULT FALSE,
-    distributor_info TEXT,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Product_Variant (
@@ -122,12 +131,12 @@ CREATE TABLE Product_Images (
 CREATE TABLE Discounts (
     discount_id INT AUTO_INCREMENT PRIMARY KEY,
     discount_type ENUM('percentage', 'fixed') NOT NULL,
-    value DECIMAL(10, 2) NOT NULL,
-    start_date DATE,
-    end_date DATE,
-    product_id INT,
-    category_id INT,
-    active BOOLEAN DEFAULT TRUE,
+    value DECIMAL(10, 2) NOT NULL,  
+    start_date DATE,                
+    end_date DATE,                 
+    product_id INT,                 
+    category_id INT,                
+    active BOOLEAN DEFAULT TRUE,  
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL,
     FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE SET NULL
 );
@@ -164,13 +173,6 @@ CREATE TABLE Payments (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE DeliveryOptions (
-    delivery_option_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    cost DECIMAL(10, 2) NOT NULL,
-    description TEXT
-);
-
 CREATE TABLE RefundRequests (
     refund_request_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -185,7 +187,7 @@ CREATE TABLE RefundRequests (
 CREATE TABLE ReturnItems (
     return_item_id INT AUTO_INCREMENT PRIMARY KEY,
     refund_request_id INT NOT NULL,
-    product_id INT NOT NULL,
+    product_id INT,
     quantity INT NOT NULL CHECK (quantity > 0),
     price_at_purchase DECIMAL(10, 2) NOT NULL,  -- Price paid at purchase, including any discounts
     reason TEXT,  -- Reason provided by customer for the return
