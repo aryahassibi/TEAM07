@@ -16,9 +16,9 @@ db.connect(err => {
   console.log('MySQL connected');
 });
 
-// API route to get products
+// GET endpoint to list all products
 app.get('/api/products', (req, res) => {
-  db.query('SELECT * FROM products', (error, results) => {
+  db.query('SELECT * FROM Products', (error, results) => {
     if (error) throw error;
     res.json(results);
   });
