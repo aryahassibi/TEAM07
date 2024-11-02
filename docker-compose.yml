@@ -4,14 +4,13 @@ services:
   db:
     image: mysql:8.0
     environment:
-      # MYSQL_ROOT_PASSWORD: ${DB_PASS}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allows MySQL to run without a password
-      MYSQL_DATABASE: ${DB_NAME}
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"  # Allows MySQL to run without a password
+      - MYSQL_DATABASE=${DB_NAME}
+      - TZ=Europe/Istnabul
     ports:
       - "3307:3306"  # Map port 3306 in the container to 3307 on your host to avoid conflicts
     volumes:
       - ./backend/db/ecommerce_db.sql:/docker-entrypoint-initdb.d/ecommerce_db.sql  # Initialize with your SQL file
-      
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
