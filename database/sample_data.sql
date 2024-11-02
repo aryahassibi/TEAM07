@@ -1,4 +1,4 @@
-USE ECOMMERCE;
+USE ecommerce_db;
 
 -- Insert sample data into Users
 INSERT INTO Users (user_id, first_name, last_name, email, phone_number, tax_id, password_hash)

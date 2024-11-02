@@ -1,8 +1,9 @@
-CREATE DATABASE ECOMMERCE;
-USE ECOMMERCE;
+CREATE DATABASE IF NOT EXISTS ecommerce_db;
+
+USE ecommerce_db;
 
 -- Create dependent tables first
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE Users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Managers (
+CREATE TABLE IF NOT EXISTS Managers (
     manager_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -23,13 +24,13 @@ CREATE TABLE Managers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Categories (
+CREATE TABLE IF NOT EXISTS Categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT
 );
 
-CREATE TABLE Products (
+CREATE TABLE IF NOT EXISTS Products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     origin VARCHAR(100),
@@ -47,7 +48,7 @@ CREATE TABLE Products (
     FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE CASCADE
 );
 
-CREATE TABLE DeliveryOptions (
+CREATE TABLE IF NOT EXISTS DeliveryOptions (
     delivery_option_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     cost DECIMAL(10, 2) NOT NULL,
@@ -55,7 +56,7 @@ CREATE TABLE DeliveryOptions (
 );
 
 -- Now create tables that reference the above tables
-CREATE TABLE Address (
+CREATE TABLE IF NOT EXISTS Address (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     address_line VARCHAR(255) NOT NULL,
@@ -66,7 +67,7 @@ CREATE TABLE Address (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Comments (
+CREATE TABLE IF NOT EXISTS Comments (
     comment_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
     user_id INT,
@@ -78,7 +79,7 @@ CREATE TABLE Comments (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Orders (
+CREATE TABLE IF NOT EXISTS Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     total_price DECIMAL(10, 2) NOT NULL,
@@ -90,7 +91,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (delivery_option_id) REFERENCES DeliveryOptions(delivery_option_id) ON DELETE SET NULL
 );
 
-CREATE TABLE OrderItems (
+CREATE TABLE IF NOT EXISTS OrderItems (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     product_id INT,
@@ -100,7 +101,7 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL
 );
 
-CREATE TABLE Invoices (
+CREATE TABLE IF NOT EXISTS Invoices (
     invoice_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     user_id INT,
@@ -110,7 +111,7 @@ CREATE TABLE Invoices (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Product_Variant (
+CREATE TABLE IF NOT EXISTS Product_Variant (
     variant_id INT PRIMARY KEY AUTO_INCREMENT,
     product_id INT NOT NULL,
     weight_grams INT NOT NULL,
@@ -120,7 +121,7 @@ CREATE TABLE Product_Variant (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Product_Images (
+CREATE TABLE IF NOT EXISTS Product_Images (
     image_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
     image_url VARCHAR(500),
@@ -128,7 +129,7 @@ CREATE TABLE Product_Images (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Discounts (
+CREATE TABLE IF NOT EXISTS Discounts (
     discount_id INT AUTO_INCREMENT PRIMARY KEY,
     discount_type ENUM('percentage', 'fixed') NOT NULL,
     value DECIMAL(10, 2) NOT NULL,  
@@ -141,7 +142,7 @@ CREATE TABLE Discounts (
     FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE SET NULL
 );
 
-CREATE TABLE Wishlist (
+CREATE TABLE IF NOT EXISTS Wishlist (
     wishlist_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -150,7 +151,7 @@ CREATE TABLE Wishlist (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE WishlistItems (
+CREATE TABLE IF NOT EXISTS WishlistItems (
     wishlist_item_id INT AUTO_INCREMENT PRIMARY KEY,
     wishlist_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -159,7 +160,7 @@ CREATE TABLE WishlistItems (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Payments (
+CREATE TABLE IF NOT EXISTS Payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -173,7 +174,7 @@ CREATE TABLE Payments (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE RefundRequests (
+CREATE TABLE IF NOT EXISTS RefundRequests (
     refund_request_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -184,7 +185,7 @@ CREATE TABLE RefundRequests (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE ReturnItems (
+CREATE TABLE IF NOT EXISTS ReturnItems (
     return_item_id INT AUTO_INCREMENT PRIMARY KEY,
     refund_request_id INT NOT NULL,
     product_id INT,
@@ -195,7 +196,7 @@ CREATE TABLE ReturnItems (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL
 );
 
-CREATE TABLE ShoppingCart (
+CREATE TABLE IF NOT EXISTS ShoppingCart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,  -- Nullable to support guests
     session_id VARCHAR(255),  -- Unique session identifier for guest users
@@ -204,7 +205,7 @@ CREATE TABLE ShoppingCart (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
-CREATE TABLE ShoppingCartItems (
+CREATE TABLE IF NOT EXISTS ShoppingCartItems (
     cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
     cart_id INT NOT NULL,
     product_id INT NOT NULL,
