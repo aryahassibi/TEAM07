@@ -3,6 +3,10 @@ const mysql = require('mysql2');
 const app = express();
 const port = process.env.PORT;
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -110,24 +114,71 @@ app.post('/api/users/register', async (req, res) => {
       return res.status(409).json({ error: 'User already exists' });
     }
 
-
-    // Insert the new user
-    const insertUserQuery = 'INSERT INTO Users SET ?';
-    const newUser = {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      password_hash: password,
-    };
-    db.query(insertUserQuery, newUser, (error, result) => {
-      if (error) {
-        console.error('Error creating user:', error);
+    //Hash the password before storing
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.error('Error hashing password:', err);
         return res.status(500).json({ error: 'Internal server error' });
       }
-      res
-        .status(201)
-        .json({ message: 'User registered', userId: result.insertId });
+
+      // Insert the new user with the hashed password
+      const insertUserQuery = 'INSERT INTO Users SET ?';
+      const newUser = {
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        password_hash: hash, // **Store the hashed password**
+      };
+      db.query(insertUserQuery, newUser, (error, result) => {
+        if (error) {
+          console.error('Error creating user:', error);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+        res
+          .status(201)
+          .json({ message: 'User registered', userId: result.insertId });
+      });
+    });
+  });
+});
+
+// **Added POST endpoint for user login with authentication**
+app.post('/api/users/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Fetch the user by email
+  const query = 'SELECT * FROM Users WHERE email = ?';
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error('Error fetching user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.length === 0) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const user = results[0];
+
+    // Compare the provided password with the stored password hash
+    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+      if (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      if (!isMatch) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      // Generate a JWT token
+      const token = jwt.sign(
+        { userId: user.user_id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      res.json({ message: 'Login successful', token });
     });
   });
 });
