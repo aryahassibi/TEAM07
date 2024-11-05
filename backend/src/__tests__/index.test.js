@@ -2,7 +2,12 @@ const request = require('supertest');
 const app = require('../index'); // Ensure this points to your main app file
 
 jest.mock('mysql2'); // use the mock for mysql2
-jest.mock('bcrypt'); // same, mock bcrypt
+//jest.mock('bcrypt'); // same, mock bcrypt
+
+jest.mock('bcrypt', () => ({
+    hash: jest.fn((password, saltRounds, callback) => callback(null, 'hashedPassword')), // Mock hash for registration
+    compare: jest.fn((password, hashedPassword, callback) => callback(null, true)), // Mock compare to always return true
+  }));
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -10,29 +15,30 @@ beforeEach(() => {
 
 
 describe('Product Endpoints', () => {
-  it('GET /api/products should retrieve all products', async () => {
-    const res = await request(app).get('/api/products');
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toBeInstanceOf(Array);
-  });
-
-  it('GET /api/products/:id should retrieve a product by ID', async () => {
-    const res = await request(app).get('/api/products/1');
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('product_id');
-  });
-
-  it('POST /api/products should create a new product', async () => {
-    const res = await request(app)
-      .post('/api/products')
-      .send({
-        name: 'Test Product',
-        price: 10,
-        category: 'Test Category'
+    it('GET /api/products should retrieve all products', async () => {
+        const res = await request(app).get('/api/products');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body[0]).toHaveProperty('product_id');
       });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('productId');
-  });
+
+    it('GET /api/products/:id should retrieve a product by ID', async () => {
+        const res = await request(app).get('/api/products/1');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('product_id');
+    });
+
+    it('POST /api/products should create a new product', async () => {
+        const res = await request(app)
+        .post('/api/products')
+        .send({
+            name: 'Test Product',
+            price: 10,
+            category: 'Test Category'
+        });
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toHaveProperty('productId');
+    });
 });
 
 describe('User Endpoints', () => {
