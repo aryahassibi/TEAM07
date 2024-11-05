@@ -44,8 +44,8 @@ If you need more detailed instructions, refer to the sections below.
      PORT=5000
      DB_HOST=db
      DB_USER=root
-     DB_PASS=your_password
-     DB_NAME=online_store
+     DB_PASS=
+     DB_NAME=ecommerce_db
      ```
 
 ### 2. Start Services with Docker
@@ -337,8 +337,8 @@ To ensure consistency and eliminate environment-related issues across all team m
      PORT=5000
      DB_HOST=db
      DB_USER=root
-     DB_PASS=your_password
-     DB_NAME=online_store
+     DB_PASS=
+     DB_NAME=ecommerce_db
      ```
 
 4. **Setup Docker with `docker-compose`:**
