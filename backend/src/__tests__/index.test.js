@@ -1,6 +1,14 @@
 const request = require('supertest');
 const app = require('../index'); // Ensure this points to your main app file
 
+jest.mock('mysql2'); // use the mock for mysql2
+jest.mock('bcrypt'); // same, mock bcrypt
+
+beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+
 describe('Product Endpoints', () => {
   it('GET /api/products should retrieve all products', async () => {
     const res = await request(app).get('/api/products');
