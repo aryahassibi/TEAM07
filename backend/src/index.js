@@ -132,6 +132,34 @@ app.post('/api/users/register', async (req, res) => {
   });
 });
 
+
+// GET endpoit to list all users
+app.get('/api/users', (req,res) => {
+  db.query('SELECT * FROM Users', (error,results) => {
+    if (error) throw error;
+    res.json(results);
+  })
+})
+
+// GET endpoint to retrieve a specific user by ID
+app.get('/api/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'SELECT * FROM Users WHERE user_id = ?';
+
+  db.query(query, [userId], (error, results) => {
+    if (error) {
+      console.error('Error fetching user:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(results[0]);
+  });
+});
+
+
+
 app.get('/', (req, res) => {
   res.send('Backend is running');
 });
