@@ -26,7 +26,10 @@ db.connect(err => {
 // GET endpoint to list all products
 app.get('/api/products', (req, res) => {
   db.query('SELECT * FROM Products', (error, results) => {
-    if (error) throw error;
+    if (error) {
+      console.error('Error retrieving products:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
     res.json(results);
   });
 });
