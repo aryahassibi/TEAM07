@@ -1,10 +1,17 @@
-# TEAM07
+# Compresso Coffee Store
 
-This is the repository for team 07 of the course CS 308 - Software Engineering at Sabanci University.
+Welcome to the Compresso Coffee Store! This is the official GitHub repository for Team 07’s project in CS 308 - Software Engineering at Sabanci University. We’re a team of six working to build a functional, secure, and visually appealing online store for our unique coffee brand, **Compresso**.
 
-We will develop an online store to sell our own brand of coffee.
+## Key Features
 
-## Group Members
+- **Browse and Purchase:** Users can explore coffee products, check availability, add items to their cart, and place orders.
+- **User Authentication:** Customers can register, log in, and securely manage their accounts.
+- **Order Tracking:** Order statuses are updated in real-time (e.g., "processing," "in-transit," "delivered").
+- **Product Reviews:** Customers can rate and comment on products, pending manager approval.
+- **Search and Filter:** Users can search by product name and sort by price or popularity.
+- **Admin Interface:** A dedicated section for managers to handle inventory, manage discounts, and view analytics.
+
+## Team Members
 
 - Arya Hassibi
 - Beste Bayhan
@@ -13,9 +20,26 @@ We will develop an online store to sell our own brand of coffee.
 - Eid Alhamali
 - Ecem Akın
 
+## Development Roadmap
+
+### Project SCRUM Schedule
+We follow a SCRUM approach with two-week sprints, culminating in bi-weekly demos as outlined below:
+
+- **Sprint 1:** Initial setup, basic UI, and data modeling
+- **Sprint 2:** Product Display, User Account Setup, and Shopping Cart
+- **Sprint 3:** Order Tracking and Review System
+- **Sprint 4:** Wishlist, Admin Review Management, and System Optimizations
+- **Sprint 5:** Final Testing, Debugging, and Demo Preparation
+
 ## Git and GitHub Guidelines
 
-For detailed guidelines and cheat sheets on using Git and GitHub effectively, refer to our [Git Guide](docs/Git_Guide.md). This resource will help you understand our project's version control practices and provide useful tips and commands.
+To keep our project organized:
+
+1. **Branching:** We follow the Git Flow model, with separate branches for features, development, and main releases.
+2. **Commit Frequency:** Each member aims for at least five meaningful commits per sprint.
+3. **PR Reviews:** All pull requests require review and approval from at least one teammate before merging.
+
+Checkout our [Git Guide](docs/Git_Guide.md) for mor info about our system and useful commands.
 
 ## Workflow Overview
 
@@ -101,7 +125,7 @@ Here’s a quick roadmap to get you set up and moving forward effectively.
 
 ### Best Practices
 
-- Use **environment variables** for sensitive data. Never hard-code passwords, tokens, or keys in the code.
+- Use **environment variables** (like the '.env' file) for sensitive data. Never hard-code passwords, tokens, or keys in the code.
 
 
 
