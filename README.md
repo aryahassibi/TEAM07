@@ -11,6 +11,14 @@ Welcome to the Compresso Coffee Store! This is the official GitHub repository fo
 - **Search and Filter:** Users can search by product name and sort by price or popularity.
 - **Admin Interface:** A dedicated section for managers to handle inventory, manage discounts, and view analytics.
 
+### Tech Stack
+
+- **Frontend:** React, Axios
+- **Backend:** Node.js, Express
+- **Database:** MySQL
+- **Containerization:** Docker
+- **Version Control:** Git, GitHub
+
 ## Team Members
 
 - Arya Hassibi
