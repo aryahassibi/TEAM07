@@ -1,18 +1,6 @@
-const request = require('supertest');
+
+/*const request = require('supertest');
 const app = require('../index'); // Ensure this points to your main app file
-
-jest.mock('mysql2'); // use the mock for mysql2
-//jest.mock('bcrypt'); // same, mock bcrypt
-
-jest.mock('bcrypt', () => ({
-    hash: jest.fn((password, saltRounds, callback) => callback(null, 'hashedPassword')), // Mock hash for registration
-    compare: jest.fn((password, hashedPassword, callback) => callback(null, true)), // Mock compare to always return true
-  }));
-
-beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
 
 describe('Product Endpoints', () => {
     it('GET /api/products should retrieve all products', async () => {
@@ -20,7 +8,7 @@ describe('Product Endpoints', () => {
         expect(res.statusCode).toEqual(200);
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body[0]).toHaveProperty('product_id');
-      });
+    });
 
     it('GET /api/products/:id should retrieve a product by ID', async () => {
         const res = await request(app).get('/api/products/1');
@@ -30,40 +18,103 @@ describe('Product Endpoints', () => {
 
     it('POST /api/products should create a new product', async () => {
         const res = await request(app)
-        .post('/api/products')
-        .send({
-            name: 'Test Product',
-            price: 10,
-            category: 'Test Category'
-        });
+            .post('/api/products')
+            .send({
+                name: 'Test Product',
+                price: 10,
+                category: 'Test Category'
+            });
         expect(res.statusCode).toEqual(201);
         expect(res.body).toHaveProperty('productId');
     });
 });
 
 describe('User Endpoints', () => {
-  it('POST /api/users/register should register a new user', async () => {
-    const res = await request(app)
-      .post('/api/users/register')
-      .send({
-        first_name: 'John',
-        last_name: 'Doe',
-        email: 'johndoe@example.com',
-        phone_number: '1234567890',
-        password: 'password123'
-      });
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('userId');
-  });
+    it('POST /api/users/register should register a new user', async () => {
+        const res = await request(app)
+            .post('/api/users/register')
+            .send({
+                first_name: 'John',
+                last_name: 'Doe',
+                email: 'johndoe@example.com',
+                phone_number: '1234567890',
+                password: 'password123'
+            });
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toHaveProperty('userId');
+    });
 
-  it('POST /api/users/login should login a user and return a token', async () => {
-    const res = await request(app)
-      .post('/api/users/login')
-      .send({
-        email: 'johndoe@example.com',
-        password: 'password123'
-      });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('token');
-  });
+    it('POST /api/users/login should login a user and return a token', async () => {
+        const res = await request(app)
+            .post('/api/users/login')
+            .send({
+                email: 'johndoe@example.com',
+                password: 'password123'
+            });
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('token');
+    });
+});
+*/
+
+const request = require('supertest');
+const app = require('../index');
+
+// Mock the modules
+jest.mock('mysql2');
+jest.mock('bcrypt');
+jest.mock('jsonwebtoken');
+
+describe('Product Endpoints', () => {
+    it('GET /api/products should retrieve all products', async () => {
+        const res = await request(app).get('/api/products');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body[0]).toHaveProperty('product_id');
+    });
+
+    it('GET /api/products/:id should retrieve a product by ID', async () => {
+        const res = await request(app).get('/api/products/1');
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('product_id');
+    });
+
+    it('POST /api/products should create a new product', async () => {
+        const res = await request(app)
+            .post('/api/products')
+            .send({
+                name: 'Test Product',
+                price: 10,
+                category: 'Test Category'
+            });
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toHaveProperty('productId');
+    });
+});
+
+describe('User Endpoints', () => {
+    it('POST /api/users/register should register a new user', async () => {
+        const res = await request(app)
+            .post('/api/users/register')
+            .send({
+                first_name: 'John',
+                last_name: 'Doe',
+                email: 'johndoe@example.com',
+                phone_number: '1234567890',
+                password: 'password123'
+            });
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toHaveProperty('userId');
+    });
+
+    it('POST /api/users/login should login a user and return a token', async () => {
+        const res = await request(app)
+            .post('/api/users/login')
+            .send({
+                email: 'johndoe@example.com',
+                password: 'password123'
+            });
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('token');
+    });
 });
