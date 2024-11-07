@@ -49,20 +49,22 @@ Here’s a quick roadmap to get you set up and moving forward effectively.
     ```bash
     docker-compose up --build
     ```
+    The first time you run this command you might get an error and your may able ot resolve it easirly by stopping the application (press `Ctrl+C` in the terminal) and running the command again. 
 - **Access Services**:
     - **Frontend**: [http://localhost:3000](http://localhost:3000)
     - **Backend**: [http://localhost:5001](http://localhost:5001)
-    - **Database**: MySQL on `localhost:3307`
-- To stop the running containers, press Ctrl+C in the terminal, then run:
+- **Stopping and Removing Docker Containers**
+    To stop the running containers, press `Ctrl+C` in the terminal, then run:
     ```bash
     docker-compose down
     ```
-    This will stop and remove the containers. However, the data will persist in the database volume.
-    If you want to remove the data as well, run:
+    This will stop and remove the containers. However, the data will persist in the database volume. If you want to remove the data as well, run:
     ```bash
     docker-compose down -v
     ```
     This command stops and removes the containers and associated volumes, effectively resetting the database and other persistent data.
+    > [!TIP]
+    > These commands can also be used to resolve Docker errors by ensuring a clean state before restarting the services.
 
 
 ### 3. Choose Your Task and Branch
