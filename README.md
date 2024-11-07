@@ -4,13 +4,22 @@ This is the repository for team 07 of the course CS 308 - Software Engineering a
 
 We will develop an online store to sell our own brand of coffee.
 
-For detailed instructions on setting up the project, initializing the tech stack, and managing version control, please refer to the [Setup Guide](docs/Setup_Guide.md)
+## Group Members
+
+- Arya Hassibi
+- Beste Bayhan
+- Mustafa Topcu
+- Orhun Ege Ozpay
+- Eid Alhamali
+- Ecem Akın
+
+## Git and GitHub Guidelines
+
+For detailed guidelines and cheat sheets on using Git and GitHub effectively, refer to our [Git Guide](docs/Git_Guide.md). This resource will help you understand our project's version control practices and provide useful tips and commands.
 
 ## Workflow Overview
 
-If you’re ready to dive into your task, here’s a quick roadmap to get you set up and moving forward effectively.
-
-If you need more detailed instructions, refer to the sections below.
+Here’s a quick roadmap to get you set up and moving forward effectively.
 
 ### 1. Set Up Your Development Environment
 
@@ -31,7 +40,11 @@ If you need more detailed instructions, refer to the sections below.
      The `DB_PASS` field should be left empty since for now during the development phase, the database is modified to accept empty passwords.
 
 ### 2. Start Services with Docker
-
+   - Download and install Docker Desktop from [here](https://www.docker.com/products/docker-desktop).
+   - Verify Docker is running by checking:
+     ```bash
+     docker --version
+     ```
    - **Run the Project in Docker**: Start all services (backend, frontend, database) with:
      ```bash
      docker-compose up --build
@@ -40,6 +53,17 @@ If you need more detailed instructions, refer to the sections below.
      - **Frontend**: [http://localhost:3000](http://localhost:3000)
      - **Backend**: [http://localhost:5001](http://localhost:5001)
      - **Database**: MySQL on `localhost:3307`
+   - To stop the running containers, press Ctrl+C in the terminal, then run:
+     ```bash
+     docker-compose down
+     ```
+     This will stop and remove the containers. However, the data will persist in the database volume.
+     If you want to remove the data as well, run:
+     ```bash
+     docker-compose down -v
+     ```
+     This command stops and removes the containers and associated volumes, effectively resetting the database and other persistent data.
+
 
 ### 3. Choose Your Task and Branch
 
@@ -73,11 +97,9 @@ If you need more detailed instructions, refer to the sections below.
    - On [GitHub](https://github.com/aryahassibi/TEAM07.git), submit a **Pull Request to the `develop` branch** and request a review. 
    - Once approved by a at least one of your teammates, you’re ready to merge.
 
-## Group Members
+### Best Practices
 
-- Arya Hassibi
-- Beste Bayhan
-- Mustafa Topcu
-- Orhun Ege Ozpay
-- Eid Alhamali
-- Ecem Akın
+- Use **environment variables** for sensitive data. Never hard-code passwords, tokens, or keys in the code.
+
+
+
