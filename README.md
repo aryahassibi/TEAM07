@@ -87,8 +87,8 @@ Here’s a quick roadmap to get you set up and moving forward effectively.
     docker-compose down -v
     ```
     This command stops and removes the containers and associated volumes, effectively resetting the database and other persistent data.
-    > [!TIP]
-    > These commands can also be used to resolve Docker errors by ensuring a clean state before restarting the services.
+> [!TIP]
+> These commands can also be used to resolve Docker errors by ensuring a clean state before restarting the services.
 
 
 ### 3. Choose Your Task and Branch
