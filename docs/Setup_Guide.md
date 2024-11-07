@@ -11,17 +11,11 @@
    - [Backend Setup (Node.js)](#backend-setup-nodejs)
    - [Frontend Setup (React)](#frontend-setup-react)
    - [Database Setup (MySQL)](#database-setup-mysql)
-2. [Version Control (GitHub)](#version-control-github)
-   - [Cloning the Repository](#cloning-the-repository)
-   - [Branching Strategy](#branching-strategy)
-   - [Committing Changes](#committing-changes)
-   - [Pull Requests](#pull-requests)
-   - [Merge Conflicts](#merge-conflicts)
-3. [Connecting Backend, Frontend, and Database](#connecting-backend-frontend-and-database)
-4. [Environment Setup](#environment-setup)
-   - [Windows and Mac Setup](#windows-and-mac-setup)
-5. [Best Practices](#best-practices)
-6. [Troubleshooting and FAQs](#troubleshooting-and-faqs)
+2. [Connecting Backend, Frontend, and Database](#connecting-backend-frontend-and-database)
+3. [Environment Setup](#environment-setup)
+  - [Windows and Mac Setup](#windows-and-mac-setup)
+4. [Best Practices](#best-practices)
+5. [Troubleshooting and FAQs](#troubleshooting-and-faqs)
 
 ---
 
@@ -184,102 +178,6 @@ If you need more detailed instructions, refer to the sections below.
    ```sql
    CREATE DATABASE online_store;
    ```
-
----
-
-## Version Control (GitHub)
-
-### Cloning the Repository
-
-1. Clone the project repository from GitHub:
-   ```bash
-   git clone https://github.com/aryahassibi/TEAM07.git
-   cd TEAM07
-   ```
-
-### Branching Strategy
-
-We follow **Git Flow** for better collaboration:
-- **Main branch**: Contains production-ready code.
-- **Development branch**: Where integration happens.
-- **Feature branches**: Each new feature or bug fix should have its own branch.
-
-To create a new feature branch:
-```bash
-git checkout develop
-git pull origin develop
-git checkout -b feature/your-feature
-```
-
-### Committing Changes
-
-- Follow the Commit Message Convention: `type(scope): message`
-   - `type`
-   Indicates the kind of change you are making to the project. Common types include:
-      - `feat`: A new feature.
-      - `fix`: A bug fix.
-      - `docs`: Documentation changes.
-      - `style`: Code style changes (formatting, no code change).
-      - `refactor`: Code refactoring without adding features or fixing bugs.
-      - `test`: Adding or modifying tests.
-      - `chore`: Maintenance tasks (e.g., dependency updates).
-
-   - `scope`
-   Describes the part of the project that your change affects. Some common scopes are:
-      - `auth`: Authentication-related code.
-      - `cart`: Shopping cart functionality.
-      - `setup`: Project setup or configuration.
-      - `db`: Database changes.
-      - `api`: Backend API-related changes.
-
-   - `message`
-      A concise summary of the change you made, written in the `imperative` form (e.g., "add", "fix", "update"). Keep it brief but descriptive.
-      
-- Commit Message Examples:
-   - Adding a feature: `feat(auth): add login functionality`
-   - Fixing a bug: `fix(cart): correct item count logic`
-   - Updating documentation: `docs(setup): add project setup guide`
-
-
-- Stage and commit your changes:
-   ```bash
-   git add .
-   git commit -m "feat(auth): implement user login"
-   ```
-   - The `git add .` command stages all changes in the current directory and its subdirectories. This includes new, modified, and deleted files.
-   - Alternatively, you can stage specific files or folders by listing them individually:
-      ```bash
-      git add file1 directory1/ file2
-      ```
-
-### Pull Requests
-
-- Once you are done with a feature, push your changes to GitHub:
-  ```bash
-  git push origin feature/your-feature
-  ```
-
-- Open a pull request (PR) on GitHub to merge the feature branch into `develop`. 
-
-### Code Review and Merging
-  - Wait for at least one approval before merging your PR.
-  - Once approved, **merge your PR** into `develop` on [GitHub](https://github.com/aryahassibi/TEAM07.git). Avoid merging directly from your local machine.
-
-### Updating Local Branches
-- **Sync frequently** by pulling the latest changes from `develop`:
-  ```bash
-  git checkout develop
-  git pull origin develop
-  ```
-### Merge Conflicts
-
-- If there are conflicts during merge:
-  - Fetch the latest changes:
-    ```bash
-    git fetch
-    git merge origin/develop
-    ```
-  - Resolve conflicts in your editor and commit.
 
 ---
 
