@@ -38,8 +38,8 @@ If you need more detailed instructions, refer to the sections below.
      ```
    - **Access Services**:
      - **Frontend**: [http://localhost:3000](http://localhost:3000)
-     - **Backend**: [http://localhost:5000](http://localhost:5000)
-     - **Database**: MySQL on `localhost:3306`
+     - **Backend**: [http://localhost:5001](http://localhost:5001)
+     - **Database**: MySQL on `localhost:3307`
 
 ### 3. Choose Your Task and Branch
 
