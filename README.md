@@ -39,6 +39,8 @@ We follow a SCRUM approach with two-week sprints, culminating in bi-weekly demos
 - **Sprint 4:** Wishlist, Admin Review Management, and System Optimizations
 - **Sprint 5:** Final Testing, Debugging, and Demo Preparation
 
+Jira is used to manage tasks and track progress. Each sprint begins with a planning meeting to assign tasks and ends with a sprint review to showcase completed features.
+
 ## Git and GitHub Guidelines
 
 To keep our project organized:
