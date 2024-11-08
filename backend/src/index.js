@@ -188,6 +188,66 @@ app.post('/api/users/login', (req, res) => {
   });
 });
 
+// DELETE endpoint to delete a user
+app.delete('/api/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'DELETE FROM Users WHERE user_id = ?';
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error deleting user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'User deleted successfully' });
+  });
+});
+
+// PUT endpoint to update a user's details
+app.put('/api/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { first_name, last_name, email, phone_number, password } = req.body;
+
+  // Hash the password if provided
+  const updateUser = { first_name, last_name, email, phone_number };
+  if (password) {
+    const saltRounds = 10;
+    updateUser.password_hash = await bcrypt.hash(password, saltRounds);
+  }
+
+  const query = 'UPDATE Users SET ? WHERE user_id = ?';
+  db.query(query, [updateUser, userId], (err, results) => {
+    if (err) {
+      console.error('Error updating user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'User updated successfully' });
+  });
+});
+
+// GET endpoint to retrieve a user's details by ID
+app.get('/api/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'SELECT user_id, first_name, last_name, email, phone_number FROM Users WHERE user_id = ?';
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching user:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(results[0]);
+  });
+});
+
+
 
 app.get('/', (req, res) => {
   res.send('Backend is running');
