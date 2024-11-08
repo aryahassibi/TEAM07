@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const app = express();
 const port = process.env.PORT;
 
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -117,6 +118,7 @@ app.post('/api/users/register', async (req, res) => {
       return res.status(409).json({ error: 'User already exists' });
     }
 
+
     //Hash the password before storing
     const saltRounds = 10;
     bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -185,6 +187,7 @@ app.post('/api/users/login', (req, res) => {
     });
   });
 });
+
 
 app.get('/', (req, res) => {
   res.send('Backend is running');
