@@ -9,12 +9,13 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
 
-# Copy the rest of the backend code
+# Copy the rest of the frontend code
 COPY . .
 
-# Expose the port (assuming the app listens on 5000)
-EXPOSE 5000
+# Expose the port (assuming the app runs on 3000)
+EXPOSE 3000
 
-# Start the application
-CMD ["node", "src/index.js"]
+# Start the React application
+CMD ["npm", "start"]
