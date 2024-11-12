@@ -8,6 +8,15 @@ import ProductsPage from './components/ProductsPage';
 import { CartProvider } from './CartContext'; // Import CartProvider
 
 function App() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from the backend API
+    axios.get('http://localhost:5000/api/products')
+      .then(response => setProducts(response.data))
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
+
   return (
     <CartProvider> {/* Wrap the app with CartProvider */}
       <Router>
