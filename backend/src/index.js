@@ -247,6 +247,20 @@ app.get('/api/users/:id', (req, res) => {
   });
 });
 
+// GET endpoint to list all users
+app.get('/api/users', (req, res) => {
+  const query = 'SELECT user_id, first_name, last_name, email, phone_number FROM Users';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving users:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.json(results);
+  });
+});
+
+
 
 
 app.get('/', (req, res) => {
