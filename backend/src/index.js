@@ -261,6 +261,20 @@ app.get('/api/users', (req, res) => {
 });
 
 
+// GET endpoint to fetch the current user's or guest's cart
+app.get('/api/cart', (req, res) => {
+  const { user_id } = req.query;
+  const query = 'SELECT * FROM Cart WHERE user_id = ?';
+
+  db.query(query, [user_id], (err, results) => {
+    if (err) {
+      console.error('Error fetching cart:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.json(results);
+  });
+});
+
 
 
 app.get('/', (req, res) => {
