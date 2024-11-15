@@ -28,8 +28,46 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const removeFromCart = (product) => {
+    setCartItems((prevItems) => {
+      return prevItems.filter(item => item.product !== product);
+    });
+  };
+
+  const increaseQuantity = (product) => {
+    setCartItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      const itemIndex = updatedItems.findIndex(item => item.product === product);
+
+      if (itemIndex !== -1) {
+        updatedItems[itemIndex] = {
+          ...updatedItems[itemIndex],
+          quantity: updatedItems[itemIndex].quantity + 1,
+        };
+      }
+
+      return updatedItems;
+    });
+  };
+
+  const decreaseQuantity = (product) => {
+    setCartItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      const itemIndex = updatedItems.findIndex(item => item.product === product);
+
+      if (itemIndex !== -1 && updatedItems[itemIndex].quantity > 1) {
+        updatedItems[itemIndex] = {
+          ...updatedItems[itemIndex],
+          quantity: updatedItems[itemIndex].quantity - 1,
+        };
+      }
+
+      return updatedItems;
+    });
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity }}>
       {children}
     </CartContext.Provider>
   );
