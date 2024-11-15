@@ -261,31 +261,60 @@ app.get('/api/users', (req, res) => {
 });
 
 
-// GET endpoint to fetch the current user's or guest's cart
-app.get('/api/cart', (req, res) => {
-  const { user_id } = req.query;
-  const query = 'SELECT * FROM Cart WHERE user_id = ?';
+// GET endpoint to fetch cart items
+// go to localhost:5001/api/cart/1
+app.get('/api/cart/:user_id', (req, res) => {
+  const { user_id } = req.params;
+
+  const query = `
+    SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
+    FROM ShoppingCartItems ci
+    JOIN Products p ON ci.product_id = p.product_id
+    WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1)
+  `;
 
   db.query(query, [user_id], (err, results) => {
     if (err) {
-      console.error('Error fetching cart:', err);
+      console.error('Error retrieving cart items:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
-    res.json(results);
+
+    const total = results.reduce((sum, item) => sum + item.subtotal, 0);
+    res.json({ items: results, total });
   });
 });
 
-// POST endpoint to add a product to the cart (or update the quantity if it already exists)
-app.post('/api/cart/items', (req, res) => {
-  const { user_id, product_id, quantity } = req.body;
-  const query = 'INSERT INTO Cart (user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = ?';
+// POST endpoint to add item to cart
+app.post('/api/cart/add', (req, res) => {
+  const { user_id, variant_id, quantity } = req.body;
 
-  db.query(query, [user_id, product_id, quantity, quantity], (err, results) => {
+  // Check stock in Product_Variant
+  const checkStockQuery = 'SELECT quantity FROM Product_Variant WHERE variant_id = ?';
+  db.query(checkStockQuery, [variant_id], (err, results) => {
     if (err) {
-      console.error('Error adding product to cart:', err);
+      console.error('Error checking stock:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
-    res.json({ message: 'Product added to cart' });
+    if (!results.length || results[0].quantity < quantity) {
+      return res.status(400).json({ error: 'Insufficient stock' });
+    }
+
+    // Add item to cart
+    const addToCartQuery = `
+      INSERT INTO Cart_Items (cart_id, variant_id, quantity)
+      VALUES (
+        (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1),
+        ?, ?
+      )
+      ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)
+    `;
+    db.query(addToCartQuery, [user_id, variant_id, quantity], (err) => {
+      if (err) {
+        console.error('Error adding to cart:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      res.json({ message: 'Item added to cart' });
+    });
   });
 });
 
