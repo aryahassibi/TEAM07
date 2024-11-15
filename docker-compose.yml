@@ -4,9 +4,9 @@ services:
   db:
     image: mysql:8.0
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"  # Allows MySQL to run without a password
-      - MYSQL_DATABASE=${DB_NAME}
-      - TZ=Europe/Istanbul
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allows MySQL to run without a password
+      MYSQL_DATABASE: ${DB_NAME}
+      TZ: Europe/Istanbul
     ports:
       - "3307:3306"  # Map port 3306 in the container to 3307 on your host to avoid conflicts
     volumes:
@@ -30,11 +30,11 @@ services:
       db:
         condition: service_healthy
     environment:
-      - PORT=${PORT}
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
     command: npx nodemon src/index.js  # Use nodemon for live reloading during development
 
   frontend:
