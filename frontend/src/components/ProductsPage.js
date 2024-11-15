@@ -1,21 +1,13 @@
-// src/components/ProductsPage.js
-
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import { CartContext } from '../CartContext';
 import FilterPanel from './FilterPanel'; // Import FilterPanel component
 import './ProductsPage.css';
 
-const coffeeData = [
-  { id: 1, name: 'Colombia Coffee', type: 'Arabica', region: 'Colombia', stature: 'Tall', beanSize: 'Average', optimalAltitude: 'High', leafTipColor: 'Green', price: 15 },
-  { id: 2, name: 'Honduras Coffee', type: 'Robusta', region: 'Honduras', stature: 'Short', beanSize: 'Below Average', optimalAltitude: 'Medium', leafTipColor: 'Bronze', price: 12 },
-  { id: 3, name: 'Dominican R. Coffee', type: 'Arabica', region: 'Dominican Republic', stature: 'Tall', beanSize: 'Large', optimalAltitude: 'High', leafTipColor: 'Green', price: 14 },
-  // Add more products with similar structure
-];
-
 const ProductsPage = () => {
   const { addToCart } = useContext(CartContext);
+  const [coffees, setCoffees] = useState([]);
   const [filters, setFilters] = useState({
     type: '',
     region: '',
@@ -26,6 +18,23 @@ const ProductsPage = () => {
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(filters); // Temporary filters to apply on confirmation
+
+  // Fetch coffee data from the backend
+  useEffect(() => {
+    const fetchCoffees = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/products');
+        const data = await response.json();
+        console.log(data);
+        
+        setCoffees(data);
+      } catch (error) {
+        console.error('Error fetching coffee data:', error);
+      }
+    };
+
+    fetchCoffees();
+  }, []);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +63,7 @@ const ProductsPage = () => {
   const openPanel = () => setIsPanelOpen(true);
   const closePanel = () => setIsPanelOpen(false);
 
-  const filteredCoffees = coffeeData.filter((coffee) =>
+  const filteredCoffees = coffees.filter((coffee) =>
     Object.keys(filters).every((key) =>
       filters[key] ? coffee[key] === filters[key] : true
     )
