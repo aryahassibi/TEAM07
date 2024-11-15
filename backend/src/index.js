@@ -1,10 +1,14 @@
 const express = require('express');
 const mysql = require('mysql2');
+
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT;
 
 // Middleware to parse JSON bodies
+
 app.use(express.json());
+app.use(cors());
 
 // Database connection
 const db = mysql.createConnection({
