@@ -370,6 +370,105 @@ app.delete('/api/cart/remove', (req, res) => {
 });
 
 
+// POST endpoint to checkout cart
+app.post('/api/cart/checkout', (req, res) => {
+  const { user_id } = req.body;
+
+  // Step 1: Fetch user's default address
+  const addressQuery = `
+    SELECT address_id, address_line, city, state, postal_code, country
+    FROM Address
+    WHERE user_id = ?
+    LIMIT 1
+  `;
+
+  db.query(addressQuery, [user_id], (err, addressResult) => {
+    if (err) {
+      console.error('Error fetching user address:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    if (!addressResult.length) {
+      return res.status(400).json({ error: 'No address found for the user' });
+    }
+
+    const deliveryAddress = addressResult[0];
+
+    // Step 2: Fetch cart items
+    const cartQuery = `
+      SELECT ci.variant_id, p.price, ci.quantity
+      FROM Cart_Items ci
+      JOIN Product_Variant pv ON ci.variant_id = pv.variant_id
+      JOIN Products p ON pv.product_id = p.product_id
+      WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+    `;
+
+    db.query(cartQuery, [user_id], (err, cartItems) => {
+      if (err) {
+        console.error('Error fetching cart items:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (!cartItems.length) {
+        return res.status(400).json({ error: 'Cart is empty' });
+      }
+
+      // Calculate total price
+      const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      // Step 3: Create order
+      const createOrderQuery = `
+        INSERT INTO Orders (user_id, total_price, status, created_at)
+        VALUES (?, ?, 'processing', NOW())
+      `;
+
+      db.query(createOrderQuery, [user_id, totalPrice], (err, result) => {
+        if (err) {
+          console.error('Error creating order:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        const orderId = result.insertId;
+
+        // Step 4: Add order items
+        const orderItemsQuery = `
+          INSERT INTO Order_Items (order_id, variant_id, quantity, price)
+          VALUES ?
+        `;
+
+        const orderItems = cartItems.map(item => [orderId, item.variant_id, item.quantity, item.price]);
+
+        db.query(orderItemsQuery, [orderItems], (err) => {
+          if (err) {
+            console.error('Error inserting order items:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+
+          // Step 5: Clear cart
+          const clearCartQuery = `
+            DELETE FROM Cart_Items
+            WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+          `;
+
+          db.query(clearCartQuery, [user_id], (err) => {
+            if (err) {
+              console.error('Error clearing cart:', err);
+              return res.status(500).json({ error: 'Internal server error' });
+            }
+
+            // Step 6: Respond with order details and address
+            res.json({
+              message: 'Order placed successfully',
+              order_id: orderId,
+              delivery_address: deliveryAddress,
+            });
+          });
+        });
+      });
+    });
+  });
+});
+
 
 app.get('/', (req, res) => {
   res.send('Backend is running');

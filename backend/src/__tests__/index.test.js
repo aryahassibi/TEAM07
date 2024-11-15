@@ -218,5 +218,62 @@ describe('Cart API Endpoints', () => {
       expect.any(Function)
     );
   });
+
+  test('POST /api/cart/checkout should place an order', async () => {
+    const mockUserId = 1;
+    const mockAddress = {
+      address_id: 1,
+      address_line: '123 Main St',
+      city: 'Metropolis',
+      state: 'NY',
+      postal_code: '10001',
+      country: 'USA',
+    };
+    const mockCartItems = [
+      { variant_id: 2, price: 100, quantity: 2 },
+    ];
+    const mockOrderId = 12345;
   
+    mysql.createConnection().query
+      .mockImplementationOnce((sql, params, callback) => callback(null, [mockAddress])) // Fetch address
+      .mockImplementationOnce((sql, params, callback) => callback(null, mockCartItems)) // Fetch cart items
+      .mockImplementationOnce((sql, params, callback) => callback(null, { insertId: mockOrderId })) // Create order
+      .mockImplementationOnce((sql, params, callback) => callback(null)) // Insert order items
+      .mockImplementationOnce((sql, params, callback) => callback(null)); // Clear cart
+  
+    const res = await request(app).post('/api/cart/checkout').send({ user_id: mockUserId });
+  
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual({
+      message: 'Order placed successfully',
+      order_id: mockOrderId,
+      delivery_address: mockAddress,
+    });
+  
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('SELECT address_id, address_line, city, state, postal_code, country'),
+      [mockUserId],
+      expect.any(Function)
+    );
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('SELECT ci.variant_id, p.price, ci.quantity'),
+      [mockUserId],
+      expect.any(Function)
+    );
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('INSERT INTO Orders'),
+      [mockUserId, 200],
+      expect.any(Function)
+    );
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('INSERT INTO Order_Items'),
+      expect.any(Array),
+      expect.any(Function)
+    );
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('DELETE FROM Cart_Items'),
+      [mockUserId],
+      expect.any(Function)
+    );
+  });
 });
