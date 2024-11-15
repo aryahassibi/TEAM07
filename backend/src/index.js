@@ -276,16 +276,16 @@ app.get('/api/cart', (req, res) => {
 });
 
 // POST endpoint to add a product to the cart (or update the quantity if it already exists)
-app.post('/api/cart', (req, res) => {
+app.post('/api/cart/items', (req, res) => {
   const { user_id, product_id, quantity } = req.body;
-  const query = 'INSERT INTO Cart SET ? ON DUPLICATE KEY UPDATE quantity = ?';
+  const query = 'INSERT INTO Cart (user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = ?';
 
-  db.query(query, [{ user_id, product_id, quantity }, quantity], (err, results) => {
+  db.query(query, [user_id, product_id, quantity, quantity], (err, results) => {
     if (err) {
-      console.error('Error adding to cart:', err);
+      console.error('Error adding product to cart:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
-    res.json({ message: 'Added to cart' });
+    res.json({ message: 'Product added to cart' });
   });
 });
 
