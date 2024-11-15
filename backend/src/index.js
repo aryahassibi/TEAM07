@@ -319,6 +319,38 @@ app.post('/api/cart/add', (req, res) => {
 });
 
 
+// PUT endpoint to update cart item quantity
+app.put('/api/cart/update', (req, res) => {
+  const { user_id, variant_id, quantity } = req.body;
+
+  // Validate stock in Product_Variant
+  const stockQuery = 'SELECT quantity FROM Product_Variant WHERE variant_id = ?';
+  db.query(stockQuery, [variant_id], (err, results) => {
+    if (err) {
+      console.error('Error validating stock:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (!results.length || results[0].quantity < quantity) {
+      return res.status(400).json({ error: 'Insufficient stock' });
+    }
+
+    // Update cart item quantity
+    const updateQuery = `
+      UPDATE Cart_Items
+      SET quantity = ?
+      WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+      AND variant_id = ?
+    `;
+    db.query(updateQuery, [quantity, user_id, variant_id], (err) => {
+      if (err) {
+        console.error('Error updating cart item:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      res.json({ message: 'Cart item updated' });
+    });
+  });
+});
+
 
 
 app.get('/', (req, res) => {

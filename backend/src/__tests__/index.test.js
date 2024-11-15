@@ -169,4 +169,33 @@ describe('Cart API Endpoints', () => {
       expect.any(Function)
     );
   });
+
+  test('PUT /api/cart/update should update cart item quantity', async () => {
+    const mockUserId = 1;
+    const mockVariantId = 2;
+    const mockQuantity = 5;
+
+    mysql.createConnection().query
+      .mockImplementationOnce((sql, params, callback) => callback(null, [{ quantity: 10 }])) // Check stock
+      .mockImplementationOnce((sql, params, callback) => callback(null)); // Update quantity
+
+    const res = await request(app).put('/api/cart/update').send({
+      user_id: mockUserId,
+      variant_id: mockVariantId,
+      quantity: mockQuantity,
+    });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual({ message: 'Cart item updated' });
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      'SELECT quantity FROM Product_Variant WHERE variant_id = ?',
+      [mockVariantId],
+      expect.any(Function)
+    );
+    expect(mysql.createConnection().query).toHaveBeenCalledWith(
+      expect.stringContaining('UPDATE Cart_Items'),
+      expect.arrayContaining([mockQuantity, mockUserId, mockVariantId]),
+      expect.any(Function)
+    );
+  });
 });
