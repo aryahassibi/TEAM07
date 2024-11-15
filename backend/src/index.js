@@ -351,6 +351,24 @@ app.put('/api/cart/update', (req, res) => {
   });
 });
 
+// DELETE endpoint to remove item from cart
+app.delete('/api/cart/remove', (req, res) => {
+  const { user_id, variant_id } = req.body;
+
+  const removeQuery = `
+    DELETE FROM Cart_Items
+    WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+    AND variant_id = ?
+  `;
+  db.query(removeQuery, [user_id, variant_id], (err) => {
+    if (err) {
+      console.error('Error removing item from cart:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.json({ message: 'Item removed from cart' });
+  });
+});
+
 
 
 app.get('/', (req, res) => {
