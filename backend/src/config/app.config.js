@@ -1,5 +1,4 @@
 const path = require('path');
-require('dotenv').config();
 
 const config = {
     root: path.join(__dirname, '/../../'),
