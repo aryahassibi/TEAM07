@@ -1,9 +1,8 @@
 const path = require('path');
-require('dotenv').config();
 
 const config = {
     root: path.join(__dirname, '/../../'),
-    controllers: path.join(__dirname, '/../Controllers'),
+    controllers: path.join(__dirname, '/../controllers'),
     sqlCon: {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,

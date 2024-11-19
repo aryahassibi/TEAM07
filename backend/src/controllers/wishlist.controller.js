@@ -2,7 +2,7 @@
 //addToWishlist: Adds a new product to the user's wishlist. If the product is already in the wishlist, it won’t duplicate the entry.
 //removeFromWishlist: Removes a specific product from the wishlist by product ID for the specified user.
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config');
 const mysql = require('mysql2');
 
 const WishlistController = class {

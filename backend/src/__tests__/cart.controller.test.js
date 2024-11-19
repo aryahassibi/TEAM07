@@ -1,6 +1,6 @@
-const CartController = require('../Controllers/cartController');
+const CartController = require('../controllers/cart.controller');
 const mysql = require('mysql2');
-const config = require('../Config/appConfig');
+const config = require('../config/app.config');
 
 // Mock MySQL connection
 jest.mock('mysql2');
