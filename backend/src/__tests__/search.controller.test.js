@@ -1,4 +1,4 @@
-const SearchController = require('../Controllers/searchController');
+const SearchController = require('../controllers/search.controller');
 const mysql = require('mysql2');
 
 // Mock MySQL connection

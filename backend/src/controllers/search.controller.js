@@ -6,7 +6,7 @@
 
 
 const mysql = require('mysql2');
-const config = require('../Config/appConfig');
+const config = require('../config/app.config');
 
 const SearchController = class {
     constructor() {

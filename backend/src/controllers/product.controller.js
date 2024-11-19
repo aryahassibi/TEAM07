@@ -10,7 +10,7 @@
 // getOutOfStockProducts: Retrieves a list of products that are currently out of stock. If all products are in stock, it returns an error.
 
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config.js');
 const mysql = require('mysql2');
 
 const ProductsController = class {

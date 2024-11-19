@@ -6,7 +6,7 @@
 // deleteItemFromCart: Removes a specific item from the cart by product ID and size for the specified user.
 
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config.js');
 const mysql = require('mysql2');
 
 const CartController = class {

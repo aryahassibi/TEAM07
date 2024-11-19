@@ -1,6 +1,6 @@
-const PaymentController = require('../Controllers/paymentController');
+const PaymentController = require('../controllers/payment.controller');
 const mysql = require('mysql2');
-const config = require('../Config/appConfig');
+const config = require('../config/app.config');
 
 // Mock MySQL connection
 jest.mock('mysql2');

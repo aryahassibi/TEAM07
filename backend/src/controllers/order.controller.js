@@ -7,7 +7,7 @@
 // cancelOrder: Sets the status of a specific order to "canceled" based on the order ID. If the order does not exist, it returns an error.
 
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config.js');
 const mysql = require('mysql2');
 
 const OrdersController = class {

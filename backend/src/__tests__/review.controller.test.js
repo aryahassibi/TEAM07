@@ -1,6 +1,6 @@
-const ReviewController = require('../Controllers/reviewController');
+const ReviewController = require('../controllers/review.controller');
 const mysql = require('mysql2');
-const config = require('../Config/appConfig');
+const config = require('../config/app.config');
 
 // Mock MySQL connection
 jest.mock('mysql2');

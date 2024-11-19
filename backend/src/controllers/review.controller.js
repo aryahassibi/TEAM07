@@ -3,7 +3,7 @@
 // approveReview: Marks a review as approved. This action is typically performed by an admin to make the review visible to customers.
 // deleteReview: Removes a review from the database based on its ID. Useful for admins or users to delete unwanted or inappropriate reviews.
 const mysql = require('mysql2');
-const config = require('../Config/appConfig');
+const config = require('../config/app.config');
 
 const ReviewController = class {
     constructor() {

@@ -9,7 +9,7 @@
 // deleteUser: Deletes a user record based on the user's ID. If the user does not exist, it returns an error.
 
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config');
 const mysql = require('mysql2');
 
 const UsersController = class {

@@ -5,7 +5,7 @@
 // deletePayment: Deletes a payment record from the Payments table based on its payment ID. If the payment record does not exist, it returns an error.
 
 
-const config = require('../Config/appConfig.js');
+const config = require('../config/app.config.js');
 const mysql = require('mysql2');
 
 const PaymentController = class {
