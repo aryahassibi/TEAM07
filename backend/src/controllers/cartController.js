@@ -17,6 +17,10 @@ db.connect((err) => {
 exports.getCartItems = (req, res) => {
     const { user_id } = req.params;
 
+    if (!user_id) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
     const query = `
         SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
         FROM ShoppingCartItems ci
@@ -38,6 +42,10 @@ exports.getCartItems = (req, res) => {
 // POST endpoint to add an item to the cart with stock check
 exports.addItemToCart = (req, res) => {
     const { user_id, variant_id, quantity } = req.body;
+
+    if (!user_id || !variant_id || !quantity || quantity <= 0) {
+        return res.status(400).json({ error: "Invalid input parameters" });
+    }
 
     const checkStockQuery =
         "SELECT quantity FROM Product_Variant WHERE variant_id = ?";
@@ -72,6 +80,10 @@ exports.addItemToCart = (req, res) => {
 exports.updateCartItemQuantity = (req, res) => {
     const { user_id, variant_id, quantity } = req.body;
 
+    if (!user_id || !variant_id || !quantity || quantity <= 0) {
+        return res.status(400).json({ error: "Invalid input parameters" });
+    }
+
     const stockQuery =
         "SELECT quantity FROM Product_Variant WHERE variant_id = ?";
     db.query(stockQuery, [variant_id], (err, results) => {
@@ -102,6 +114,10 @@ exports.updateCartItemQuantity = (req, res) => {
 // DELETE endpoint to remove an item from the cart
 exports.removeCartItem = (req, res) => {
     const { user_id, variant_id } = req.body;
+
+    if (!user_id || !variant_id) {
+        return res.status(400).json({ error: "Invalid input parameters" });
+    }
 
     const removeQuery = `
         DELETE FROM Cart_Items
