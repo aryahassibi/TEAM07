@@ -1,6 +1,13 @@
+// cart.test.js
 const request = require("supertest");
 const app = require("../index");
 const mysql = require("mysql2");
+const {
+    generateMockUserId,
+    generateMockVariantId,
+    generateMockCartItems,
+    generateMockAddress,
+} = require("../utils/mockData.js");
 
 // Mocking functions
 jest.mock("mysql2");
@@ -11,16 +18,8 @@ describe("Cart API Endpoints", () => {
     });
 
     test("GET /api/cart/:user_id should fetch cart items", async () => {
-        const mockUserId = 1;
-        const mockCartItems = [
-            {
-                product_id: 2,
-                name: "Product Name",
-                price: 100,
-                quantity: 2,
-                subtotal: 200,
-            },
-        ];
+        const mockUserId = generateMockUserId();
+        const mockCartItems = generateMockCartItems();
 
         mysql
             .createConnection()
@@ -35,11 +34,11 @@ describe("Cart API Endpoints", () => {
 
         // Normalize query string
         const expectedQuery = `
-        SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
-        FROM ShoppingCartItems ci
-        JOIN Products p ON ci.product_id = p.product_id
-        WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1)
-      `
+            SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
+            FROM ShoppingCartItems ci
+            JOIN Products p ON ci.product_id = p.product_id
+            WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1)
+            `
             .replace(/\s+/g, " ")
             .trim(); // Remove extra spaces
 
@@ -57,9 +56,8 @@ describe("Cart API Endpoints", () => {
     });
 
     test("POST /api/cart/add should add an item to the cart", async () => {
-        const mockCartId = 1;
-        const mockVariantId = 2;
-        const mockUserId = 1;
+        const mockUserId = generateMockUserId();
+        const mockVariantId = generateMockVariantId();
         const mockQuantity = 3;
 
         mysql
@@ -90,8 +88,8 @@ describe("Cart API Endpoints", () => {
     });
 
     test("PUT /api/cart/update should update cart item quantity", async () => {
-        const mockUserId = 1;
-        const mockVariantId = 2;
+        const mockUserId = generateMockUserId();
+        const mockVariantId = generateMockVariantId(); 
         const mockQuantity = 5;
 
         mysql
@@ -122,8 +120,8 @@ describe("Cart API Endpoints", () => {
     });
 
     test("DELETE /api/cart/remove should remove an item from the cart", async () => {
-        const mockUserId = 1;
-        const mockVariantId = 2;
+        const mockUserId = generateMockUserId();
+        const mockVariantId = generateMockVariantId();
 
         mysql
             .createConnection()
@@ -146,16 +144,9 @@ describe("Cart API Endpoints", () => {
     });
 
     test("POST /api/cart/checkout should place an order", async () => {
-        const mockUserId = 1;
-        const mockAddress = {
-            address_id: 1,
-            address_line: "123 Main St",
-            city: "Metropolis",
-            state: "NY",
-            postal_code: "10001",
-            country: "USA",
-        };
-        const mockCartItems = [{ variant_id: 2, price: 100, quantity: 2 }];
+        const mockUserId = generateMockUserId();
+        const mockAddress = generateMockAddress();
+        const mockCartItems = generateMockCartItems();
         const mockOrderId = 12345;
 
         mysql
@@ -172,9 +163,9 @@ describe("Cart API Endpoints", () => {
             .mockImplementationOnce((sql, params, callback) => callback(null)) // Insert order items
             .mockImplementationOnce((sql, params, callback) => callback(null)); // Clear cart
 
-        const res = await request(app)
-            .post("/api/cart/checkout")
-            .send({ user_id: mockUserId });
+        const res = await request(app).post("/api/cart/checkout").send({
+            user_id: mockUserId,
+        });
 
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
