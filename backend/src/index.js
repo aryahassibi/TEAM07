@@ -1,6 +1,8 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
+const cartRoutes = require('./routes/cartRoutes');
+
 const port = process.env.PORT;
 
 
@@ -10,6 +12,9 @@ const jwt = require('jsonwebtoken');
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// integrate cart routes
+app.use('/api/cart', cartRoutes);
 
 // Database connection
 const db = mysql.createConnection({
@@ -260,29 +265,6 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-
-// GET endpoint to fetch cart items
-// go to localhost:5001/api/cart/1
-app.get('/api/cart/:user_id', (req, res) => {
-  const { user_id } = req.params;
-
-  const query = `
-    SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
-    FROM ShoppingCartItems ci
-    JOIN Products p ON ci.product_id = p.product_id
-    WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1)
-  `;
-
-  db.query(query, [user_id], (err, results) => {
-    if (err) {
-      console.error('Error retrieving cart items:', err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-
-    const total = results.reduce((sum, item) => sum + item.subtotal, 0);
-    res.json({ items: results, total });
-  });
-});
 
 // POST endpoint to add item to cart
 app.post('/api/cart/add', (req, res) => {
