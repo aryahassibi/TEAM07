@@ -120,4 +120,28 @@ describe("Cart API Endpoints", () => {
             expect.any(Function)
         );
     });
+
+    test("DELETE /api/cart/remove should remove an item from the cart", async () => {
+        const mockUserId = 1;
+        const mockVariantId = 2;
+
+        mysql
+            .createConnection()
+            .query.mockImplementation((sql, params, callback) =>
+                callback(null)
+            );
+
+        const res = await request(app).delete("/api/cart/remove").send({
+            user_id: mockUserId,
+            variant_id: mockVariantId,
+        });
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual({ message: "Item removed from cart" });
+        expect(mysql.createConnection().query).toHaveBeenCalledWith(
+            expect.stringContaining("DELETE FROM Cart_Items"),
+            expect.arrayContaining([mockUserId, mockVariantId]),
+            expect.any(Function)
+        );
+    });
 });
