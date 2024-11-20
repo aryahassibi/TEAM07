@@ -11,6 +11,8 @@
 
 const config = require('../Config/appConfig.js');
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
+
 
 const UsersController = class {
     constructor() {
@@ -18,12 +20,58 @@ const UsersController = class {
         this.con = mysql.createConnection(config.sqlCon);
     }
 
+    register(user) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                user.password_hash = await bcrypt.hash(user.password, 10); // Hash the password
+                delete user.password; // Remove plain password
+
+                const userId = await this.save(user); // Save the user
+                resolve({ message: 'Registration successful', userId });
+            } catch (err) {
+                reject(new Error('Registration failed: ' + err.message));
+            }
+        });
+    }
+
+    login(email, password) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const user = await this.getUserByEmail(email);
+
+                // Validate password
+                const passwordMatch = await bcrypt.compare(password, user.password_hash);
+                if (!passwordMatch) {
+                    return reject(new Error('Invalid email or password'));
+                }
+
+                // Exclude password_hash in response
+                const { password_hash, ...userDetails } = user;
+                resolve(userDetails);
+            } catch (err) {
+                reject(new Error('Login failed: ' + err.message));
+            }
+        });
+    }
+    
     save(user) {
         return new Promise((resolve, reject) => {
-            this.con.query('INSERT INTO Users SET ?', user, (err, result) => {
-                if (err) return reject(err);
-                resolve(result.insertId);
-            });
+
+            this.con.query(
+                'SELECT * FROM `Users` WHERE `email` = ? OR `phone_number` = ?',
+                [user.email, user.phone_number],
+                (err, result) => {
+                    if (err) return reject(err);
+                    if (result.length > 0) {     // Ensure email and phone_number are unique before inserting
+                        return reject(new Error('Email or phone number already exists'));
+                    }
+                    // Insert user after validation
+                    this.con.query('INSERT INTO Users SET ?', user, (err, result) => {
+                        if (err) return reject(err);
+                        return resolve(result.insertId);
+                    });
+                }
+            );
         });
     }
 
@@ -37,7 +85,7 @@ const UsersController = class {
                     if (result.length < 1) {
                         return reject(new Error("User not found"));
                     } else {
-                        resolve(result[0]);
+                        return resolve(result[0]);
                     }
                 }
             );
@@ -46,22 +94,37 @@ const UsersController = class {
 
     isAdmin(id) {
         return new Promise((resolve, reject) => {
+
             this.con.query(
                 'SELECT * FROM `Users` WHERE `user_id` = ?',
-                [id],
+                [id],     // Check if the ID exists in the Users table
                 (err, result) => {
                     if (err) return reject(err);
-                    if (result.length < 1) {
-                        return reject(new Error("User not found"));
-                    } else {
-                        const userType = result[0].role;
-                        if (userType === 'admin') resolve(true);
-                        else resolve(false);
+    
+                    if (result.length > 0) {     // If found in Users table, the user is not an admin
+                        return resolve(false);
                     }
+    
+                    this.con.query(    // Check if the ID exists in the Managers table
+                        'SELECT * FROM `Managers` WHERE `manager_id` = ?',
+                        [id],
+                        (err, result) => {
+                            if (err) return reject(err);
+    
+                            if (result.length > 0) {  // If found in Managers table, the user is an admin
+                                return resolve(true);
+                            }
+    
+                            return reject(new Error('User not found in a role as a User or Manager'));
+                            // If not found in either table, return an error
+
+                        }
+                    );
                 }
             );
         });
     }
+    
 
     getUserById(id) {
         return new Promise((resolve, reject) => {
@@ -73,7 +136,7 @@ const UsersController = class {
                     if (result.length < 1) {
                         return reject(new Error("User not found"));
                     } else {
-                        resolve(result[0]);
+                        return resolve(result[0]);
                     }
                 }
             );
@@ -82,12 +145,23 @@ const UsersController = class {
 
     updateNameAndEmail(name, email, userId) {
         return new Promise((resolve, reject) => {
+
             this.con.query(
-                'UPDATE `Users` SET `first_name` = ?, `email` = ? WHERE `user_id` = ?',
-                [name, email, userId],
+                'SELECT * FROM `Users` WHERE `email` = ? AND `user_id` != ?',
+                [email, userId],    // Ensure email is unique for update
                 (err, result) => {
                     if (err) return reject(err);
-                    resolve('User details updated successfully');
+                    if (result.length > 0) {
+                        return reject(new Error('Email is already in use by another user'));
+                    }
+                    this.con.query(
+                        'UPDATE `Users` SET `first_name` = ?, `email` = ? WHERE `user_id` = ?',
+                        [name, email, userId],
+                        (err) => {
+                            if (err) return reject(err);
+                            return resolve('User details updated successfully');
+                        }
+                    );
                 }
             );
         });
@@ -98,9 +172,9 @@ const UsersController = class {
             this.con.query(
                 'UPDATE `Users` SET `password_hash` = ? WHERE `user_id` = ?',
                 [hashedPassword, userId],
-                (err, result) => {
+                (err) => {
                     if (err) return reject(err);
-                    resolve('Password updated successfully');
+                    return resolve('Password updated successfully');
                 }
             );
         });
@@ -109,10 +183,13 @@ const UsersController = class {
     getUsers() {
         return new Promise((resolve, reject) => {
             this.con.query(
-                'SELECT * FROM `Users` WHERE `role` IN ("user", "admin")',
+                'SELECT * FROM `Users`',
                 (err, result) => {
                     if (err) return reject(err);
-                    resolve(result);
+                    if (result.length === 0) {
+                        return reject(new Error('No users found in the database'));
+                    }
+                    return resolve(result);
                 }
             );
         });
@@ -125,7 +202,10 @@ const UsersController = class {
                 [user, userId],
                 (err, result) => {
                     if (err) return reject(err);
-                    resolve('User details updated successfully');
+                    if (result.affectedRows === 0) {
+                        return reject(new Error('No user found with the provided ID'));
+                    }
+                    return resolve('User details updated successfully');
                 }
             );
         });
@@ -133,20 +213,29 @@ const UsersController = class {
 
     deleteUser(userId) {
         return new Promise((resolve, reject) => {
+
             this.con.query(
-                'DELETE FROM `Users` WHERE `user_id` = ?',
-                [userId],
+                'SELECT * FROM `Users` WHERE `user_id` = ?',
+                [userId],     // Ensure user exists before deleting
                 (err, result) => {
                     if (err) return reject(err);
-                    if (result.affectedRows === 0) {
-                        return reject(new Error("User not found"));
-                    } else {
-                        resolve('User deleted successfully');
+                    if (result.length < 1) {
+                        return reject(new Error('User not found'));
                     }
+                    this.con.query(
+                        'DELETE FROM `Users` WHERE `user_id` = ?',
+                        [userId],
+                        (err) => {
+                            if (err) return reject(err);
+                            return resolve('User deleted successfully');
+                        }
+                    );
                 }
             );
         });
     }
 };
+
+
 
 module.exports = UsersController;
