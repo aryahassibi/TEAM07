@@ -35,3 +35,34 @@ exports.getCartItems = (req, res) => {
     res.json({ items: results, total });
   });
 };
+
+exports.addItemToCart = (req, res) => {
+    const { user_id, variant_id, quantity } = req.body;
+  
+    const checkStockQuery = 'SELECT quantity FROM Product_Variant WHERE variant_id = ?';
+    db.query(checkStockQuery, [variant_id], (err, results) => {
+      if (err) {
+        console.error('Error checking stock:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      if (!results.length || results[0].quantity < quantity) {
+        return res.status(400).json({ error: 'Insufficient stock' });
+      }
+  
+      const addToCartQuery = `
+        INSERT INTO Cart_Items (cart_id, variant_id, quantity)
+        VALUES (
+          (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1),
+          ?, ?
+        )
+        ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)
+      `;
+      db.query(addToCartQuery, [user_id, variant_id, quantity], (err) => {
+        if (err) {
+          console.error('Error adding to cart:', err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json({ message: 'Item added to cart' });
+      });
+    });
+  };

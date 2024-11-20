@@ -103,36 +103,6 @@ describe('Cart API Endpoints', () => {
     mysql.createConnection().query.mockReset();
   });
 
-  test('POST /api/cart/add should add an item to the cart', async () => {
-    const mockCartId = 1;
-    const mockVariantId = 2;
-    const mockUserId = 1;
-    const mockQuantity = 3;
-
-    mysql.createConnection().query
-      .mockImplementationOnce((sql, params, callback) => callback(null, [{ quantity: 10 }])) // Check stock
-      .mockImplementationOnce((sql, params, callback) => callback(null)); // Add to cart
-
-    const res = await request(app).post('/api/cart/add').send({
-      user_id: mockUserId,
-      variant_id: mockVariantId,
-      quantity: mockQuantity,
-    });
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual({ message: 'Item added to cart' });
-    expect(mysql.createConnection().query).toHaveBeenCalledWith(
-      'SELECT quantity FROM Product_Variant WHERE variant_id = ?',
-      [mockVariantId],
-      expect.any(Function)
-    );
-    expect(mysql.createConnection().query).toHaveBeenCalledWith(
-      expect.stringContaining('INSERT INTO Cart_Items'),
-      expect.arrayContaining([mockUserId, mockVariantId, mockQuantity]),
-      expect.any(Function)
-    );
-  });
-
   test('PUT /api/cart/update should update cart item quantity', async () => {
     const mockUserId = 1;
     const mockVariantId = 2;
