@@ -34,6 +34,10 @@ exports.getCartItems = (req, res) => {
             return res.status(500).json({ error: "Internal server error" });
         }
 
+        if (!results.length) {
+            return res.status(200).json({ items: [], total: 0 });
+        }
+
         const total = results.reduce((sum, item) => sum + item.subtotal, 0);
         res.json({ items: results, total });
     });
