@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import './UserReview.css'
 
 const ReviewForm = () => {
@@ -11,7 +12,7 @@ const ReviewForm = () => {
   const [error, setError] = useState(''); // State to store error message
 
   // Star Rating Component
-  const StarRating = ({ initialRating = 0, onRatingChange }) => {
+  const StarRating = ({ initialRating, onRatingChange }) => {
     const [rating, setRating] = useState(initialRating);
 
     const handleClick = (newRating) => {
@@ -36,6 +37,12 @@ const ReviewForm = () => {
         <p>{rating} out of 5</p>
       </div>
     );
+  };
+
+  // Add PropTypes validation
+  StarRating.propTypes = {
+    initialRating: PropTypes.number,      // Validate as a number
+    onRatingChange: PropTypes.func        // Validate as a function
   };
 
   // Handle form input changes
@@ -72,7 +79,7 @@ const ReviewForm = () => {
   };
 
   return (
-    <div className = 'wrapper'>
+    <div className='wrapper'>
       <div>
         <label htmlFor="name">Your Name:</label>
         <input
