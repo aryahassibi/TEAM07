@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './LoginRegister.css'
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa"; // npm install react-icons
 import validator from 'validator'; // npm install validator
@@ -148,7 +148,7 @@ const LoginRegister = () => {
                 {loginError && <div className="error-message">{loginError}</div>}
                 
                 <div className="register-link">
-                    <p>Don't have an account? 
+                    <p>Don&apos;t have an account? 
                         <a href="#" onClick={registerLink}>Register</a>
                     </p>
                 </div>
