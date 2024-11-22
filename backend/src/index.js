@@ -1,6 +1,10 @@
 const express = require('express');
 const mysql = require('mysql2');
+
+const cors = require('cors');
 const app = express();
+const cartRoutes = require('./routes/cartRoutes');
+
 const port = process.env.PORT;
 
 
@@ -9,7 +13,12 @@ const jwt = require('jsonwebtoken');
 
 
 // Middleware to parse JSON bodies
+
 app.use(express.json());
+app.use(cors());
+
+// integrate cart routes
+app.use('/api/cart', cartRoutes);
 
 // Database connection
 const db = mysql.createConnection({
