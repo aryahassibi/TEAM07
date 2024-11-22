@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import './LoginRegister.css'
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa"; // npm install react-icons
 import validator from 'validator'; // npm install validator
+import Navbar from './Navbar'; 
 
 const LoginRegister = () => {
-
+    
     // state variables to manage form data, error messages, and action (login or register)
     const [action, setAction] = useState('');
     const [username, setUsername] = useState('');
@@ -115,8 +116,9 @@ const LoginRegister = () => {
     };
 
     return (
+    <>
+        <Navbar />
         <div className={`loginregister-wrapper${action}`}>
-
             {/*login form*/}
             <div className="loginregister-form-box login">
                 <form action="" className="loginregister-form">
@@ -157,7 +159,7 @@ const LoginRegister = () => {
                     </div>
                 </form>
             </div>
-
+            
             {/*register form*/}
             <div className="loginregister-form-box register">
                 <form action="" className="loginregister-form">
@@ -213,6 +215,7 @@ const LoginRegister = () => {
                 </form>
             </div>
         </div>
+    </>
     )
 }
 

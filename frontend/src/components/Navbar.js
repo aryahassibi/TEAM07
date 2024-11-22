@@ -22,7 +22,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div>
-        <Link to="/login-register"><img src={userIcon} alt="User Icon" className="user-icon" /></Link> 
+        <Link to="/loginregister"><img src={userIcon} alt="User Icon" className="user-icon" /></Link> 
         <Link to="/card"><img src={shopIcon} alt="Shop Icon" className="shop-icon" /></Link>
       </div>
     </nav>
