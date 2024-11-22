@@ -44,6 +44,59 @@ app.get('/api/products', (req, res) => {
     });
 });
 
+//-----------------------------
+// GET endpoint to retrieve a single product by ID
+app.get('/api/products/:id', (req, res) => {
+    const productId = req.params.id;
+    db.query(
+    'SELECT * FROM Products WHERE product_id = ?',
+    [productId],
+    (error, results) => {
+        if (error) {
+        console.error('Error fetching product:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+        }
+        if (results.length === 0) {
+        return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(results[0]);
+    }
+    );
+});
+
+// DELETE endpoint to delete a product
+app.delete('/api/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const query = 'DELETE FROM Products WHERE product_id = ?';
+    db.query(query, [productId], (error, results) => {
+    if (error) {
+        console.error('Error deleting product:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json({ message: 'Product deleted' });
+    });
+});
+  
+// PUT endpoint to update a product
+app.put('/api/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const updateData = req.body;
+    const query = 'UPDATE Products SET ? WHERE product_id = ?';
+    db.query(query, [updateData, productId], (error, results) => {
+    if (error) {
+        console.error('Error updating product:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+    if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json({ message: 'Product updated' });
+    });
+});
+
 // POST endpoint to add items to the cart
 app.post('/api/cart', (req, res) => {
     const { userId, variantId, quantity } = req.body;
