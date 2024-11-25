@@ -26,6 +26,7 @@ function App() {
           <Route path="/mnovo" element={<Mnovo />} />
           <Route path="/card" element={<Card />} />
           <Route path="/products" element={<ProductsPage products={products} />} /> 
+          <Route path="/loginregister" element={<LoginRegister/>} />
           <Route path="/login-register" element={<LoginRegister/>} />
         </Routes>
       </Router>

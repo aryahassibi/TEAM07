@@ -6,19 +6,22 @@
     box-sizing: border-box;
 }
 
-body {
+body.loginregister-body {
+    padding-top: 80px;
     font-family: "Poppins", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: white;
+    background:  #202020;
+    flex-direction: column;
+    margin: 0;
     /* background: url('../assets/placeholder.png') no-repeat;
     background-size: cover;
     background-position: center; */
 }
 
-.wrapper {
+.loginregister-wrapper {
     position: relative;
     width: 420px;
     height: 450px;
@@ -32,53 +35,54 @@ body {
     align-items: center;
     overflow: hidden;
     transition: height .2s ease;
+    background: white;
 }
 
-.wrapper.alternate {
+.loginregister-wrapper.alternate {
     height: 580px;
 }
 
-.wrapper .form-box {
+.loginregister-wrapper .loginregister-form-box {
     width:  100%;
     padding: 40px;
 }
 
-.wrapper .form-box.login {
+.loginregister-wrapper .loginregister-form-box.login {
     transition: translate .18s ease;
     translate: 0;
 }
 
-.wrapper.alternate .form-box.login {
+.loginregister-wrapper.alternate .loginregister-form-box.login {
     transition: none;
     translate: -400px;
 }
 
-.wrapper .form-box.register {
+.loginregister-wrapper .loginregister-form-box.register {
     position: absolute;
     transition: none;
     translate: 400px;
 }
 
-.wrapper.alternate .form-box.register {
+.loginregister-wrapper.alternate .loginregister-form-box.register {
     transition: translate .18s ease;
     translate: 0;
 }
 
-form h1 {
+.loginregister-form h1 {
     font-size: 36px;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
-form .input-box {
+.loginregister-form .loginregister-input-box {
     position: relative;
     width: 100%;
     height: 50px;
     margin-bottom: 30px;
 }
 
-form .remember-forgot {
+.loginregister-form .loginregister-remember-forgot {
     display: flex;
     justify-content: space-between;
     font-size: 14.5px;
@@ -86,7 +90,7 @@ form .remember-forgot {
     margin-bottom: 30px;
 }
 
-.error-message {
+.loginregister-error-message {
     color: red;
     font-weight: bold;
     font-size: 0.9em;
@@ -95,7 +99,7 @@ form .remember-forgot {
     padding-left: 20px;
 }  
 
-form button {
+.loginregister-form button {
     width: 100%;
     height: 45px;
     background: white;
@@ -109,14 +113,14 @@ form button {
     margin-bottom: 30px;
 }
 
-form .register-link {
+.loginregister-form .loginregister-register-link {
     font-size: 14.5px;
     font-weight: 600;
     text-align: center;
     margin-bottom: 30px;
 }
 
-.input-box input {
+.loginregister-input-box input {
     width: 100%;
     height: 100%;
     outline: none;
@@ -127,11 +131,11 @@ form .register-link {
     padding: 20px 45px 20px 20px;
 }
 
-.input-box input::placeholder {
+.loginregister-input-box input::placeholder {
     color: black;
 }
 
-.input-box .icon {
+.loginregister-input-box .loginregister-icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -139,31 +143,31 @@ form .register-link {
     font-size: 16px;
 }
 
-.remember-forgot label input {
+.loginregister-remember-forgot label input {
     accent-color: rgb(70, 70, 70);
     margin-right: 4px;
 }
 
-.remember-forgot a {
+.loginregister-remember-forgot a {
     color: rgb(70, 70, 70);
     text-decoration: none;
     /* font-weight: 600; */
 }
 
-.remember-forgot a:hover {
+.loginregister-remember-forgot a:hover {
     text-decoration: underline;
 }
 
-.register-link a {
+.loginregister-register-link a {
     margin-left: 15px;
 }
 
-.register-link p a {
+.loginregister-register-link p a {
     color: rgb(70, 70, 70);
     text-decoration: none;
     /* font-weight: 600; */
 }
 
-.register-link p a:hover {
+.loginregister-register-link p a:hover {
     text-decoration: underline;
 }
