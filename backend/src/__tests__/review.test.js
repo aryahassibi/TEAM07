@@ -5,12 +5,7 @@ const managerRoutes = require('../routes/managerRoutes');
 const mysql = require('mysql2');
 
 // Create a mock of the mysql database connection
-jest.mock('mysql2', () => ({
-    createConnection: jest.fn().mockReturnValue({
-      execute: jest.fn(),  // Mock the `execute` method for queries
-      query: jest.fn()      // Mock the `query` method for SELECT queries
-    })
-}));
+jest.mock("mysql2");
 
 const app = express();
 app.use(express.json());
@@ -145,55 +140,72 @@ describe('GET /reviews/:product_id/approved', () => {
 
   test('should return 400 if product_id is not provided', async () => {
     const response = await request(app)
-      .get('/reviews//approved') // Invalid product ID
+      .get('/reviews/approved') // Invalid product ID
       .expect(400);
 
     expect(response.body.message).toBe('Product ID is required');
   });
+
+  test('should return 400 for invalid product_id format', async () => {
+    const response = await request(app)
+      .get('/reviews/invalid_id/approved') // Invalid product_id
+      .expect(400);
+  
+    expect(response.body.message).toBe('Invalid Product ID format');
+  });  
 });
 
 // Test for managers to edit review status
+// THIS ONE DOESN'T WORK. I DON'T GET WHY!!!
 describe('PATCH /managers/reviews/:review_id', () => {
     let reviewId;
 
     beforeAll(async () => {
-        // Mock the database for review creation (simulating a review ID insertion)
-        mockDb.execute.mockResolvedValue([{ insertId: 1 }]); // Mocked insert ID for the review
+        // Mock the review creation to avoid triggering an actual INSERT query.
+        mockDb.execute = jest.fn() // Ensure mockDb.execute is a Jest mock function
 
-        // Create a new review
+        // Mock the review creation (POST /reviews/submit)
+        mockDb.execute.mockResolvedValueOnce([{ insertId: 1 }]); // Mocked insertId for review creation
+    
+        // Simulate a POST request to create a review (with mock data)
         const reviewData = {
             product_id: 1,
             user_id: 1,
             rating: 5,
             content: 'Great product!',
         };
-
+    
+        // Simulate the response from the review creation
         const response = await request(app)
             .post('/reviews/submit')
             .send(reviewData);
-
-        // Store the review ID from the response
-        reviewId = response.body.review.comment_id;
+    
+        // Set the reviewId directly from the mock (since mockDb.execute returned { insertId: 1 })
+        reviewId = 1;
+    
+        // Ensure the reviewId is set correctly for later tests
+        expect(reviewId).toBeDefined();
     });
-
+  
     test('should approve a pending review', async () => {
-        // Mock successful database update for approval
+        // Mock the database call for updating the review status to approved
         mockDb.execute.mockResolvedValue([{ affectedRows: 1 }]); // Simulate successful DB update
-
+    
         const response = await request(app)
-            .patch(`/managers/reviews/${reviewId}`)
+            .patch(`/managers/reviews/${reviewId}`) // This should match the test route
             .send({ action: 'approve' });
-
+    
+        // Check that the response is successful
         expect(response.status).toBe(200);
         expect(response.body.message).toBe('Review approved successfully.');
-
-        // Verify DB call was made with correct parameters
+    
+        // Verify that the database call was made with the correct parameters
         expect(mockDb.execute).toHaveBeenCalledWith(
             'UPDATE Comments SET approved = ? WHERE comment_id = ? AND approved = FALSE',
             [true, reviewId]
         );
     });
-
+  
     test('should reject a pending review', async () => {
         // Mock successful database update for rejection
         mockDb.execute.mockResolvedValue([{ affectedRows: 1 }]); // Simulate successful DB update

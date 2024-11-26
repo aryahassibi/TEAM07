@@ -1,4 +1,5 @@
 // authentication middleware for review submission
+// NOT TESTED OR USED IN ROUTES
 const authenticationMiddleware = (req, res, next) => {
   const user = req.user; // Assuming user information is populated here (e.g., from a JWT token or session)
 
