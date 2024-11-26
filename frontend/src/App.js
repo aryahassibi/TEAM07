@@ -8,7 +8,8 @@ import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
 ///
 import Checkout from './components/Checkout';
-
+import Failed from './components/Failed';
+import OrderSuccess from './components/OrderSuccess';
 
 ////
 import { CartProvider } from './CartContext'; // Import CartProvider
@@ -33,6 +34,8 @@ function App() {
           <Route path="/products" element={<ProductsPage products={products} />} /> 
           <Route path="/loginregister" element={<LoginRegister/>} />
           <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/order-failed" element={<Failed/>} />
+          <Route path="/order-success" element={<OrderSuccess/>} />
         </Routes>
       </Router>
     </CartProvider>
