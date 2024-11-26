@@ -3,22 +3,39 @@ import './Checkout.css'
 
 const Checkout = () => {
     
-    {/*state variables to manage form data, error messages, and action (checkout)*/}
-    const [action, setAction] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
-    const [zipcode, setZipcode] = useState('');
-    const [phonenumber, setPhonenumber] = useState('');
-    const [nameoncard, setNameoncard] = useState('');
-    const [cardnumber, setCardnumber] = useState('');
-    const [expirationMonth, setExpirationMonth] = useState('');
-    const [expirationYear, setExpirationYear] = useState('');
-    const [ccv, setCcv] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
+    const [action, setAction] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    const [address, setAddress] = useState({
+        firstname: "",
+        lastname: "",
+        address: "",
+        city: "",
+        zipcode: "",
+        country: "",
+        phonenumber:"",
+      });
+    
+      const [payment, setPayment] = useState({
+        cardHolderName: "",
+        cardNumber: "",
+        cardExpirationMonth: "",
+        cardExpirationYear:"",
+        cvv: "",
+      });
+    
+      const handleInputChange = (e, setter) => {
+        const { name, value } = e.target;
+        setter((prev) => ({ ...prev, [name]: value }));
+      };
+
+    {/*state variables to manage form data, error messages, and action (checkout)*/}
+   
+
+
+
+    
     {/*switch to purchase complete screen*/}
     const completeLink = () => {
         setAction( ' complete' );
@@ -27,8 +44,8 @@ const Checkout = () => {
     {/*perform validation checks*/}
     const validateForm = () => {
         if (
-            !firstname || !lastname || !address || !city || !country || !zipcode ||
-            !phonenumber || !nameoncard || !cardnumber || !expirationMonth || !expirationYear || !ccv
+            !address.firstname || !address.lastname || !address.address || !address.city || !address.country || !address.zipcode ||
+            !address.phonenumber || !address.nameoncard || !payment.cardnumber || !payment.expirationMonth || !payment.expirationYear || !payment.ccv
         ) {
             setErrorMessage('All fields are required.');
             return false;
@@ -83,15 +100,15 @@ const Checkout = () => {
                     <div className="column1">
                         <label htmlFor="firstname">First Name</label>
                         <input type="text" placeholder='First Name' 
-                        value={firstname}
-                        onChange={(e) => setFirstname(e.target.value)}
+                        value={address.firstname}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                     <div className="column2">
                         <label htmlFor="lastname">Last Name</label>
                         <input type="text" placeholder='Last Name' 
-                        value={lastname}
-                        onChange={(e) => setLastname(e.target.value)}
+                        value={address.lastname}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                 </div>
@@ -99,8 +116,8 @@ const Checkout = () => {
                 <div className="single-input-box">
                     <label htmlFor="address">Address</label>
                     <input type="text" placeholder='Address' 
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    value={address.address}
+                    onChange={(e) => handleInputChange(e,setAddress)}
                     required/>
                 </div>
 
@@ -108,15 +125,15 @@ const Checkout = () => {
                     <div className="column1">
                         <label htmlFor="city">City</label>
                         <input type="text" placeholder='City' 
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        value={address.city}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                     <div className="column2">
                         <label htmlFor="country">Country</label>
                         <input type="text" placeholder='Country' 
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
+                        value={address.country}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                 </div>
@@ -125,15 +142,15 @@ const Checkout = () => {
                     <div className="column1">
                         <label htmlFor="zipcode">Zip Code</label>
                         <input type="text" placeholder='Zip Code' 
-                        value={zipcode}
-                        onChange={(e) => setZipcode(e.target.value)}
+                        value={address.zipcode}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                     <div className="column2">
                         <label htmlFor="phonenumber">Phone Number</label>
                         <input type="text" placeholder='Phone Number' 
-                        value={phonenumber}
-                        onChange={(e) => setPhonenumber(e.target.value)}
+                        value={address.phonenumber}
+                        onChange={(e) => handleInputChange(e,setAddress)}
                         required/>
                     </div>
                 </div>
@@ -143,16 +160,16 @@ const Checkout = () => {
                 <div className="single-input-box">
                     <label htmlFor="nameoncard">Name on Card</label>
                     <input type="text" placeholder='Name' 
-                    value={nameoncard}
-                    onChange={(e) => setNameoncard(e.target.value)}
+                    value={payment.cardHolderName}
+                    onChange={(e) => handleInputChange(e, setPayment)}
                     required/>
                 </div>
 
                 <div className="single-input-box">
                     <label htmlFor="cardnumber">Card Number</label>
                     <input type="text" placeholder='Card Number' 
-                    value={cardnumber}
-                    onChange={(e) => setCardnumber(e.target.value)}
+                    value={payment.cardNumber}
+                    onChange={(e) => handleInputChange(e, setPayment)}
                     required/>
                 </div>
 
@@ -162,14 +179,14 @@ const Checkout = () => {
                 <div className="double-input-box">
                     <div className="column1">
                         <input type="text" placeholder='Month' 
-                        value={expirationMonth}
-                        onChange={(e) => setExpirationMonth(e.target.value)}
+                        value={payment.cardExpirationMonth}
+                        onChange={(e) => handleInputChange(e, setPayment)}
                         required/>
                     </div>
                     <div className="column2">
                         <input type="text" placeholder='Year' 
-                        value={expirationYear}
-                        onChange={(e) => setExpirationYear(e.target.value)}
+                        value={payment.cardExpirationYear}
+                        onChange={(e) => handleInputChange(e, setPayment)}
                         required/>
                     </div>
                 </div>
@@ -177,8 +194,8 @@ const Checkout = () => {
                 <div className="single-input-box">
                     <label htmlFor="ccv">CCV</label>
                     <input type="text" placeholder='CCV' 
-                    value={ccv}
-                    onChange={(e) => setCcv(e.target.value)}
+                    value={payment.cvv}
+                    onChange={(e) => handleInputChange(e, setPayment)}
                     required/>
                 </div>
                 
@@ -192,7 +209,7 @@ const Checkout = () => {
         <div className="form-box complete">
             <div className="action">
                 <h1>Thank you for your purchase</h1>
-                <a href="index.html" class="home-button">Return to Home Page</a> {/*make this button return to home screen*/}
+                <a href="index.html" className="home-button">Return to Home Page</a> {/*make this button return to home screen*/}
             </div>
         </div>
     </div>

@@ -6,6 +6,11 @@ import Mnovo from './components/Mnovo';
 import Card from './components/Card';
 import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
+///
+import Checkout from './components/Checkout';
+
+
+////
 import { CartProvider } from './CartContext'; // Import CartProvider
 
 function App() {
@@ -27,6 +32,7 @@ function App() {
           <Route path="/card" element={<Card />} />
           <Route path="/products" element={<ProductsPage products={products} />} /> 
           <Route path="/loginregister" element={<LoginRegister/>} />
+          <Route path="/checkout" element={<Checkout/>} />
         </Routes>
       </Router>
     </CartProvider>
