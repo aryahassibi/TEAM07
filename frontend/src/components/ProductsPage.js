@@ -4,10 +4,11 @@ import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import { CartContext } from '../CartContext';
-import FilterPanel from './FilterPanel'; // Import FilterPanel component
-import { useLocation } from 'react-router-dom';
+import FilterPanel from './FilterPanel';
+import { useLocation, Link } from 'react-router-dom'; // Import Link
 import axios from 'axios';
 import './ProductsPage.css';  
+
 const ProductsPage = () => {
   const { addToCart } = useContext(CartContext);
   const [filters, setFilters] = useState({
@@ -23,7 +24,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const location = useLocation();
 
-  // Fetch products data from the backend
+  // Fetch products data from backend based on location.search
   useEffect(() => {
     const fetchProducts = async () => {
       const query = new URLSearchParams(location.search);
@@ -60,6 +61,37 @@ const ProductsPage = () => {
       leafTipColor: '',
     });
   };
+  // Generate breadcrumb from location.search
+  const generateBreadcrumb = () => {
+    const query = new URLSearchParams(location.search);
+    const breadcrumbs = [];
+    query.forEach((value, key) => {
+      let label;
+      switch (key) {
+        case 'roast_level':
+          label = 'Roast Level';
+          break;
+        case 'bean_type':
+          label = 'Bean Type';
+          break;
+        case 'grind_type':
+          label = 'Grind Type';
+          break;
+        case 'caffeine_content':
+          label = 'Caffeine Content';
+          break;
+        case 'origin':
+          label = 'Origin';
+          break;
+        default:
+          label = key;
+      }
+      breadcrumbs.push({ label, value });
+    });
+    return breadcrumbs;
+  };
+
+  const breadcrumbs = generateBreadcrumb();
 
   const openPanel = () => setIsPanelOpen(true);
   const closePanel = () => setIsPanelOpen(false);
@@ -69,6 +101,18 @@ const ProductsPage = () => {
     <div className="products-page">
       <Navbar />
       <h1>Our Coffee Products</h1>
+
+      {/* Breadcrumb Navigation */}
+      <div className="breadcrumb">
+        <Link to="/products">All Products</Link>
+         {breadcrumbs.map((crumb, index) => (
+          <span key={index}>
+            {' > '}
+            <span>{crumb.label}: </span>
+            <span>{crumb.value}</span>
+          </span>
+        ))}
+      </div>
 
       {/* Filter Button */}
       <button onClick={openPanel} className="filter-button">
@@ -86,7 +130,7 @@ const ProductsPage = () => {
         />
       )}
 
-      {/* Filtered Coffee List */}
+      {/* Product List */}
 
       <div className="coffee-list">
         {products.length > 0 ? (
@@ -101,10 +145,8 @@ const ProductsPage = () => {
   );
 };
 
-
-
 const CoffeeCard = ({ coffee, addToCart }) => {
-  
+
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
@@ -115,8 +157,8 @@ const CoffeeCard = ({ coffee, addToCart }) => {
       alert('Not enough stock available!');
       return;
     }
-    addToCart(coffee.name, coffee.variant_id, quantity, coffee.price, coffee.weight_grams); // Pass weight_grams here
-    alert(`${quantity} item(s) of ${coffee.name} (Weight: ${coffee.weight_grams}g) added to cart.`);
+    addToCart(coffee.name, coffee.variant_id, quantity, coffee.price, coffee.weight_grams);
+    alert(`${quantity} item(s) of ${coffee.name} added to cart.`);
   };
 
   return (
@@ -143,7 +185,7 @@ CoffeeCard.propTypes = {
     name: PropTypes.string.isRequired,
     weight_grams: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
-    stock: PropTypes.number.isRequired, // Add stock here
+    stock: PropTypes.number.isRequired,
     variant_id: PropTypes.number.isRequired,
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
