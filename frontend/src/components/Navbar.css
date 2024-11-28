@@ -120,10 +120,11 @@
   height: auto;
   cursor: pointer;
   margin-right: 10px;
-  transition: transform 0.5s ease;
 }
 
 .shop-icon:hover,
 .user-icon:hover {
   transform: scale(1.1); /* Slight zoom effect on hover */
+  transition: transform 0.3s ease;
+
 }
