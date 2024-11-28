@@ -1,7 +1,6 @@
 //src/components/ProductsPage.js
 
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import { CartContext } from '../CartContext';
