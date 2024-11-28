@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import Navbar from './Navbar';
 import { CartContext } from '../CartContext';
 import FilterPanel from './FilterPanel'; // Import FilterPanel component
-import './ProductsPage.css';
-
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import './ProductsPage.css';  
 const ProductsPage = () => {
   const { addToCart } = useContext(CartContext);
-  const [coffees, setCoffees] = useState([]);
   const [filters, setFilters] = useState({
     type: '',
     region: '',
@@ -20,21 +20,22 @@ const ProductsPage = () => {
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(filters); // Temporary filters to apply on confirmation
+  const [products, setProducts] = useState([]);
+  const location = useLocation();
 
-  // Fetch coffee data from the backend
+  // Fetch products data from the backend
   useEffect(() => {
-    const fetchCoffees = async () => {
+    const fetchProducts = async () => {
+      const query = new URLSearchParams(location.search);
       try {
-        const response = await fetch('http://localhost:5001/api/products');
-        const data = await response.json();
-        setCoffees(data);
+        const response = await axios.get(`http://localhost:5001/api/products?${query.toString()}`);
+        setProducts(response.data);
       } catch (error) {
-        console.error('Error fetching coffee data:', error);
+        console.error('Error fetching products:', error);
       }
     };
-
-    fetchCoffees();
-  }, []);
+    fetchProducts();
+  }, [location.search]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -62,17 +63,12 @@ const ProductsPage = () => {
 
   const openPanel = () => setIsPanelOpen(true);
   const closePanel = () => setIsPanelOpen(false);
-
-  const filteredCoffees = coffees.filter((coffee) =>
-    Object.keys(filters).every((key) =>
-      filters[key] ? coffee[key] === filters[key] : true
-    )
-  );
+  
 
   return (
     <div className="products-page">
       <Navbar />
-      <h2>Our Coffee Products</h2>
+      <h1>Our Coffee Products</h1>
 
       {/* Filter Button */}
       <button onClick={openPanel} className="filter-button">
@@ -91,16 +87,24 @@ const ProductsPage = () => {
       )}
 
       {/* Filtered Coffee List */}
+
       <div className="coffee-list">
-        {filteredCoffees.map((coffee) => (
-          <CoffeeCard key={coffee.product_id} coffee={coffee} addToCart={addToCart} />
-        ))}
+        {products.length > 0 ? (
+          products.map((coffee) => (
+            <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
+          ))
+        ) : (
+          <p>No products available.</p>
+        )}
       </div>
     </div>
   );
 };
 
+
+
 const CoffeeCard = ({ coffee, addToCart }) => {
+  
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
