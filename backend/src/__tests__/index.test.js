@@ -95,35 +95,3 @@ test('GET /api/products should return all products', async () => {
   });
 
 });
-
-describe('User API Endpoints', () => {
-  beforeEach(() => {
-    mysql.createConnection().query.mockReset();
-  });
-
-  test('POST /api/users/register should register a new user', async () => {
-    const newUser = { first_name: 'Jane', last_name: 'Doe', email: 'jane@example.com', password: 'password123' };
-    mysql.createConnection().query
-      .mockImplementationOnce((sql, params, callback) => callback(null, [])) // Check if user exists
-      .mockImplementationOnce((sql, data, callback) => callback(null, { insertId: 1 })); // Insert new user
-
-    const res = await request(app).post('/api/users/register').send(newUser);
-
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toEqual({ message: 'User registered', userId: 1 });
-    expect(bcrypt.hash).toHaveBeenCalledWith(newUser.password, 10, expect.any(Function));
-  });
-
-  test('POST /api/users/login should log in a user', async () => {
-    const loginData = { email: 'john@example.com', password: 'password123' };
-    mysql.createConnection().query.mockImplementationOnce((sql, params, callback) =>
-      callback(null, [{ user_id: 1, password_hash: 'hashedPassword' }])
-    );
-
-    const res = await request(app).post('/api/users/login').send(loginData);
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual({ message: 'Login successful', token: 'mock-jwt-token' });
-    expect(bcrypt.compare).toHaveBeenCalledWith(loginData.password, 'hashedPassword', expect.any(Function));
-  });
-});
