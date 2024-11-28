@@ -66,8 +66,8 @@
   position: absolute;
   top: 100%; /* Below the navbar */
   left: 0;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #fffffff5;
+  color: #000000; 
   list-style: none;
   padding: 1rem;
   border-radius: 8px;
