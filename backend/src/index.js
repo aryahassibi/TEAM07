@@ -71,7 +71,7 @@ app.get('/api/products', (req, res) => {
         params.push(bean_type);
     }
     if (grind_type) {
-        conditions.push(`p.grind_type = ?`);
+        conditions.push(`p.  = ?`);
         params.push(grind_type);
     }
     if (caffeine_content) {
@@ -90,9 +90,19 @@ app.get('/api/products', (req, res) => {
 
     db.query(query, params, (error, results) => {
         if (error) {
-            console.error('Error retrieving products:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+            console.error('Error retrieving products:', error.message); // Log message only
+            return res.status(500).json({ 
+                error: 'Failed to retrieve products. Please try again later.',
+                details: error.message // Optional, can be removed for user-facing API
+            });
         }
+
+        if (results.length === 0) {
+            return res.status(404).json({ 
+                error: 'No products found matching the criteria.'
+            });
+        }
+
         res.json(results);
     });
 });
