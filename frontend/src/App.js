@@ -1,3 +1,5 @@
+// src/App.js
+
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -6,12 +8,14 @@ import Mnovo from './components/Mnovo';
 import Card from './components/Card';
 import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
+import ProductDetail from './components/ProductDetail'; // Import ProductDetail
 import { CartProvider } from './CartContext'; // Import CartProvider
 
 import './App.css'; 
 
 function App() {
   const [products, setProducts] = useState([]); // Correctly define products and setProducts
+  
   useEffect(() => {
     // Fetch data from the backend API
     axios.get('http://localhost:5000/api/products')
