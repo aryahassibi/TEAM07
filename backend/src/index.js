@@ -127,6 +127,21 @@ app.get('/api/products/:id', (req, res) => {
     );
 });
 
+// POST endpoint to create a new product
+app.post('/api/products', (req, res) => {
+    const productData = req.body;
+    const query = 'INSERT INTO Products SET ?';
+    db.query(query, productData, (error, results) => {
+      if (error) {
+        console.error('Error creating product:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      res
+        .status(201)
+        .json({ message: 'Product created', productId: results.insertId });
+    });
+  });
+
 // DELETE endpoint to delete a product
 app.delete('/api/products/:id', (req, res) => {
     const productId = req.params.id;
