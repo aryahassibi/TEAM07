@@ -1,5 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;700&display=swap');
 
+/* Global CSS Variables */
+:root {
+  
+  /* Primary Colors */
+  --primary-color: #ba9661;    /* Yellow */
+  --primary-light: #dfc9a2;    /* Light Yellow */
+  --primary-dark: #78431c;     /* Dark Yellow */
+
+  /* Secondary Colors */
+  --secondary-color: #48914f;  /* Blue */
+  --secondary-light: #bbebb0;  /* Light Blue */
+  --secondary-dark: #114f2f;   /* Dark Blue */
+
+  /* Neutral Colors */
+  --neutral-black: #202124;    /* Near Black */
+  --neutral-dark-gray: #5f6368; /* Dark Gray */
+  --neutral-light-gray: #dadce0; /* Light Gray */
+  --neutral-white: #ffffff;     /* White */
+
+  /* Alert Colors */
+  --success-color: #34a853;    /* Green */
+  --error-color: #ea4335;      /* Red */
+  --warning-color: #fbbc05;    /* Yellow (Reused) */
+  --info-color: #4285f4;       /* Blue (Reused) */
+
+  /* Backgrounds */
+  --background: #303134;  /* Dark Background */  
+
+
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-code: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --font-size-base: 16px;
+  --font-size-lg: 1.25rem;
+  --font-size-sm: 0.875rem;
+}
+
 /* Reset Styles */
 * {
   margin: 0;
@@ -9,53 +46,34 @@
 
 body {
   font-family: var(--font-body);
-  color: var(--primary-color);
-  background-color: var(--secondary-color);
+  background-color: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* Global CSS Variables */
-:root {
-  --primary-color: #000;
-  --secondary-color: #fff;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-code: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-/* Utility Classes */
 .main-content {
   padding-top: 66px; /*Match navbar height */
   min-height: 10vh; /* Full viewport height */
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-  margin-top: 0;
+  background-color: var(--background);
   margin: 0;
-  text-align: left; /* Ensure text is left-aligned */
 }
 
 .main-content h2 {
-  font-size: 2rem;
-  color: var(--secondary-color);
+  font-size: var(--font-size-lg);
 }
 
 .main-content p {
-  font-size: 1.2rem;
-  color: var(--secondary-color);
+  font-size: 1rem;
 }
-
-
 
 code {
   font-family: var(--font-code);
 }
 
-/* Responsive Font Sizes */
 html {
-  font-size: 16px;
+  font-size: var(--font-size-base);
 }
 
+/* Responsive Font Sizes */
 @media (max-width: 768px) {
   html {
     font-size: 14px;
