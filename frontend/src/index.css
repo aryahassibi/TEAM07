@@ -85,10 +85,36 @@ html {
   text-align: left;
 }
 
+/* Margins */
 .margin-0 {
   margin: 0;
 }
 
+.margin-sm {
+  margin: 4px;
+}
+
+.margin-md {
+  margin: 8px;
+}
+
+.margin-lg {
+  margin: 16px;
+}
+
+/* Padding */
 .padding-0 {
   padding: 0;
+}
+
+.padding-sm {
+  padding: 4px;
+}
+
+.padding-md {
+  padding: 8px;
+}
+
+.padding-lg {
+  padding: 16px;
 }
