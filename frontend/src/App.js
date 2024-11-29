@@ -11,7 +11,7 @@ import LoginRegister from './components/LoginRegister';
 import ProductDetail from './components/ProductDetail'; // Import ProductDetail
 import { CartProvider } from './CartContext'; // Import CartProvider
 
-import './App.css'; 
+import './index.css'; 
 
 function App() {
   const [products, setProducts] = useState([]); // Correctly define products and setProducts
