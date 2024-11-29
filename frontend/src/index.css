@@ -4,14 +4,14 @@
 :root {
   
   /* Primary Colors */
-  --primary-color: #ba9661;    /* Yellow */
-  --primary-light: #dfc9a2;    /* Light Yellow */
-  --primary-dark: #78431c;     /* Dark Yellow */
+  --primary-color: #007bff;    /* Basic Blue */
+  --primary-light: #cce5ff;    /* Light Blue */
+  --primary-dark: #0056b3;     /* Dark Blue */
 
   /* Secondary Colors */
-  --secondary-color: #48914f;  /* Blue */
-  --secondary-light: #bbebb0;  /* Light Blue */
-  --secondary-dark: #114f2f;   /* Dark Blue */
+  --secondary-color: #ff9800;  /* Basic Orange */
+  --secondary-light: #ffe0b2;  /* Light Orange */
+  --secondary-dark: #e65100;   /* Dark Orange */
 
   /* Neutral Colors */
   --neutral-black: #202124;    /* Near Black */
@@ -27,7 +27,6 @@
 
   /* Backgrounds */
   --background: #303134;  /* Dark Background */  
-
 
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
