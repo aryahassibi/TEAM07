@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'; // Import useState and useEffect
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage';
-import Mnovo from './components/Mnovo';
 import Cart from './components/Cart';
 import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
@@ -30,7 +29,6 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/mnovo" element={<Mnovo />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products" element={<ProductsPage products={products} />} /> 
             <Route path="/product/:variant_id" element={<ProductDetail />} />

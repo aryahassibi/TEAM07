@@ -59,7 +59,6 @@ const Navbar = () => {
               </div>
             )}
           </li>
-          <li><Link to="/mnovo">BEANS</Link></li>
           <li><a href="#about">ABOUT</a></li>
           <li><a href="#contact">CONTACT</a></li>
         </ul>
