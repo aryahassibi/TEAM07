@@ -1,11 +1,11 @@
-//src/components/Card.js
+//src/components/Cart.js
 
-import './Card.css';
+import './Cart.css';
 import { useContext } from 'react';
 import Navbar from './Navbar';
 import { CartContext } from '../CartContext';
 
-const Card = () => {
+const Cart = () => {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
 
   // Calculate total price for all items in the cart
@@ -14,7 +14,7 @@ const Card = () => {
   }, 0);
 
   return (
-    <div className='card-page'>
+    <div className='cart-page'>
       <Navbar />
       <div style={{ padding: '20px' }}>
         <h2>Your Cart</h2>
@@ -63,4 +63,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default Cart;

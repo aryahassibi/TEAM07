@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import Mnovo from './components/Mnovo';
-import Card from './components/Card';
+import Cart from './components/Cart';
 import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
 import ProductDetail from './components/ProductDetail'; // Import ProductDetail
@@ -31,7 +31,7 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/mnovo" element={<Mnovo />} />
-            <Route path="/card" element={<Card />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/products" element={<ProductsPage products={products} />} /> 
             <Route path="/product/:variant_id" element={<ProductDetail />} />
             <Route path="/loginregister" element={<LoginRegister/>} />
