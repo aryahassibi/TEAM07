@@ -118,3 +118,70 @@ html {
 .padding-lg {
   padding: 16px;
 }
+
+
+/* Button Styles */
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: var(--neutral-white);
+  text-transform: uppercase;
+}
+
+/* Button Variants */
+.button-primary {
+  background-color: var(--primary-color);
+}
+
+.button-primary:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.button-success {
+  background-color: var(--success-color);
+}
+
+.button-success:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.button-danger {
+  background-color: var(--error-color);
+}
+
+.button-danger:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.button-secondary {
+  background-color: var(--neutral-dark-gray);
+}
+
+.button-secondary:hover {
+  background-color: var(--neutral-black);
+  transform: scale(1.05);
+}
+
+/* Remove Button */
+.remove-button {
+  font-size: var(--font-size-sm);
+  background: none;
+  border: none;
+  color: var(--error-color);
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.2s ease;
+}
+
+.remove-button:hover {
+  color: var(--error-color);
+  text-decoration: underline;
+}
+
