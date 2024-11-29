@@ -2,7 +2,7 @@
 
 .product-detail {
   min-height: 100vh; /* Ensure the background covers the entire viewport */
-  background-image: url('../img/details_background.png'); /* Path to the background image */
+  background-image: url('../assets/images/backgrounds/details_background.png'); /* Path to the background image */
   background-size: cover; /* Scale the image to cover the entire area */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent the image from repeating */
