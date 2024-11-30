@@ -59,6 +59,7 @@
 }
 
 body {
+  margin: 0;
   font-family: var(--font-body);
   background-color: var(--background);
   -webkit-font-smoothing: antialiased;
@@ -66,7 +67,6 @@ body {
 }
 .main-content {
   padding-top: 66px; /*Match navbar height */
-  min-height: 10vh; /* Full viewport height */
   background-color: var(--background);
   margin: 0;
 }
@@ -76,7 +76,7 @@ body {
 }
 
 .main-content p {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 code {
@@ -90,7 +90,7 @@ html {
 /* Responsive Font Sizes */
 @media (min-width: 1200px) {
   html {
-    font-size: 16px;
+    font-size: var(--font-size-base);
   }
 }
 
@@ -98,11 +98,19 @@ html {
   html {
     font-size: 14px;
   }
+
+  .button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
 }
 
 @media (max-width: 480px) {
   html {
     font-size: 12px;
+  }
+
+  .button {
+    font-size: var(--font-size-sm);
   }
 }
 
@@ -161,9 +169,9 @@ html {
   cursor: pointer;
   font-size: var(--font-size-sm);
   font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  color: var(--neutral-white);
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
   text-transform: uppercase;
+  color: var(--neutral-white);
 }
 
 /* Button Variants */
