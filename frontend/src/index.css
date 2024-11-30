@@ -36,6 +36,21 @@
   --font-size-sm: 0.875rem;
 }
 
+/* Add spacing variables for consistent layout spacing */
+:root {
+  --spacing-xs: 0.4rem;
+  --spacing-sm: 0.8rem;
+  --spacing-md: 1.6rem;
+  --spacing-lg: 2.4rem;
+  --spacing-xl: 3.2rem;
+
+  --line-height-sm: 1.4;
+  --line-height-md: 1.6;
+  --line-height-lg: 1.8;
+
+  --transition-speed: 0.3s;
+}
+
 /* Reset Styles */
 * {
   margin: 0;
