@@ -1,5 +1,3 @@
-// src/components/MainPage.js
-
 import Navbar from './Navbar';
 import './MainPage.css';
 import mainCoffee from '../assets/images/featured/main_page_banner.jpg';
@@ -41,23 +39,23 @@ const MainPage = () => {
   return (
     <div className="main-page">
       <Navbar />
-      <img src={mainCoffee} alt="Main Coffee" className="main-image" />
-      <div className="main-content">
+      <img src={mainCoffee} alt="Main Coffee" className="main-page-image" />
+      <div className="main-page-content">
         <p>Your one-stop solution for efficient and effective compression services.</p>
       </div>
 
       {/* Horizontal scrollable section */}
-      <div className="scrollable-container">
+      <div className="main-page-scrollable-container">
         {coffeeOptions.map((option, index) => (
-          <div key={index} className="coffee-option">
-            <div className="image-container">
+          <div key={index} className="main-page-coffee-option">
+            <div className="main-page-image-container">
               <img
                 src={option.src}
                 alt={option.label}
-                className="coffee-image"
+                className="main-page-coffee-image"
               />
             </div>
-            <p className="coffee-label">{option.label}</p>
+            <p className="main-page-coffee-label">{option.label}</p>
           </div>
         ))}
       </div>

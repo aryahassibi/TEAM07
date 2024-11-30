@@ -7,37 +7,38 @@
   background-color: var(--background);
   color: var(--neutral-white);
   min-height: 100vh;
-  padding-top: 60px;
+  padding-top: var(--spacing-lg);
 }
 
-.main-image {
+
+.main-page-image {
   width: 100%;
   height: auto;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 /* Scrollable Coffee Section */
-.scrollable-container {
+.main-page-scrollable-container {
   display: flex;
-  gap: 1rem;
-  overflow-x: scroll;
-  padding: 1rem 0;
-  margin-top: 2rem;
-  background-color: var(--primary-light); /* Updated color */
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding: var(--spacing-md) 0;
+  margin-top: var(--spacing-lg);
+  background-color: var(--primary-light);
   align-items: center;
 }
 
-.scrollable-container::-webkit-scrollbar {
+.main-page-scrollable-container::-webkit-scrollbar {
   height: 8px;
 }
 
-.scrollable-container::-webkit-scrollbar-thumb {
-  background-color: var(--primary-dark); /* Updated color */
+.main-page-scrollable-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-dark);
   border-radius: 10px;
 }
 
 /* Coffee Card Styles */
-.coffee-option {
+.main-page-coffee-option {
   flex: 0 0 auto;
   width: 150px;
   text-align: center;
@@ -46,26 +47,26 @@
   align-items: center;
 }
 
-.image-container {
+.main-page-image-container {
   width: 130px;
   height: 100px;
-  background-color: var(--primary-dark); /* Updated color */
+  background-color: var(--primary-dark);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  border: 2px solid var(--primary-dark); /* Updated color */
-  padding: 5px;
+  border-radius: var(--spacing-xs);
+  border: 2px solid var(--primary-dark);
+  padding: var(--spacing-xs);
 }
 
-.coffee-image {
+.main-page-coffee-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.coffee-label {
+.main-page-coffee-label {
   color: var(--primary-dark);
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-sm);
 }
