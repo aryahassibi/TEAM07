@@ -113,6 +113,47 @@ app.get('/api/products', (req, res) => {
     });
 });
 
+// GET endpoint to fetch all variants for a specific product
+app.get('/api/products/:product_id/variants', (req, res) => {
+    const { product_id } = req.params;
+
+    const query = `
+        SELECT 
+            variant_id, 
+            product_id, 
+            weight_grams, 
+            price, 
+            stock, 
+            sku
+        FROM 
+            Product_Variant
+        WHERE 
+            product_id = ?
+    `;
+
+    db.query(query, [product_id], (error, results) => {
+        if (error) {
+            console.error('Error retrieving variants:', error.message);
+            return res.status(500).json({ 
+                error: 'Failed to retrieve variants. Please try again later.',
+                details: error.message 
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ 
+                error: 'No variants found for the specified product.'
+            });
+        }
+
+        res.json({
+            product_id,
+            variants: results,
+        });
+    });
+});
+
+
 
 // GET endpoint to retrieve a single product by ID
 app.get('/api/products/:id', (req, res) => {
