@@ -2,7 +2,7 @@
 .cart-page {
   min-height: 100vh;
   background-color: var(--background);
-  color: var(--neutral-white);
+  color: var(--neutral-black);
   padding: 2rem;
 }
 

@@ -1,7 +1,7 @@
 
 .products-page {
   background-color: var(--background);
-  color: var(--neutral-white);
+  color: var(--neutral-black);
   min-height: 100vh;
   padding: 2rem;
 }
@@ -68,7 +68,7 @@
 .breadcrumb {
   margin-bottom: 2rem;
   font-size: var(--font-size-base);
-  color: var(--neutral-light-gray);
+  color: var(--neutral-dark-gray);
 }
 
 .breadcrumb a {
@@ -83,7 +83,7 @@
 }
 
 .breadcrumb span {
-  color: var(--neutral-light-gray);
+  color: var(--neutral-dark-gray);
 }
 
 /* Filter Panel */
