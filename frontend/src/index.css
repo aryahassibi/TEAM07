@@ -148,6 +148,12 @@ html {
 
 
 /* Button Styles */
+
+.button:focus {
+  outline: 2px dashed var(--primary-light);
+  outline-offset: 2px;
+}
+
 .button {
   padding: 0.5rem 1rem;
   border-radius: 6px;
