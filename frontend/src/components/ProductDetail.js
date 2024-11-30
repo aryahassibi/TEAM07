@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../CartContext";
-import Navbar from "./Navbar";
 import "./ProductDetail.css"; // Import the CSS file for styling
 
 const ProductDetail = () => {
@@ -86,7 +85,6 @@ const ProductDetail = () => {
 
     return (
         <div className="product-detail-container">
-            <Navbar />
             <div className="image-carousel">
                 {product.images && product.images.length > 0 ? (
                     <>

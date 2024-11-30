@@ -21,7 +21,7 @@
 /* Logo */
 .navbar-logo {
   max-width: 200px;
-  width: 20vw;
+  width: 10vw;
   min-width: 100px;
   /* height: auto; */
 }
@@ -46,7 +46,7 @@
 .navbar-links a {
   color: var(--neutral-black);
   text-decoration: none;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-sm);
   transition: color 0.5s ease;
 }
 

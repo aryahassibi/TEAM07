@@ -7,6 +7,7 @@ import ProductsPage from './components/ProductsPage';
 import LoginRegister from './components/LoginRegister';
 import ProductDetail from './components/ProductDetail'; // Import ProductDetail
 import { CartProvider } from './CartContext'; // Import CartProvider
+import Navbar from './components/Navbar';
 
 import './index.css'; 
 
@@ -16,6 +17,7 @@ function App() {
     <CartProvider> {/* Wrap the app with CartProvider */}
       <Router>
         <div className="main-content">
+          <Navbar />
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/cart" element={<Cart />} />
