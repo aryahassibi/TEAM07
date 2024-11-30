@@ -4,14 +4,14 @@
 :root {
   
   /* Primary Colors */
-  --primary-color: #007bff;    /* Basic Blue */
+  --primary-color: #97c9ff;    /* Basic Blue */
   --primary-light: #cce5ff;    /* Light Blue */
-  --primary-dark: #0056b3;     /* Dark Blue */
+  --primary-dark: #0e2640;     /* Dark Blue */
 
   /* Secondary Colors */
-  --secondary-color: #ff9800;  /* Basic Orange */
-  --secondary-light: #ffe0b2;  /* Light Orange */
-  --secondary-dark: #e65100;   /* Dark Orange */
+  --secondary-color: #ffd595;  /* Basic Orange */
+  --secondary-light: #fff7ea;  /* Light Orange */
+  --secondary-dark: #e8b092;   /* Dark Orange */
 
   /* Neutral Colors */
   --neutral-black: #202124;    /* Near Black */
