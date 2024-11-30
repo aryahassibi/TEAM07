@@ -238,7 +238,7 @@ app.put('/api/products/:id', (req, res) => {
 });
 
 // GET endpoint to retrieve product details by variant_id
-app.get('/api/product/:variant_id', (req, res) => {
+app.get('/api/product/variants/:variant_id', (req, res) => {
     const variantId = req.params.variant_id;
 
     const productQuery = `
