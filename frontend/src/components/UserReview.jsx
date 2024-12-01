@@ -63,7 +63,7 @@ const ReviewForm = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form
@@ -72,10 +72,38 @@ const ReviewForm = () => {
       return;
     }
 
-    // If validation passes, submit the form
-    console.log('Review Submitted:', formData);
-    setFormData({ name: '', rating: 0, comment: '' }); // Reset form after submission
-    setError(''); // Clear error message after submission
+    try {
+      // Construct payload to match backend requirements
+      const payload = {
+        product_id: 1, // Replace with actual product_id (e.g., from props or state)
+        user_id: 1,    // Replace with actual user_id (e.g., from logged-in user data)
+        rating: formData.rating,
+        content: formData.comment,
+      };
+
+      // Send data to backend
+      const response = await fetch('http://localhost:5000/api/reviews/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.message || 'Failed to submit the review.');
+        return;
+      }
+
+      console.log('Review Submitted:', result.message);
+      setFormData({ name: '', rating: 0, comment: '' }); // Reset form after submission
+      setError(''); // Clear error message after successful submission
+    } catch (err) {
+      console.error('Error submitting review:', err.message);
+      setError('An error occurred while submitting the review. Please try again later.');
+    }
   };
 
   return (

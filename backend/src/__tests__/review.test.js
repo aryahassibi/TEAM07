@@ -9,7 +9,7 @@ jest.mock("mysql2");
 
 const app = express();
 app.use(express.json());
-app.use('/reviews', reviewRoutes);
+app.use('/api/reviews', reviewRoutes);
 //app.use('/managers', managerRoutes);
 
 // Define mock database responses
@@ -19,7 +19,7 @@ const mockDb = mysql.createConnection();
 mockDb.execute.mockResolvedValue([{}]);  // Default mock response for success (e.g., successful insert)
 
 // Test for submitting reviews
-describe('POST /reviews/submit', () => {
+describe('POST /api/reviews/submit', () => {
   test('should successfully submit a review', async () => {
     const reviewData = {
       product_id: 1,
@@ -32,7 +32,7 @@ describe('POST /reviews/submit', () => {
     mockDb.execute.mockResolvedValue([{}]); // Simulate a successful insert
 
     const response = await request(app)
-      .post('/reviews/submit')
+      .post('/api/reviews/submit')
       .send(reviewData);
 
     expect(response.status).toBe(201);
@@ -48,7 +48,7 @@ describe('POST /reviews/submit', () => {
     };
 
     const response = await request(app)
-      .post('/reviews/submit')
+      .post('/api/reviews/submit')
       .send(reviewData);
 
     expect(response.status).toBe(400);
@@ -64,7 +64,7 @@ describe('POST /reviews/submit', () => {
     };
 
     const response = await request(app)
-        .post('/reviews/submit')
+        .post('/api/reviews/submit')
         .send(reviewData);
 
     expect(response.status).toBe(400);
@@ -79,7 +79,7 @@ describe('POST /reviews/submit', () => {
     };
 
     const response = await request(app)
-      .post('/reviews/submit')
+      .post('/api/reviews/submit')
       .send(reviewData);
 
     expect(response.status).toBe(400);
@@ -88,7 +88,7 @@ describe('POST /reviews/submit', () => {
 });
 
 // Test for fetching approved reviews
-describe('GET /reviews/:product_id/approved', () => {
+describe('GET /api/reviews/:product_id/approved', () => {
   test('should fetch all approved reviews for a product', async () => {
     const product_id = 1; // Use a valid product ID from your database
 
@@ -110,7 +110,7 @@ describe('GET /reviews/:product_id/approved', () => {
     mockDb.execute.mockResolvedValue([mockReviews]);
 
     const response = await request(app)
-      .get(`/reviews/${product_id}/approved`)
+      .get(`/api/reviews/${product_id}/approved`)
       .expect(200);
 
     expect(response.body.reviews).toBeInstanceOf(Array); // Ensure reviews is an array
@@ -132,7 +132,7 @@ describe('GET /reviews/:product_id/approved', () => {
     mockDb.execute.mockResolvedValue([[]]); // No reviews
 
     const response = await request(app)
-      .get(`/reviews/${product_id}/approved`)
+      .get(`/api/reviews/${product_id}/approved`)
       .expect(404);
 
     expect(response.body.message).toBe('No approved reviews found for this product.');
@@ -140,7 +140,7 @@ describe('GET /reviews/:product_id/approved', () => {
 
   test('should return 400 if product_id is not provided', async () => {
     const response = await request(app)
-      .get('/reviews/approved') // Invalid product ID
+      .get('/api/reviews/approved') // Invalid product ID
       .expect(400);
 
     expect(response.body.message).toBe('Product ID is required');
@@ -148,7 +148,7 @@ describe('GET /reviews/:product_id/approved', () => {
 
   test('should return 400 for invalid product_id format', async () => {
     const response = await request(app)
-      .get('/reviews/invalid_id/approved') // Invalid product_id
+      .get('/api/reviews/invalid_id/approved') // Invalid product_id
       .expect(400);
   
     expect(response.body.message).toBe('Invalid Product ID format');

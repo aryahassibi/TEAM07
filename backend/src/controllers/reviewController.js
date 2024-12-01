@@ -32,7 +32,11 @@ const submitReview = async (req, res) => {
         INSERT INTO Comments (product_id, user_id, rating, content, approved) 
         VALUES (?, ?, ?, ?, FALSE)
       `;
-      await db.execute(query, [product_id, user_id, rating, content]);
+      const [result] = await db.execute(query, [product_id, user_id, rating, content]);
+
+      if (result.affectedRows === 0) {
+          return res.status(500).json({ message: 'Failed to submit the review. Please try again later.' });
+      }
 
       res.status(201).json({ message: 'Review submitted successfully. It is pending approval.' });
     } catch (error) {
@@ -61,7 +65,7 @@ const getApprovedReviews = async (req, res) => {
 
       const [reviews] = await db.execute(query, [product_id]);
 
-      if (reviews.length === 0) {
+      if (!reviews.length) {
         return res.status(404).json({ message: 'No approved reviews found for this product.' });
       }
 
