@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 const cartRoutes = require('./routes/cartRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 const port = process.env.PORT;
 const bcrypt = require('bcrypt');
@@ -16,6 +17,9 @@ app.use(cors());
 
 // integrate cart routes
 app.use('/api/cart', cartRoutes);
+
+// integrate search routes
+app.use('/api/search', searchRoutes);
 
 // Database connection
 const db = mysql.createConnection({
@@ -53,21 +57,36 @@ app.get('/api/products', (req, res) => {
 // GET endpoint to retrieve a single product by ID
 app.get('/api/products/:id', (req, res) => {
     const productId = req.params.id;
-    db.query(
-    'SELECT * FROM Products WHERE product_id = ?',
-    [productId],
-    (error, results) => {
+    const query = `
+        SELECT 
+            p.name, 
+            p.origin, 
+            p.roast_level, 
+            p.bean_type, 
+            p.grind_type, 
+            p.flavor_profile, 
+            p.processing_method, 
+            p.caffeine_content, 
+            p.description, 
+            pv.weight_grams, 
+            pv.price, 
+            pv.stock, 
+            pv.sku 
+        FROM Products p 
+        JOIN Product_Variant pv ON p.product_id = pv.product_id 
+        WHERE pv.variant_id = ?`;
+    db.query(query, [productId], (error, results) => {
         if (error) {
-        console.error('Error fetching product:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+            console.error('Error fetching product:', error);
+            return res.status(500).json({ error: 'Internal server error' });
         }
         if (results.length === 0) {
-        return res.status(404).json({ error: 'Product not found' });
+            return res.status(404).json({ error: 'Product not found' });
         }
         res.json(results[0]);
-    }
-    );
+    });
 });
+
 
 // DELETE endpoint to delete a product
 app.delete('/api/products/:id', (req, res) => {
@@ -99,6 +118,33 @@ app.put('/api/products/:id', (req, res) => {
         return res.status(404).json({ error: 'Product not found' });
     }
     res.json({ message: 'Product updated' });
+    });
+});
+
+// GET endpoint to retrieve product details by variant_id
+app.get('/api/product/:variant_id', (req, res) => {
+    const variantId = req.params.variant_id;
+
+    const query = `
+        SELECT 
+            p.name, pv.variant_id, pv.weight_grams, pv.price, pv.stock, pv.sku, p.description
+        FROM 
+            Products p
+        JOIN 
+            Product_Variant pv ON p.product_id = pv.product_id
+        WHERE 
+            pv.variant_id = ?;
+    `;
+
+    db.query(query, [variantId], (error, results) => {
+        if (error) {
+            console.error('Error retrieving product details:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(results[0]);
     });
 });
 
