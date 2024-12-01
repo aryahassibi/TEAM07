@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import './LoginRegister.css'
+// these modules are needed
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa"; // npm install react-icons
 import validator from 'validator'; // npm install validator
+import axios from 'axios';  // npm install axios
 import Navbar from './Navbar'; 
 
 const LoginRegister = () => {
@@ -66,8 +68,8 @@ const LoginRegister = () => {
     };
     
     // handle registration logic and perform validation checks
-    const handleRegister = (e) => {
-        e.preventDefault(); {/*remove later*/}
+    const handleRegister = async (e) => {
+        e.preventDefault();
 
         if (!validator.isEmail(email)) {
             setEmailError('Please enter a valid email address');
@@ -97,21 +99,31 @@ const LoginRegister = () => {
             return;
         }
 
-        alert('Registered successfully!');
-        clearFields();
-        loginLink();
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
+            alert(response.data.message); // Display the success message
+            clearFields();
+            loginLink();
+        } catch (error) {
+            setRegisterError(error.response?.data?.error || 'Registration failed');
+        }
     };
 
     // handle login logic and check for required fields
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault(); // remove later
 
-        if (username && password) {
-            setLoginError('');
-            alert('Logged in successfully!');  
-            clearFields();
-        } else {
+        if (!username || !password) {
             setLoginError('Please fill out both fields');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/login', { email: username, password });
+            alert('Logged in successfully!'); // Show success message or redirect
+            clearFields();
+        } catch (error) {
+            setLoginError(error.response?.data?.error || 'Login failed');
         }
     };
 
