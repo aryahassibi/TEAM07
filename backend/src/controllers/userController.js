@@ -37,15 +37,30 @@ const UsersController = class {
     login(email, password) {
         return new Promise(async (resolve, reject) => {
             try {
+                // Hardcoded admin credentials
+                const adminEmail = 'admin@example.com';
+                const adminPassword = 'admin123';
+    
+                // Check if the email matches the admin email
+                if (email === adminEmail) {
+                    // Validate the password for the admin account
+                    if (password === adminPassword) {
+                        return resolve({ role: 'admin', email: adminEmail });
+                    } else {
+                        return reject(new Error('Invalid email or password for admin'));
+                    }
+                }
+    
+                // Regular user login logic
                 const user = await this.getUserByEmail(email);
-
-                // Validate password
+    
+                // Validate password for the regular user
                 const passwordMatch = await bcrypt.compare(password, user.password_hash);
                 if (!passwordMatch) {
                     return reject(new Error('Invalid email or password'));
                 }
-
-                // Exclude password_hash in response
+    
+                // Exclude password_hash in the response
                 const { password_hash, ...userDetails } = user;
                 resolve(userDetails);
             } catch (err) {
@@ -53,6 +68,7 @@ const UsersController = class {
             }
         });
     }
+    
     
     save(user) {
         return new Promise((resolve, reject) => {

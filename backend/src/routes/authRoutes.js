@@ -25,15 +25,19 @@ router.post('/register', async (req, res) => {
 });
 
 // Login Endpoint
+// Login Endpoint
 router.post('/login', validateUserInput, async (req, res) => {
     try {
         const { email, password } = req.body; // Get email and password from the request body
         const userDetails = await usersController.login(email, password); // Call login method
+
+        // Return the role and email in the response
         res.status(200).json(userDetails);
     } catch (err) {
         res.status(401).json({ error: err.message }); // Unauthorized
     }
 });
+
 
 // Get all users
 router.get('/', async (req, res) => {
