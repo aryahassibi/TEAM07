@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../CartContext";
+import ReviewForm from "./UserReview.jsx";
 import "./ProductDetail.css"; // Import the CSS file for styling
 
 const ProductDetail = () => {
@@ -16,10 +17,11 @@ const ProductDetail = () => {
     });
     const [quantity, setQuantity] = useState(1);
     const [variants, setVariants] = useState([]);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         // Fetch product details by variant_id
-        const fetchProduct = async () => {
+        const fetchProductAndReviews = async () => {
             try {
                 const response = await axios.get(
                     `http://localhost:5001/api/product/variants/${variant_id}`
@@ -34,13 +36,34 @@ const ProductDetail = () => {
                 );
                 console.log(allVariantsResponse.data);
                 setVariants(allVariantsResponse.data.variants);
+                const reviewsResponse = await axios.get(
+                    `http://localhost:5001/api/reviews/${response.data.product_id}`
+                );
+                setReviews(reviewsResponse.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
         };
 
-        fetchProduct();
+        fetchProductAndReviews();
     }, [variant_id]);
+
+    const handleNewReviewSubmit = async (review) => {
+        try {
+            await axios.post(`http://localhost:5001/api/reviews`, {
+                product_id: product.product_id,
+                ...review,
+            });
+
+            // Refresh reviews after submission
+            const updatedReviews = await axios.get(
+                `http://localhost:5001/api/reviews/${product.product_id}`
+            );
+            setReviews(updatedReviews.data);
+        } catch (error) {
+            console.error("Error submitting review:", error);
+        }
+    };
 
     const handlePrevImage = () => {
         if (!product.images || product.images.length === 0) return;
@@ -190,6 +213,29 @@ const ProductDetail = () => {
                             : "Add to Cart"}
                     </button>
                 </div>
+            </div>
+
+            <div className="product-reviews">
+                <h2>Customer Reviews</h2>
+                {reviews.length > 0 ? (
+                    <ul>
+                        {reviews.map((review) => (
+                            <li key={review.comment_id} className="review-item">
+                                <p>
+                                    <strong>{review.user_id ? `User ${review.user_id}` : "Anonymous"}</strong>
+                                </p>
+                                <p>Rating: {review.rating} / 5</p>
+                                <p>{review.content}</p>
+                                <p><small>Posted on: {new Date(review.created_at).toLocaleDateString()}</small></p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No reviews yet. Be the first to review!</p>
+                )}
+
+                <h3>Write a Review</h3>
+                <ReviewForm onSubmit={handleNewReviewSubmit} />
             </div>
         </div>
     );

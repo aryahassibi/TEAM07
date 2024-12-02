@@ -322,6 +322,36 @@ app.post('/api/cart', (req, res) => {
     });
 });
 
+app.post('/api/reviews', (req, res) => {
+    const { productId, name, rating, comment } = req.body;
+
+    if (!productId || !name || !rating || !comment) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const query = 'INSERT INTO Comments (product_id, content, rating, approved) VALUES (?, ?, ?, ?)';
+    db.query(query, [productId, comment, rating, true], (error, results) => {
+        if (error) {
+            console.error('Error adding comment:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.status(201).json({ message: 'Comment added successfully' });
+    });
+});
+
+app.get('/api/reviews/:productId', (req, res) => {
+    const { productId } = req.params;
+
+    const query = 'SELECT * FROM Comments WHERE product_id = ? AND approved = TRUE';
+    db.query(query, [productId], (error, results) => {
+        if (error) {
+            console.error('Error fetching comments:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json(results);
+    });
+});
+
 
 app.get('/', (req, res) => {
     res.send('Backend is running');
