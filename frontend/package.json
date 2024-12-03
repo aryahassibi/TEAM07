@@ -22,6 +22,7 @@
     "eslint-plugin-react-refresh": "^0.4.14"
   },
   "scripts": {
+    "install:clean": "rm -rf node_modules && npm install",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
