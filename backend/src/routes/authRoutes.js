@@ -1,6 +1,23 @@
 const express = require('express');
 const UsersController = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const mysql = require("mysql2");
+
+// Database connection
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+});
+
+db.connect((err) => {
+    if (err) throw err;
+    console.log("MySQL connected");
+});
+
+
 
 
 const router = express.Router();
@@ -16,13 +33,13 @@ const validateUserInput = (req, res, next) => {
 };
 
 // Registration Endpoint
-app.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     const { first_name, last_name, email, password, phone_number } = req.body;
   
   
     try {
     
-      pool.query(
+      db.query(
         'SELECT * FROM Users WHERE email = ? OR phone_number = ?',
         [email, phone_number],
         async (err, results) => {
@@ -35,12 +52,12 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({ error: 'Email or Phone number already exists' });
           }
   
-          
+          const passwordString = String(password);
           const salt = await bcrypt.genSalt(10);
-          const hashedPassword = await bcrypt.hash(password, salt);
+          const hashedPassword = await bcrypt.hash(passwordString, salt);
   
           
-          pool.query(
+          db.query(
             'INSERT INTO Users (first_name, last_name, email, phone_number, password_hash) VALUES (?, ?, ?, ?, ?)',
             [first_name, last_name, email, phone_number, hashedPassword],
             (insertErr, result) => {
@@ -69,7 +86,7 @@ router.post("/login", async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
     }
-
+    
     
     const query = "SELECT user_id, password_hash FROM Users WHERE email = ?";
     db.query(query, [email], async (err, results) => {
@@ -83,9 +100,10 @@ router.post("/login", async (req, res) => {
         }
 
         const user = results[0];
-
+       
+        const passwordString = String(password);
         
-        const match = await bcrypt.compare(password, user.password_hash);
+        const match = await bcrypt.compare(passwordString, user.password_hash);
         if (!match) {
             return res.status(401).json({ error: "Invalid email or password" });
         }

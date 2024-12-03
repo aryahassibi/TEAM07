@@ -17,7 +17,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post("/login", { email, password });
+      const response = await axios.post("http://localhost:5001/auth/login", { email, password });
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (err) {
