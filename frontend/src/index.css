@@ -58,6 +58,64 @@
   box-sizing: border-box;
 }
 
+/* Global CSS Variables */
+:root {
+  
+  /* Primary Colors */
+  --primary-color: #97c9ff;    /* Basic Blue */
+  --primary-light: #89b5e6;    /* Light Blue */
+  --primary-dark: #6b89aa;     /* Dark Blue */
+
+  /* Secondary Colors */
+  --secondary-color: #ffd595;  /* Basic Orange */
+  --secondary-light: #fff7ea;  /* Light Orange */
+  --secondary-dark: #e8b092;   /* Dark Orange */
+
+  /* Neutral Colors */
+  --neutral-black: #202124;    /* Near Black */
+  --neutral-dark-gray: #292a2b; /* Dark Gray */
+  --neutral-light-gray: #dadce0; /* Light Gray */
+  --neutral-white: #ffffff;     /* White */
+
+  /* Alert Colors */
+  --success-color: #34a853;    /* Green */
+  --error-color: #ea4335;      /* Red */
+  --warning-color: #fbbc05;    /* Yellow (Reused) */
+  --info-color: #4285f4;       /* Blue (Reused) */
+
+  /* Backgrounds */
+  --background: #f5f3f0;  /* Dark Background */  
+
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-code: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --font-size-base: 16px;
+  --font-size-lg: 1.25rem;
+  --font-size-sm: 0.875rem;
+}
+
+/* Add spacing variables for consistent layout spacing */
+:root {
+  --spacing-xs: 0.4rem;
+  --spacing-sm: 0.8rem;
+  --spacing-md: 1.6rem;
+  --spacing-lg: 2.4rem;
+  --spacing-xl: 3.2rem;
+
+  --line-height-sm: 1.4;
+  --line-height-md: 1.6;
+  --line-height-lg: 1.8;
+
+  --transition-speed: 0.3s;
+}
+
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);

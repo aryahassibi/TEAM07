@@ -2,6 +2,8 @@
 .products-page {
   background-color: var(--background);
   color: var(--neutral-black);
+  background-color: var(--background);
+  color: var(--neutral-black);
   min-height: 100vh;
   padding: 2rem;
   padding: 2rem;
@@ -74,6 +76,9 @@
 .cart-controls button {
   padding: 0.5rem 1rem;
   background-color: var(--primary-color);
+.cart-controls button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -85,6 +90,30 @@
   transition: background-color 0.3s ease;
 }
 
+.cart-controls button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  margin-bottom: 2rem;
+  font-size: var(--font-size-base);
+  color: var(--neutral-dark-gray);
+}
+
+.breadcrumb a {
+  color: var(--primary-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.breadcrumb span {
+  color: var(--neutral-dark-gray);
 .cart-controls button:hover {
   background-color: var(--primary-dark);
 }
@@ -133,6 +162,7 @@
   gap: 1rem;
 }
 
+.filter-panel .close-icon {
 .filter-panel .close-icon {
   position: absolute;
   top: 1rem;
