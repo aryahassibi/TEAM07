@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useState ,useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
@@ -9,12 +9,25 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+
+
+  useEffect(() => {
+    
+    const token = localStorage.getItem('token'); 
+    
+    if (token) {
+      
+      navigate('/');
+    }
+  }, [navigate]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
-    }
+    }  
 
     try {
       const response = await axios.post("http://localhost:5001/auth/login", { email, password });

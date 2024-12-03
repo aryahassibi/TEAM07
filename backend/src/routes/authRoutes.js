@@ -21,16 +21,10 @@ db.connect((err) => {
 
 
 const router = express.Router();
-const usersController = new UsersController(); // Instantiate UsersController
+const usersController = new UsersController(); 
 
 // Middleware for validating user input
-const validateUserInput = (req, res, next) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email and password are required" });
-    }
-    next();
-};
+
 
 // Registration Endpoint
 router.post('/register', async (req, res) => {
@@ -109,7 +103,7 @@ router.post("/login", async (req, res) => {
         }
 
         
-        const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ user_id: user.user_id }, "abcd12d", {
             expiresIn: "12h"
         });
 
