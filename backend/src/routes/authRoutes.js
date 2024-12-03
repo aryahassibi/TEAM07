@@ -16,15 +16,51 @@ const validateUserInput = (req, res, next) => {
 };
 
 // Registration Endpoint
-router.post('/register', async (req, res) => {
+app.post('/register', async (req, res) => {
+    const { first_name, last_name, email, password, phone_number } = req.body;
+  
+  
     try {
-        const user = req.body; // Get user details from the request body
-        const result = await usersController.register(user); // Call register method
-        res.status(201).json(result);
+    
+      pool.query(
+        'SELECT * FROM Users WHERE email = ? OR phone_number = ?',
+        [email, phone_number],
+        async (err, results) => {
+          if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ error: 'Database error' });
+          }
+  
+          if (results.length > 0) {
+            return res.status(400).json({ error: 'Email or Phone number already exists' });
+          }
+  
+          
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, salt);
+  
+          
+          pool.query(
+            'INSERT INTO Users (first_name, last_name, email, phone_number, password_hash) VALUES (?, ?, ?, ?, ?)',
+            [first_name, last_name, email, phone_number, hashedPassword],
+            (insertErr, result) => {
+              if (insertErr) {
+                console.error('Insert error:', insertErr);
+                return res.status(500).json({ error: 'Failed to register user' });
+              }
+  
+              
+              res.status(201).json({ message: 'User registered successfully', userId: result.insertId });
+            }
+          );
+        }
+      );
     } catch (err) {
-        res.status(400).json({ error: err.message });
+      console.error('Error:', err);
+      res.status(500).json({ error: 'Server error' });
     }
-});
+  });
+
 
 // Login Endpoint
 router.post("/login", async (req, res) => {
