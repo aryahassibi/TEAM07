@@ -3,8 +3,6 @@ import './LoginRegister.css'
 // these modules are needed
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa"; // npm install react-icons
 import validator from 'validator'; // npm install validator
-import axios from 'axios';  // npm install axios
-import Navbar from './Navbar'; 
 
 const LoginRegister = () => {
     
@@ -128,8 +126,7 @@ const LoginRegister = () => {
     };
 
     return (
-    <>
-        <Navbar />
+    <div className="loginregister-page">
         <div className={`loginregister-wrapper${action}`}>
             {/*login form*/}
             <div className="loginregister-form-box login">
@@ -227,7 +224,7 @@ const LoginRegister = () => {
                 </form>
             </div>
         </div>
-    </>
+    </div>
     )
 }
 
