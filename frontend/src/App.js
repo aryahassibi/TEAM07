@@ -9,9 +9,6 @@ import { CartProvider } from './CartContext'; // Import CartProvider
 import Navbar from './components/Navbar';
 import LoginForm from "./components/LoginForm";
 import Register from "./components/Register";
-import Checkout from './components/Checkout';
-import Failed from './components/Failed';
-import OrderSuccess from './components/OrderSuccess';
 
 import './index.css'; 
 
@@ -26,9 +23,6 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products" element={<ProductsPage />} /> 
-            <Route path="/checkout" element={<Checkout/>} />
-            <Route path="/order-failed" element={<Failed/>} />
-            <Route path="/order-success" element={<OrderSuccess/>} />
             <Route path="/product/:variant_id" element={<ProductDetail />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<Register/>} />
