@@ -1,114 +1,4 @@
-/*!
-=========================================================
-* Dorang Landing page V 1.0
-=========================================================
-
-* Copyright: 2019 DevCRUD (https://devcrud.com)
-* Licensed: (https://devcrud.com/licenses)
-* Coded by www.devcrud.com
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-@import url("https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700");
-:root {
-  --blue: #007bff;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
-  --pink: #e83e8c;
-  --red: #dc3545;
-  --orange: #fd7e14;
-  --yellow: #ffc107;
-  --green: #28a745;
-  --teal: #20c997;
-  --cyan: #17a2b8;
-  --white: #fff;
-  --gray: #6c757d;
-  --gray-dark: #343a40;
-  --primary: #007bff;
-  --secondary: #6c757d;
-  --success: #28a745;
-  --info: #17a2b8;
-  --warning: #ffc107;
-  --danger: #dc3545;
-  --light: #f8f9fa;
-  --dark: #343a40;
-  --breakpoint-xs: 0;
-  --breakpoint-sm: 576px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 992px;
-  --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Quicksand", sans-serif;
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  font-family: sans-serif;
-  line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
-  display: block;
-}
-
-body {
-  margin: 0;
-  font-family: "Quicksand", sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: left;
-  background-color: #fff;
-}
-
-[tabindex="-1"]:focus {
-  outline: 0 !important;
-}
-
-hr {
-  box-sizing: content-box;
-  height: 0;
-  overflow: visible;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-abbr[title],
-abbr[data-original-title] {
-  text-decoration: underline;
-  -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
-  cursor: help;
-  border-bottom: 0;
-  -webkit-text-decoration-skip-ink: none;
-          text-decoration-skip-ink: none;
-}
-
-address {
-  margin-bottom: 1rem;
-  font-style: normal;
-  line-height: inherit;
-}
-
-.about-description {
+.admin-about-description {
   color: black;
   font-size: 1rem; /* Adjust the size as needed */
   line-height: 1.6; /* Improve readability */
@@ -117,7 +7,7 @@ address {
   margin-right: 2rem; /* Add space to the right */
 }
 
-.about-title {
+.admin-about-title {
   color: darkgrey;
   font-size: 2.5rem; /* Adjust the size as needed */
   font-weight: bold;
@@ -125,5 +15,8 @@ address {
   margin-bottom: 1.5rem; /* Add some spacing below the title */
   margin-left: 2rem; /* Add space to the left */
   margin-right: 2rem; /* Add space to the right */
+}
 
+.admin-about-container {
+  padding: 2rem; /* Add some padding for the container */
 }

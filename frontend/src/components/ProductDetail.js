@@ -1,12 +1,11 @@
-// ProductDetail.jsx
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../CartContext";
-import "./ProductDetail.css"; // Import the CSS file for styling
+import "./ProductDetail.css";
 
 const ProductDetail = () => {
-    const { variant_id } = useParams(); // Assuming variant_id is passed via route
+    const { variant_id } = useParams();
     const [product, setProduct] = useState(null);
     const { addToCart } = useContext(CartContext);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -17,23 +16,33 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [variants, setVariants] = useState([]);
 
+    // State for reviews
+    const [reviews, setReviews] = useState([]);
+
     useEffect(() => {
-        // Fetch product details by variant_id
         const fetchProduct = async () => {
             try {
+                // Fetch product details
                 const response = await axios.get(
                     `http://localhost:5001/api/product/variants/${variant_id}`
                 );
                 setProduct(response.data);
-                console.log(response.data);
+
+                // Set selected variant
                 const variant = response.data;
                 setSelectedVariant(variant || { stock: 0, price: 0 });
-                // Fetch all variants for the product
+
+                // Fetch all variants
                 const allVariantsResponse = await axios.get(
                     `http://localhost:5001/api/products/${response.data.product_id}/variants`
                 );
-                console.log(allVariantsResponse.data);
                 setVariants(allVariantsResponse.data.variants);
+
+                // Fetch reviews
+                const reviewsResponse = await axios.get(
+                    `http://localhost:5001/api/reviews/${response.data.product_id}`
+                );
+                setReviews(reviewsResponse.data.reviews || []);
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
@@ -43,14 +52,14 @@ const ProductDetail = () => {
     }, [variant_id]);
 
     const handlePrevImage = () => {
-        if (!product.images || product.images.length === 0) return;
+        if (!product?.images?.length) return;
         setCurrentImageIndex((prevIndex) =>
             prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
         );
     };
 
     const handleNextImage = () => {
-        if (!product.images || product.images.length === 0) return;
+        if (!product?.images?.length) return;
         setCurrentImageIndex((prevIndex) =>
             prevIndex === product.images.length - 1 ? 0 : prevIndex + 1
         );
@@ -62,31 +71,36 @@ const ProductDetail = () => {
 
     const handleVariantChange = (e) => {
         const variantId = e.target.value;
-        // Fetch the selected variant details
         const selected = variants.find(
             (variant) => variant.variant_id === parseInt(variantId)
         );
         setSelectedVariant(selected);
-        setCurrentImageIndex(0); // Reset image index when variant changes
+        setCurrentImageIndex(0);
     };
 
     const handleAddToCart = () => {
-        if (quantity > product.stock) {
-            alert('Not enough stock available!');
+        if (quantity > selectedVariant.stock) {
+            alert("Not enough stock available!");
             return;
         }
-        addToCart(selectedVariant.name, selectedVariant.variant_id, quantity, selectedVariant.price, selectedVariant.weight_grams); // Call addToCart
-        alert(`${quantity} item(s) of ${product.name} added to cart.`);
+        addToCart(
+            product.name,
+            selectedVariant.variant_id,
+            quantity,
+            selectedVariant.price,
+            selectedVariant.weight_grams
+        );
+        alert(`${quantity} item(s) added to cart.`);
     };
 
-    if (!product || !selectedVariant) {
+    if (!product) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="product-detail-container">
             <div className="image-carousel">
-                {product.images && product.images.length > 0 ? (
+                {product.images?.length > 0 ? (
                     <>
                         <div className="main-image">
                             <img
@@ -113,9 +127,7 @@ const ProductDetail = () => {
                                 <span
                                     key={index}
                                     className={`dot ${
-                                        index === currentImageIndex
-                                            ? "active"
-                                            : ""
+                                        index === currentImageIndex ? "active" : ""
                                     }`}
                                     onClick={() => handleDotClick(index)}
                                     aria-label={`View image ${index + 1}`}
@@ -128,33 +140,15 @@ const ProductDetail = () => {
                 )}
             </div>
             <div className="product-details">
-                <h1 className="product-name">{product.name}</h1>
-                <p className="product-origin">
-                    <strong>Origin:</strong> {product.origin}
-                </p>
-                <p className="product-roast">
-                    <strong>Roast Level:</strong> {product.roast_level}
-                </p>
-                <p className="product-bean">
-                    <strong>Bean Type:</strong> {product.bean_type}
-                </p>
-                <p className="product-flavor">
-                    <strong>Flavor Profile:</strong> {product.flavor_profile}
-                </p>
-                <p className="product-description">{product.description}</p>
+                <h1>{product.name}</h1>
+                <p><strong>Origin:</strong> {product.origin}</p>
+                <p><strong>Roast Level:</strong> {product.roast_level}</p>
 
                 <div className="variant-selection">
-                    <label htmlFor="variant">Choose Weight:</label>
-                    <select
-                        id="variant"
-                        value={selectedVariant.variant_id}
-                        onChange={handleVariantChange}
-                    >
+                    <label>Choose Weight:</label>
+                    <select onChange={handleVariantChange}>
                         {variants.map((variant) => (
-                            <option
-                                key={variant.variant_id}
-                                value={variant.variant_id}
-                            >
+                            <option key={variant.variant_id} value={variant.variant_id}>
                                 {variant.weight_grams}g - ${variant.price}
                             </option>
                         ))}
@@ -162,34 +156,39 @@ const ProductDetail = () => {
                 </div>
 
                 <div className="quantity-selection">
-                    <label htmlFor="quantity">Quantity:</label>
+                    <label>Quantity:</label>
                     <input
                         type="number"
-                        id="quantity"
+                        value={quantity}
                         min="1"
                         max={selectedVariant.stock}
-                        value={quantity}
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
-                    <span className="stock">
-                        {selectedVariant.stock} in stock
-                    </span>
                 </div>
 
-                <div className="price-add">
-                    <p className="price">
-                        ${Number(selectedVariant.price).toFixed(2)}
-                    </p>
-                    <button
-                        className="add-to-cart-button"
-                        onClick={handleAddToCart}
-                        disabled={selectedVariant.stock === 0}
-                    >
-                        {selectedVariant.stock === 0
-                            ? "Out of Stock"
-                            : "Add to Cart"}
-                    </button>
-                </div>
+                <button onClick={handleAddToCart}>
+                    Add to Cart
+                </button>
+            </div>
+
+            <div className="reviews-section">
+                <h2>Customer Reviews</h2>
+                {reviews.length > 0 ? (
+                    reviews.map((review, index) => (
+                        <div key={index} className="review">
+                            <p><strong>{review.rating} Stars</strong></p>
+                            <p>{review.content}</p>
+                            <p>
+                                <small>
+                                    {review.first_name} {review.last_name},{" "}
+                                    {new Date(review.created_at).toLocaleDateString()}
+                                </small>
+                            </p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No reviews yet.</p>
+                )}
             </div>
         </div>
     );

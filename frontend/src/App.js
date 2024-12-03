@@ -13,6 +13,8 @@ import AdminLoginPage from './components/AdminLoginPage'; // Import AdminLoginPa
 import MainAdminPage from './components/MainAdminPage'; // Adjust path as necessary
 import About from './components/About';
 import ReviewAdminPage from './components/ReviewAdminPage';
+import WriteReview from './components/WriteReview'; // Import WriteReview
+
 import './index.css'; 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/products" element={<ProductsPage />} /> 
             <Route path="/product/:variant_id" element={<ProductDetail />} />
+            <Route path="/reviews/write/:product_id" element={<WriteReview />} /> 
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<Register/>} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
