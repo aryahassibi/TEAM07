@@ -1,5 +1,7 @@
 const express = require('express');
 const UsersController = require('../controllers/userController');
+const jwt = require('jsonwebtoken');
+
 
 const router = express.Router();
 const usersController = new UsersController(); // Instantiate UsersController
@@ -25,15 +27,42 @@ router.post('/register', async (req, res) => {
 });
 
 // Login Endpoint
-router.post('/login', validateUserInput, async (req, res) => {
-    try {
-        const { email, password } = req.body; // Get email and password from the request body
-        const userDetails = await usersController.login(email, password); // Call login method
-        res.status(200).json(userDetails);
-    } catch (err) {
-        res.status(401).json({ error: err.message }); // Unauthorized
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
     }
+
+    
+    const query = "SELECT user_id, password_hash FROM Users WHERE email = ?";
+    db.query(query, [email], async (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        const user = results[0];
+
+        
+        const match = await bcrypt.compare(password, user.password_hash);
+        if (!match) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        
+        const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, {
+            expiresIn: "12h"
+        });
+
+        res.json({ token });
+    });
 });
+
 
 // Get all users
 router.get('/', async (req, res) => {
