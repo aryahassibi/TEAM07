@@ -9,6 +9,7 @@ import MainAdminPage from './components/MainAdminPage'; // Adjust path as necess
 import { CartProvider } from './CartContext';
 import Navbar from './components/Navbar';
 import About from './components/About';
+import ReviewAdminPage from './components/ReviewAdminPage';
 import './index.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                         <Route path="/loginregister" element={<LoginRegister />} />
                         <Route path="/admin/login" element={<AdminLoginPage />} />
                         <Route path="/admin/main_page" element={<MainAdminPage />} />
+                        <Route path="/admin/review_management" element={<ReviewAdminPage />} />
                         <Route path="/about" element={<About />} />
                     </Routes>
                 </div>

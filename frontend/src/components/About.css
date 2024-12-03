@@ -107,6 +107,14 @@ address {
   font-style: normal;
   line-height: inherit;
 }
+
+.about-description {
+  color: black;
+  font-size: 1rem; /* Adjust the size as needed */
+  line-height: 1.6; /* Improve readability */
+  margin-bottom: 1rem; /* Add spacing between paragraphs */
+}
+
 .about-title {
   color: darkgrey;
   font-size: 2.5rem; /* Adjust the size as needed */

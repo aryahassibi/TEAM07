@@ -8,8 +8,8 @@ const MainAdminPage = () => {
             <div className="admin-actions">
                 <button className="admin-button">Manage Users</button>
                 <button className="admin-button">Manage Products</button>
-                <button className="admin-button">View Reports</button>
-            </div>
+                <button className="admin-button" onClick={() => window.location.href = '/admin/review_management'}>View Reviews</button>
+                </div>
         </div>
     );
 };
