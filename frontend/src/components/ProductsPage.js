@@ -28,8 +28,15 @@ const ProductsPage = () => {
     const fetchProducts = async () => {
       const query = new URLSearchParams(location.search);
       try {
-        const response = await axios.get(`http://localhost:5001/api/products?${query.toString()}`);
-        setProducts(response.data);
+        if (query.toString().startsWith('search')){
+          const response = await axios.get(`http://localhost:5001/api/search?${query.toString()}`);
+          setProducts(response.data.data);
+          return;
+        }
+        else {
+          const response = await axios.get(`http://localhost:5001/api/products?${query.toString()}`);
+          setProducts(response.data);
+        }
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -65,6 +72,9 @@ const ProductsPage = () => {
     const query = new URLSearchParams(location.search);
     const breadcrumbs = [];
     query.forEach((value, key) => {
+      if (key === 'search') {
+        breadcrumbs.push({ label: 'Search', value });}
+      else {
       let label;
       switch (key) {
         case 'roast_level':
@@ -86,6 +96,7 @@ const ProductsPage = () => {
           label = key;
       }
       breadcrumbs.push({ label, value });
+    }
     });
     return breadcrumbs;
   };
