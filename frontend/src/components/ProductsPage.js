@@ -1,12 +1,10 @@
-// src/components/ProductsPage.js
-
 import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { CartContext } from '../CartContext';
 import FilterPanel from './FilterPanel';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './ProductsPage.css';  
+import './ProductsPage.css';
 
 const ProductsPage = () => {
   const { addToCart } = useContext(CartContext);
@@ -14,11 +12,12 @@ const ProductsPage = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState(filters);
   const [products, setProducts] = useState([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0); // New state to trigger product updates
   const location = useLocation();
   const navigate = useNavigate();
 
   // State for sorting option
-  const [sortOption, setSortOption] = useState('asc'); // Default sort order
+  const [sortOption, setSortOption] = useState('price-asc'); // Default sort order
 
   // Fetch products data from backend based on location.search
   useEffect(() => {
@@ -39,26 +38,24 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-  }, [location.search]);
+  }, [location.search, refreshTrigger]); // Add refreshTrigger to dependencies
 
   // Synchronize sortOption state with URL
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    if (query.has('sort_order')) {
-      setSortOption(query.get('sort_order'));
-    } else {
-      setSortOption('asc'); // Default to 'asc'
-    }
+    const sortBy = query.get('sort_by') || 'price';
+    const sortOrder = query.get('sort_order') || 'asc';
+    setSortOption(`${sortBy}-${sortOrder}`);
   }, [location.search]);
 
   const handleSortChange = (event) => {
-    const newSortOption = event.target.value;
-    setSortOption(newSortOption);
+    const [sortBy, sortOrder] = event.target.value.split('-');
+    setSortOption(event.target.value);
 
     // Update the URL query parameters
     const queryParams = new URLSearchParams(location.search);
-    queryParams.set('sort_by', 'price');
-    queryParams.set('sort_order', newSortOption);
+    queryParams.set('sort_by', sortBy);
+    queryParams.set('sort_order', sortOrder);
 
     // Update the URL without reloading the page
     navigate(`${location.pathname}?${queryParams.toString()}`);
@@ -139,6 +136,10 @@ const ProductsPage = () => {
   const openPanel = () => setIsPanelOpen(true);
   const closePanel = () => setIsPanelOpen(false);
 
+  const triggerRefresh = () => {
+    setRefreshTrigger((prev) => prev + 1); // Increment refreshTrigger to refetch products
+  };
+
   return (
     <div className="products-page">
       <h1>Our Coffee Products</h1>
@@ -159,8 +160,10 @@ const ProductsPage = () => {
       <div className="sorting-container">
         <label htmlFor="sort">Sort: </label>
         <select id="sort" value={sortOption} onChange={handleSortChange}>
-          <option value="asc">Lowest to Highest Price</option>
-          <option value="desc">Highest to Lowest Price</option>
+          <option value="price-asc">Lowest to Highest Price</option>
+          <option value="price-desc">Highest to Lowest Price</option>
+          <option value="average_rating-desc">Most Popular</option>
+          <option value="average_rating-asc">Least Popular</option>
         </select>
       </div>
 
@@ -184,7 +187,12 @@ const ProductsPage = () => {
       <div className="coffee-list">
         {products.length > 0 ? (
           products.map((coffee) => (
-            <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
+            <CoffeeCard
+              key={coffee.variant_id}
+              coffee={coffee}
+              addToCart={addToCart}
+              triggerRefresh={triggerRefresh} // Pass refresh function to CoffeeCard
+            />
           ))
         ) : (
           <p>No products available.</p>
@@ -194,7 +202,7 @@ const ProductsPage = () => {
   );
 };
 
-const CoffeeCard = ({ coffee, addToCart }) => {
+const CoffeeCard = ({ coffee, addToCart, triggerRefresh }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
@@ -208,6 +216,7 @@ const CoffeeCard = ({ coffee, addToCart }) => {
     }
     addToCart(coffee.name, coffee.variant_id, quantity, coffee.price, coffee.weight_grams);
     alert(`${quantity} item(s) of ${coffee.name} added to cart.`);
+    triggerRefresh(); // Trigger product refresh after adding to cart
   };
 
   return (
@@ -217,6 +226,7 @@ const CoffeeCard = ({ coffee, addToCart }) => {
         <h3>{coffee.name}</h3>
         <p>Weight: {coffee.weight_grams}g</p>
         <p>Price: ${coffee.price}</p>
+        <p>Average Rating: {coffee.average_rating}</p>
         <p>Stock Available: {coffee.stock}</p>
         <div className="cart-controls">
           <button onClick={(e) => { e.preventDefault(); handleDecrement(); }}>-</button>
@@ -236,8 +246,10 @@ CoffeeCard.propTypes = {
     price: PropTypes.number.isRequired,
     stock: PropTypes.number.isRequired,
     variant_id: PropTypes.number.isRequired,
+    average_rating: PropTypes.number, // Added to show popularity
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
+  triggerRefresh: PropTypes.func.isRequired, // New prop
 };
 
 export default ProductsPage;

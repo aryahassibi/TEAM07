@@ -1,14 +1,8 @@
-const mysql = require("mysql2");
-
-// Database connection
-const db = require('../config/db');
-
-// GET endpoint to search products
 exports.searchProducts = (req, res) => {
     const { search = '', sort_by = 'price', sort_order = 'asc' } = req.query;
 
     // Validate sorting parameters
-    const validSortBy = ['price']; // Only price allowed for sorting
+    const validSortBy = ['price', 'average_rating']; // Include average_rating for sorting
     const validSortOrder = ['asc', 'desc'];
 
     if (!validSortBy.includes(sort_by) || !validSortOrder.includes(sort_order.toLowerCase())) {
@@ -32,32 +26,36 @@ exports.searchProducts = (req, res) => {
         return res.json({ data: [], total: 0 });
     }
 
-    // Build the query
-    let query = `
-        SELECT 
- p.product_id, 
-            p.name, 
-            p.category_id,
-            p.roast_level, 
-            p.bean_type, 
-            p.grind_type, 
-            p.caffeine_content, 
-            p.origin, 
-            pv.variant_id, 
-            pv.weight_grams, 
-            pv.price, 
-            pv.stock, 
-            pv.sku, 
-            (pv.stock = 0) AS out_of_stock 
-        FROM Products p
-        LEFT JOIN Product_Variant pv ON p.product_id = pv.product_id
-        WHERE ${whereClause}
-        ORDER BY ${sort_by} ${sort_order.toUpperCase()}
+    // Use COALESCE to handle NULL values for average_rating
+    const sortColumn = sort_by === 'average_rating' ? 'COALESCE(p.average_rating, 0)' : 'pv.price';
 
+    // Build the query
+    // Updated SELECT query with dynamic average_rating calculation
+    const query = `
+    SELECT 
+        p.product_id, 
+        p.name, 
+        p.category_id,
+        p.roast_level, 
+        p.bean_type, 
+        p.grind_type, 
+        p.caffeine_content, 
+        p.origin, 
+        pv.variant_id, 
+        pv.weight_grams, 
+        pv.price, 
+        pv.stock, 
+        pv.sku, 
+        COALESCE(AVG(r.rating), 0) AS average_rating, 
+        (pv.stock = 0) AS out_of_stock 
+    FROM Products p
+    LEFT JOIN Product_Variant pv ON p.product_id = pv.product_id
+    LEFT JOIN Reviews r ON p.product_id = r.product_id
+    WHERE ${whereClause}
+    GROUP BY p.product_id, pv.variant_id
+    ORDER BY ${sortColumn} ${sort_order.toUpperCase()}
     `;
 
-    // Add the sort_by parameter to queryParams
-    queryParams.push(sort_by);
 
     // Execute the query
     db.query(query, queryParams, (err, results) => {

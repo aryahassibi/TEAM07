@@ -17,7 +17,7 @@ exports.listProducts = (req, res) => {
     } = req.query;
 
     // Validate sorting parameters
-    const validSortBy = ['price']; // Allowed fields to sort by
+    const validSortBy = ['price', 'average_rating']; // Include average_rating for sorting
     const validSortOrder = ['asc', 'desc'];
 
     if (!validSortBy.includes(sort_by)) {
@@ -31,6 +31,7 @@ exports.listProducts = (req, res) => {
     // Map sort_by to actual database column
     const sortByColumn = {
         price: 'pv.price',
+        average_rating: 'COALESCE(p.average_rating, 0)', // Handle NULL values
     };
 
     let query = `
@@ -47,7 +48,8 @@ exports.listProducts = (req, res) => {
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
-            pv.sku
+            pv.sku, 
+            COALESCE(p.average_rating, 0) AS average_rating
         FROM 
             Products p
         JOIN 
@@ -95,10 +97,10 @@ exports.listProducts = (req, res) => {
             return res.status(500).json({ error: 'Failed to retrieve products.' });
         }
 
-        // Instead of returning 404 for no results, return an empty array
         res.json(results);
     });
 };
+
 
 // Retrieve a single product by ID
 exports.getProductById = (req, res) => {
