@@ -64,35 +64,43 @@
 .search-bar {
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  border: 1px solid var(--neutral-light-gray);
+  border-radius: 50px; /* Rounded corners for the search bar */
+  background-color: rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  padding: 5px 10px;
 }
 
 .search-input {
-  padding: 5px 10px;
-  font-size: var(--font-size-base);
-  border: 1px solid var(--neutral-light-gray);
-  border-right: none;
-  border-radius: 4px 0 0 4px;
+  flex: 1;
+  border: none;
   outline: none;
+  font-size: var(--font-size-base);
+  padding: 8px 12px;
+  background: transparent;
 }
 
-.search-input:focus {
-  border-color: var(--primary-dark);
+.search-input::placeholder {
+  color: var(--neutral-gray);
 }
 
 .search-button {
-  padding: 5px 10px;
-  background-color: var(--primary-dark);
-  color: #fff;
+  background: none;
   border: none;
-  border-radius: 0 4px 4px 0;
   cursor: pointer;
-  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
 }
 
-.search-button:hover {
-  background-color: var(--primary-dark-hover);
+.search-icon {
+  width: 20px;
+  height: 20px;
+  /* filter: brightness(0) saturate(100%) invert(55%) sepia(47%) saturate(588%)
+    hue-rotate(357deg) brightness(95%) contrast(90%); */
 }
+
 
 /* Icons */
 .shop-icon,
@@ -105,7 +113,7 @@
 }
 
 .shop-icon:hover,
-.user-icon:hover {
+.user-icon:hover{
   transform: scale(1.1);
 }
 

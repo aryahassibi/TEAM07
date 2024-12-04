@@ -4,6 +4,7 @@ import './Navbar.css';
 import compressoLogo from '../assets/images/icons/logo-dark.svg';
 import shopIcon from '../assets/images/icons/cart-dark.svg';
 import userIcon from '../assets/images/icons/user-dark.svg';
+import searchIcon from '../assets/images/icons/icons8-search.svg';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -83,16 +84,18 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-right">
-        <form className="search-bar" onSubmit={handleSearchSubmit}>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="search-input"
-          />
-          <button type="submit" className="search-button">🔍</button>
-        </form>
+      <form className="search-bar" onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+        <button type="submit" className="search-button">
+          <img src={searchIcon} alt="Search" className="search-icon" />
+        </button>
+      </form>
         <Link to="/loginregister"><img src={userIcon} alt="User Icon" className="user-icon" /></Link>
         <Link to="/cart"><img src={shopIcon} alt="Shop Icon" className="shop-icon" /></Link>
       </div>
