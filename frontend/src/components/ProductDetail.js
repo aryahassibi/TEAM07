@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../CartContext";
-import "./ProductDetail.css"; // Import the CSS file for styling
+import "./ProductDetail.css";
 
 const ProductDetail = () => {
-    const { variant_id } = useParams(); // Assuming variant_id is passed via route
+    const { variant_id } = useParams();
     const [product, setProduct] = useState(null);
     const { addToCart } = useContext(CartContext);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -16,31 +16,41 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [variants, setVariants] = useState([]);
     const [reviews, setReviews] = useState([]);
-    const navigate = useNavigate(); // Hook for navigation
+    const [averageRating, setAverageRating] = useState(0); // State for average rating
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                // Fetch product details
                 const response = await axios.get(
                     `http://localhost:5001/api/product/variants/${variant_id}`
                 );
-                setProduct(response.data);
+                const productData = response.data;
+                setProduct(productData);
 
-                const variant = response.data;
+                const variant = productData;
                 setSelectedVariant(variant || { stock: 0, price: 0 });
 
                 // Fetch all variants for the product
                 const allVariantsResponse = await axios.get(
-                    `http://localhost:5001/api/products/${response.data.product_id}/variants`
+                    `http://localhost:5001/api/products/${productData.product_id}/variants`
                 );
                 setVariants(allVariantsResponse.data.variants);
 
-                // Fetch reviews for the product
+                // Fetch reviews and calculate average rating
                 const reviewsResponse = await axios.get(
-                    `http://localhost:5001/api/reviews/${response.data.product_id}`
+                    `http://localhost:5001/api/reviews/${productData.product_id}`
                 );
-                setReviews(reviewsResponse.data.reviews || []);
+                const reviewsData = reviewsResponse.data.reviews || [];
+                setReviews(reviewsData);
+
+                if (reviewsData.length > 0) {
+                    const totalRating = reviewsData.reduce(
+                        (sum, review) => sum + review.rating,
+                        0
+                    );
+                    setAverageRating(totalRating / reviewsData.length);
+                }
             } catch (error) {
                 console.error("Error fetching product or reviews:", error);
             }
@@ -147,6 +157,32 @@ const ProductDetail = () => {
             </div>
             <div className="product-details">
                 <h1 className="product-name">{product.name}</h1>
+                <div className="average-rating">
+                    <strong>Average Rating:</strong>
+                    <div className="star-rating">
+                        {[...Array(5)].map((_, index) => {
+                            const fillPercentage = Math.min(
+                                Math.max((averageRating - index) * 100, 0),
+                                100
+                            );
+                            return (
+                                <span key={index} className="star">
+                                    <span
+                                        className="star-filled"
+                                        style={{
+                                            width: `${fillPercentage}%`,
+                                            overflow: "hidden",
+                                        }}
+                                    >
+                                        ★
+                                    </span>
+                                    <span className="star-empty">★</span>
+                                </span>
+                            );
+                        })}
+                    </div>
+                    <p>({averageRating.toFixed(2)})</p>
+                </div>
                 <p className="product-origin">
                     <strong>Origin:</strong> {product.origin}
                 </p>
@@ -210,46 +246,55 @@ const ProductDetail = () => {
                 </div>
             </div>
             <div className="reviews-section">
-    <h2>Customer Reviews</h2>
-    {reviews.length > 0 ? (
-        <div className="reviews-container">
-            {reviews.map((review, index) => (
-                <div key={index} className="review-box">
-                    {/* Stars next to the comment */}
-                    <div className="review-header">
-                        <div className="star-rating">
-                            {[...Array(5)].map((_, starIndex) => (
-                                <span
-                                    key={starIndex}
-                                    className={`star ${
-                                        starIndex < review.rating ? "filled" : ""
-                                    }`}
-                                >
-                                    ★
-                                </span>
-                            ))}
-                        </div>
-                        <p className="review-author">
-                            {review.first_name} {review.last_name}
-                        </p>
+                <h2>Customer Reviews</h2>
+                {reviews.length > 0 ? (
+                    <div className="reviews-container">
+                        {reviews.map((review, index) => (
+                            <div key={index} className="review-box">
+                                <div className="review-header">
+                                    <div className="star-rating">
+                                        {[...Array(5)].map((_, starIndex) => (
+                                            <span
+                                                key={starIndex}
+                                                className={`star ${
+                                                    starIndex <
+                                                    review.rating
+                                                        ? "filled"
+                                                        : ""
+                                                }`}
+                                            >
+                                                ★
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <p className="review-author">
+                                        {review.first_name} {review.last_name}
+                                    </p>
+                                </div>
+                                <p className="review-content">
+                                    {review.content}
+                                </p>
+                                <p className="review-date">
+                                    {new Date(
+                                        review.created_at
+                                    ).toLocaleDateString()}
+                                </p>
+                            </div>
+                        ))}
                     </div>
-                    <p className="review-content">{review.content}</p>
-                    <p className="review-date">
-                        {new Date(review.created_at).toLocaleDateString()}
-                    </p>
-                </div>
-            ))}
-        </div>
-    ) : (
-        <p>No reviews yet.</p>
-    )}
-    <button onClick={handleWriteReviewClick} className="write-review-button">
-        Write a Review
-    </button>
-</div>
-
+                ) : (
+                    <p>No reviews yet.</p>
+                )}
+                <button
+                    onClick={handleWriteReviewClick}
+                    className="write-review-button"
+                >
+                    Write a Review
+                </button>
+            </div>
         </div>
     );
+
 };
 
 export default ProductDetail;

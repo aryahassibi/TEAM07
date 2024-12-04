@@ -37,7 +37,7 @@ const WriteReview = () => {
             alert("Please write a review before submitting.");
             return;
         }
-
+    
         try {
             await axios.post(
                 "http://localhost:5001/api/reviews",
@@ -48,17 +48,18 @@ const WriteReview = () => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`, // Retrieve token from localStorage
                     },
                 }
             );
             alert("Your review has been submitted!");
-            navigate(`/products/${product_id}`);
+            navigate(`/product/${product_id}`); // Redirect to the product detail page
         } catch (error) {
             console.error("Error submitting review:", error);
             alert("Failed to submit the review. Please try again.");
         }
     };
+    
 
     if (!isValidProduct) {
         return (

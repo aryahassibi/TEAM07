@@ -63,20 +63,39 @@ exports.addReview = (req, res) => {
 
     console.log("Adding review:", { product_id, user_id, rating, content });
 
-    const query = `
+    const addReviewQuery = `
         INSERT INTO Comments (product_id, user_id, rating, content, approved)
         VALUES (?, ?, ?, ?, FALSE)
     `;
 
-    db.query(query, [product_id, user_id, rating, content], (err) => {
+    const updateAverageRatingQuery = `
+        UPDATE Products
+        SET average_rating = (
+            SELECT AVG(rating)
+            FROM Comments
+            WHERE product_id = ? AND approved = TRUE
+        )
+        WHERE product_id = ?
+    `;
+
+    db.query(addReviewQuery, [product_id, user_id, rating, content], (err) => {
         if (err) {
             console.error("Error adding review:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error." });
         }
 
-        res.status(201).json({ message: "Review submitted successfully. Awaiting approval." });
+        // Update the product's average rating
+        db.query(updateAverageRatingQuery, [product_id, product_id], (updateErr) => {
+            if (updateErr) {
+                console.error("Error updating average rating:", updateErr);
+                return res.status(500).json({ error: "Internal server error while updating average rating." });
+            }
+
+            res.status(201).json({ message: "Review submitted successfully. Awaiting approval." });
+        });
     });
 };
+
 
 exports.getReviewsByProduct = (req, res) => {
     const { product_id } = req.params;
