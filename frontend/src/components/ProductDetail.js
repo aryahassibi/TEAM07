@@ -1,6 +1,5 @@
-// ProductDetail.jsx
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 import { CartContext } from "../CartContext";
 import "./ProductDetail.css"; // Import the CSS file for styling
@@ -16,31 +15,45 @@ const ProductDetail = () => {
     });
     const [quantity, setQuantity] = useState(1);
     const [variants, setVariants] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const navigate = useNavigate(); // Hook for navigation
 
     useEffect(() => {
-        // Fetch product details by variant_id
         const fetchProduct = async () => {
             try {
+                // Fetch product details
                 const response = await axios.get(
                     `http://localhost:5001/api/product/variants/${variant_id}`
                 );
                 setProduct(response.data);
-                console.log(response.data);
+
                 const variant = response.data;
                 setSelectedVariant(variant || { stock: 0, price: 0 });
+
                 // Fetch all variants for the product
                 const allVariantsResponse = await axios.get(
                     `http://localhost:5001/api/products/${response.data.product_id}/variants`
                 );
-                console.log(allVariantsResponse.data);
                 setVariants(allVariantsResponse.data.variants);
+
+                // Fetch reviews for the product
+                const reviewsResponse = await axios.get(
+                    `http://localhost:5001/api/reviews/${response.data.product_id}`
+                );
+                setReviews(reviewsResponse.data.reviews || []);
             } catch (error) {
-                console.error("Error fetching product:", error);
+                console.error("Error fetching product or reviews:", error);
             }
         };
 
         fetchProduct();
     }, [variant_id]);
+
+    const handleWriteReviewClick = () => {
+        if (product?.product_id) {
+            navigate(`/reviews/write/${product.product_id}`);
+        }
+    };
 
     const handlePrevImage = () => {
         if (!product.images || product.images.length === 0) return;
@@ -62,20 +75,25 @@ const ProductDetail = () => {
 
     const handleVariantChange = (e) => {
         const variantId = e.target.value;
-        // Fetch the selected variant details
         const selected = variants.find(
             (variant) => variant.variant_id === parseInt(variantId)
         );
         setSelectedVariant(selected);
-        setCurrentImageIndex(0); // Reset image index when variant changes
+        setCurrentImageIndex(0);
     };
 
     const handleAddToCart = () => {
         if (quantity > product.stock) {
-            alert('Not enough stock available!');
+            alert("Not enough stock available!");
             return;
         }
-        addToCart(selectedVariant.name, selectedVariant.variant_id, quantity, selectedVariant.price, selectedVariant.weight_grams); // Call addToCart
+        addToCart(
+            product.name,
+            selectedVariant.variant_id,
+            quantity,
+            selectedVariant.price,
+            selectedVariant.weight_grams
+        );
         alert(`${quantity} item(s) of ${product.name} added to cart.`);
     };
 
@@ -190,6 +208,29 @@ const ProductDetail = () => {
                             : "Add to Cart"}
                     </button>
                 </div>
+            </div>
+            <div className="reviews-section">
+                <h2>Customer Reviews</h2>
+                {reviews.length > 0 ? (
+                    reviews.map((review, index) => (
+                        <div key={index} className="review">
+                            <p><strong>{review.rating} Stars</strong></p>
+                            <p>{review.content}</p>
+                            <p>
+                                <small>
+                                    {review.first_name} {review.last_name},{" "}
+                                    {new Date(review.created_at).toLocaleDateString()}
+                                </small>
+                            </p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No reviews yet.</p>
+                )}
+                {/* Add a "Write Review" button */}
+                <button onClick={handleWriteReviewClick} className="write-review-button">
+                    Write a Review
+                </button>
             </div>
         </div>
     );
