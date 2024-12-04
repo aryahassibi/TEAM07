@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const mysql = require("mysql2");
 const JWT_SECRET = process.env.JWT_SECRET;
 
-
 // Database connection
 const db = require('../config/db');
 
