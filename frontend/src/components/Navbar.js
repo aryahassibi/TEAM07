@@ -84,18 +84,18 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-right">
-      <form className="search-bar" onSubmit={handleSearchSubmit}>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="search-input"
-        />
-        <button type="submit" className="search-button">
-          <img src={searchIcon} alt="Search" className="search-icon" />
-        </button>
-      </form>
+        <form className="search-bar" onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+          <button type="submit" className="search-button">
+            <img src={searchIcon} alt="Search" className="search-icon" />
+          </button>
+        </form>
         <Link to="/loginregister"><img src={userIcon} alt="User Icon" className="user-icon" /></Link>
         <Link to="/cart"><img src={shopIcon} alt="Shop Icon" className="shop-icon" /></Link>
       </div>

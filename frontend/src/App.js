@@ -4,10 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage';
 import Cart from './components/Cart';
 import ProductsPage from './components/ProductsPage';
-import LoginRegister from './components/LoginRegister';
 import ProductDetail from './components/ProductDetail'; // Import ProductDetail
 import { CartProvider } from './CartContext'; // Import CartProvider
 import Navbar from './components/Navbar';
+import LoginForm from "./components/LoginForm";
+import Register from "./components/Register";
 
 import './index.css'; 
 
@@ -24,7 +25,9 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/search" element={<ProductsPage />} />  
             <Route path="/product/:variant_id" element={<ProductDetail />} />
-            <Route path="/loginregister" element={<LoginRegister/>} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<Register/>} />
+            
           </Routes>
         </div>
       </Router>

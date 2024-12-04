@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -36,6 +35,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
     command: npx nodemon src/index.js  # Use nodemon for live reloading during development
 
   frontend:
