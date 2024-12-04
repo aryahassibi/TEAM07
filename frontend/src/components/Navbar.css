@@ -120,6 +120,35 @@
   fill: var(--neutral-black);
 }
 
+
+.logout-button {
+  background-color: #50321d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.logout-button:hover {
+  background-color: #a75e5e;
+}
+
+.logout-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.logout-icon:hover {
+  transform: scale(1.2);
+  opacity: 0.8;
+}
+
 .shop-icon:hover,
 .user-icon:hover {
   transform: scale(1.1);
