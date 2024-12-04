@@ -2,236 +2,285 @@ const mysql = require("mysql2");
 
 // Database connection
 const db = require('../config/db');
-
-// GET endpoint to fetch cart items
-exports.getCartItems = (req, res) => {
-    const { user_id } = req.params;
-
-    if (!user_id) {
-        return res.status(400).json({ error: "User ID is required" });
-    }
-
+exports.getItems=(req, res) => {      
+    const userId = req.user.user_id; 
+  
     const query = `
-        SELECT ci.product_id, p.name, p.price, ci.quantity, (p.price * ci.quantity) AS subtotal
-        FROM ShoppingCartItems ci
-        JOIN Products p ON ci.product_id = p.product_id
-        WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1)
+      SELECT 
+        p.name AS product_name,
+        pv.variant_id AS variantId,
+        ci.quantity,
+        pv.price,
+        pv.weight_grams AS weight,
+        pi.image_url AS image
+      FROM ShoppingCart sc
+      JOIN ShoppingCartItems ci ON ci.cart_id = sc.cart_id
+      JOIN Product_Variant pv ON pv.variant_id = ci.variant_id
+      JOIN Products p ON p.product_id = pv.product_id
+      LEFT JOIN Product_Images pi ON pi.product_id = p.product_id
+      WHERE sc.user_id = ? AND pi.image_id = (
+        SELECT MIN(image_id) FROM Product_Images WHERE product_id = p.product_id
+      )
     `;
-
-    db.query(query, [user_id], (err, results) => {
-        if (err) {
-            console.error("Error retrieving cart items:", err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        if (!results.length) {
-            return res.status(200).json({ items: [], total: 0 });
-        }
-
-        const total = results.reduce((sum, item) => sum + item.subtotal, 0);
-        res.json({ items: results, total });
+  
+    router.execute(query, [userId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      res.json(results);
     });
-};
+  }
 
-// POST endpoint to add an item to the cart with stock check
-exports.addItemToCart = (req, res) => {
-    const { user_id, variant_id, quantity } = req.body;
 
-    if (!user_id || !variant_id || !quantity || quantity <= 0) {
-        return res.status(400).json({ error: "Invalid input parameters" });
-    }
 
-    const checkStockQuery =
-        "SELECT quantity FROM Product_Variant WHERE variant_id = ?";
-    db.query(checkStockQuery, [variant_id], (err, results) => {
-        if (err) {
-            console.error("Error checking stock:", err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (!results.length || results[0].quantity < quantity) {
-            return res.status(400).json({ error: "Insufficient stock" });
-        }
-
-        const addToCartQuery = `
-            INSERT INTO Cart_Items (cart_id, variant_id, quantity)
-            VALUES (
-                (SELECT cart_id FROM ShoppingCart WHERE user_id = ? LIMIT 1),
-                ?, ?
-            )
-            ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)
-        `;
-        db.query(addToCartQuery, [user_id, variant_id, quantity], (err) => {
-            if (err) {
-                console.error("Error adding to cart:", err);
-                return res.status(500).json({ error: "Internal server error" });
-            }
-            res.json({ message: "Item added to cart" });
-        });
-    });
-};
-
-// PUT endpoint to update cart item quantity
-exports.updateCartItemQuantity = (req, res) => {
-    const { user_id, variant_id, quantity } = req.body;
-
-    if (!user_id || !variant_id || !quantity || quantity <= 0) {
-        return res.status(400).json({ error: "Invalid input parameters" });
-    }
-
-    const stockQuery =
-        "SELECT quantity FROM Product_Variant WHERE variant_id = ?";
-    db.query(stockQuery, [variant_id], (err, results) => {
-        if (err) {
-            console.error("Error validating stock:", err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (!results.length || results[0].quantity < quantity) {
-            return res.status(400).json({ error: "Insufficient stock" });
-        }
-
-        const updateQuery = `
-            UPDATE Cart_Items
-            SET quantity = ?
-            WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
-            AND variant_id = ?
-        `;
-        db.query(updateQuery, [quantity, user_id, variant_id], (err) => {
-            if (err) {
-                console.error("Error updating cart item:", err);
-                return res.status(500).json({ error: "Internal server error" });
-            }
-            res.json({ message: "Cart item updated" });
-        });
-    });
-};
-
-// DELETE endpoint to remove an item from the cart
-exports.removeCartItem = (req, res) => {
-    const { user_id, variant_id } = req.body;
-
-    if (!user_id || !variant_id) {
-        return res.status(400).json({ error: "Invalid input parameters" });
-    }
-
-    const removeQuery = `
-        DELETE FROM Cart_Items
-        WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+exports.incrementItem = (variantId, userId, res) => {   
+    
+    const query = `
+      SELECT stock FROM Product_Variant WHERE variant_id = ?
+    `;
+    
+    db.execute(query, [variantId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Variant not found' });
+      }
+  
+      const stock = results[0].stock;
+  
+      // Check if there is enough stock
+      const cartQuery = `
+        SELECT quantity FROM ShoppingCartItems 
+        WHERE cart_id IN (SELECT cart_id FROM ShoppingCart WHERE user_id = ?) 
         AND variant_id = ?
-    `;
-    db.query(removeQuery, [user_id, variant_id], (err) => {
+      `;
+  
+      db.execute(cartQuery, [userId, variantId], (err, cartResults) => {
         if (err) {
-            console.error("Error removing item from cart:", err);
-            return res.status(500).json({ error: "Internal server error" });
+          console.error(err);
+          return res.status(500).json({ message: 'Database error' });
         }
-        res.json({ message: "Item removed from cart" });
-    });
-};
-
-// Post endpoint to checkout cart
-
-exports.checkoutCart = (req, res) => {
-    const { user_id } = req.body;
-
-    const addressQuery = `
-        SELECT address_id, address_line, city, state, postal_code, country
-        FROM Address
-        WHERE user_id = ?
-        LIMIT 1
-    `;
-
-    db.query(addressQuery, [user_id], (err, addressResult) => {
-        if (err) {
-            console.error("Error fetching user address:", err);
-            return res.status(500).json({ error: "Internal server error" });
+  
+        if (cartResults.length === 0) {
+          return res.status(404).json({ message: 'Item not in cart' });
         }
-
-        if (!addressResult.length) {
-            return res
-                .status(400)
-                .json({ error: "No address found for the user" });
+  
+        const currentQuantity = cartResults[0].quantity;
+        const newQuantity = currentQuantity + 1;
+  
+        // Check if stock is sufficient
+        if (newQuantity > stock) {
+          return res.status(400).json({ message: 'Insufficient stock' });
         }
-
-        const deliveryAddress = addressResult[0];
-
-        const cartQuery = `
-            SELECT ci.variant_id, p.price, ci.quantity
-            FROM Cart_Items ci
-            JOIN Product_Variant pv ON ci.variant_id = pv.variant_id
-            JOIN Products p ON pv.product_id = p.product_id
-            WHERE ci.cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
+  
+        // Increment quantity in the cart
+        const updateQuery = `
+          UPDATE ShoppingCartItems SET quantity = ? 
+          WHERE cart_id IN (SELECT cart_id FROM ShoppingCart WHERE user_id = ?) 
+          AND variant_id = ?
         `;
-
-        db.query(cartQuery, [user_id], (err, cartItems) => {
-            if (err) {
-                console.error("Error fetching cart items:", err);
-                return res.status(500).json({ error: "Internal server error" });
-            }
-
-            if (!cartItems.length) {
-                return res.status(400).json({ error: "Cart is empty" });
-            }
-
-            const totalPrice = cartItems.reduce(
-                (sum, item) => sum + item.price * item.quantity,
-                0
-            );
-
-            const createOrderQuery = `
-                INSERT INTO Orders (user_id, total_price, status, created_at)
-                VALUES (?, ?, 'processing', NOW())
-            `;
-
-            db.query(createOrderQuery, [user_id, totalPrice], (err, result) => {
-                if (err) {
-                    console.error("Error creating order:", err);
-                    return res
-                        .status(500)
-                        .json({ error: "Internal server error" });
-                }
-
-                const orderId = result.insertId;
-
-                const orderItemsQuery = `
-                    INSERT INTO Order_Items (order_id, variant_id, quantity, price)
-                    VALUES ?
-                `;
-
-                const orderItems = cartItems.map((item) => [
-                    orderId,
-                    item.variant_id,
-                    item.quantity,
-                    item.price,
-                ]);
-
-                db.query(orderItemsQuery, [orderItems], (err) => {
-                    if (err) {
-                        console.error("Error inserting order items:", err);
-                        return res
-                            .status(500)
-                            .json({ error: "Internal server error" });
-                    }
-
-                    const clearCartQuery = `
-                        DELETE FROM Cart_Items
-                        WHERE cart_id = (SELECT cart_id FROM ShoppingCart WHERE user_id = ?)
-                    `;
-
-                    db.query(clearCartQuery, [user_id], (err) => {
-                        if (err) {
-                            console.error("Error clearing cart:", err);
-                            return res
-                                .status(500)
-                                .json({ error: "Internal server error" });
-                        }
-
-                        res.json({
-                            message: "Order placed successfully",
-                            order_id: orderId,
-                            delivery_address: deliveryAddress,
-                        });
-                    });
-                });
-            });
+  
+        db.execute(updateQuery, [newQuantity, userId, variantId], (err, updateResult) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Failed to update quantity' });
+          }
+  
+          res.json({ message: 'Item quantity updated successfully' });
         });
+      });
     });
-};
+  };
+
+
+  exports.decrementItem = (variantId, userId, res) => {  //checked and no problem
+    const query = `
+      SELECT quantity FROM ShoppingCartItems 
+      WHERE cart_id IN (SELECT cart_id FROM ShoppingCart WHERE user_id = ?) 
+      AND variant_id = ?
+    `;
+  
+    db.execute(query, [userId, variantId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'Item not in cart' });
+      }
+  
+      const currentQuantity = results[0].quantity;
+  
+      // Ensure quantity doesn't go below 1
+      if (currentQuantity <= 1) {
+        return res.status(400).json({ message: 'Quantity cannot be less than 1' });
+      }
+  
+      const newQuantity = currentQuantity - 1;
+  
+      const updateQuery = `
+        UPDATE ShoppingCartItems SET quantity = ? 
+        WHERE cart_id IN (SELECT cart_id FROM ShoppingCart WHERE user_id = ?) 
+        AND variant_id = ?
+      `;
+  
+      db.execute(updateQuery, [newQuantity, userId, variantId], (err, updateResult) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Failed to update quantity' });
+        }
+  
+        res.json({ message: 'Item quantity updated successfully' });
+      });
+    });
+  };
+
+
+exports.removeItem = (variantId, userId, res) => {   //checked no problem
+    const query = `
+      DELETE FROM ShoppingCartItems 
+      WHERE cart_id IN (SELECT cart_id FROM ShoppingCart WHERE user_id = ?) 
+      AND variant_id = ?
+    `;
+  
+    db.execute(query, [userId, variantId], (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: 'Item not found in cart' });
+      }
+  
+      res.json({ message: 'Item removed from cart' });
+    });
+  };
+
+
+
+exports.addToCart = (req, res) => {
+    const userId = req.user.user_id; // Extract user ID from the authentication token
+    const { variantId } = req.body;
+  
+    // Step 1: Get the user's ShoppingCart ID
+    const getCartQuery = 'SELECT cart_id FROM ShoppingCart WHERE user_id = ?';
+  
+    db.execute(getCartQuery, [userId], (err, cartResults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (cartResults.length === 0) {
+        return res.status(404).json({ message: 'Shopping cart not found' });
+      }
+  
+      const cartId = cartResults[0].cart_id;
+  
+      
+      const checkItemInCartQuery = `
+        SELECT quantity FROM ShoppingCartItems 
+        WHERE cart_id = ? AND variant_id = ?
+      `;
+      
+      db.execute(checkItemInCartQuery, [cartId, variantId], (err, itemResults) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Database error' });
+        }
+  
+        // If item exists in cart, check stock and increment the quantity
+        if (itemResults.length > 0) {
+          const currentQuantity = itemResults[0].quantity;
+          checkStockAndUpdateCart(variantId, currentQuantity + 1, cartId, res);
+        } else {
+          // If item does not exist in cart, add it with quantity 1
+          checkStockAndAddItem(variantId, cartId, res);
+        }
+      });
+    });
+  }
+
+
+exports.checkStockAndUpdateCart = (variantId, newQuantity, cartId, res) => {
+    const stockQuery = 'SELECT stock FROM Product_Variant WHERE variant_id = ?';
+    db.execute(stockQuery, [variantId], (err, stockResults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (stockResults.length === 0) {
+        return res.status(404).json({ message: 'Variant not found' });
+      }
+  
+      const stock = stockResults[0].stock;
+  
+      if (newQuantity > stock) {
+        return res.status(400).json({ message: 'Insufficient stock' });
+      }
+  
+      // Update quantity in the cart
+      const updateQuery = `
+        UPDATE ShoppingCartItems 
+        SET quantity = ? 
+        WHERE cart_id = ? AND variant_id = ?
+      `;
+  
+      db.execute(updateQuery, [newQuantity, cartId, variantId], (err, updateResult) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Failed to update cart item' });
+        }
+  
+        res.status(200).json({ message: 'Item quantity updated successfully' });
+      });
+    });
+  };
+
+
+
+exports.checkStockAndAddItem = (variantId, cartId, res) => {
+    const stockQuery = 'SELECT stock FROM Product_Variant WHERE variant_id = ?';
+    db.execute(stockQuery, [variantId], (err, stockResults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+  
+      if (stockResults.length === 0) {
+        return res.status(404).json({ message: 'Variant not found' });
+      }
+  
+      const stock = stockResults[0].stock;
+  
+      if (stock <= 0) {
+        return res.status(400).json({ message: 'Insufficient stock' });
+      }
+  
+      // Add the item with quantity 1
+      const addItemQuery = `
+        INSERT INTO ShoppingCartItems (cart_id, variant_id, quantity) 
+        VALUES (?, ?, ?)
+      `;
+  
+      db.execute(addItemQuery, [cartId, variantId, 1], (err, addItemResult) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Error adding item to cart' });
+        }
+  
+        res.status(200).json({ message: 'Item added to cart successfully' });
+      });
+    });
+  };
+
+
+

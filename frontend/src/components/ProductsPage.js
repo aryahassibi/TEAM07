@@ -1,15 +1,15 @@
 //src/components/ProductsPage.js
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { CartContext } from '../CartContext';
+
 import FilterPanel from './FilterPanel';
 import { useLocation, Link } from 'react-router-dom'; // Import Link
 import axios from 'axios';
 import './ProductsPage.css';  
 
 const ProductsPage = () => {
-  const { addToCart } = useContext(CartContext);
+  
   const [filters, setFilters] = useState({
     type: '',
     region: '',
@@ -133,7 +133,7 @@ const ProductsPage = () => {
       <div className="coffee-list">
         {products.length > 0 ? (
           products.map((coffee) => (
-            <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
+            <CoffeeCard key={coffee.variant_id} coffee={coffee}  />
           ))
         ) : (
           <p>No products available.</p>
@@ -143,22 +143,99 @@ const ProductsPage = () => {
   );
 };
 
-const CoffeeCard = ({ coffee, addToCart }) => {
+const CoffeeCard = ({ coffee }) => {
 
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  const handleAddToCart = (e) => {
-      e.preventDefault(); // Prevent page navigation
-      if (quantity > coffee.stock) {
-          alert('Not enough stock available!');
-          return;
-      }
-      addToCart(coffee.name, coffee.variant_id, quantity, coffee.price, coffee.weight_grams);
-      alert(`${quantity} item(s) of ${coffee.name} added to cart.`);
-  };
+  const fetchProductVariantDetails = async (variantId) => {
+    try {
+        const response = await axios.get(`http://localhost:5001/api/cart/variant/${variantId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching product details:', error.response?.data || error.message);
+        throw new Error(error.response?.data?.error || 'Failed to fetch product details');
+    }
+};
+
+const handleAddToCart= async (variantId, quantity) => {
+
+    const token = localStorage.getItem('token');
+    if(token){
+
+        try {
+            // Send a POST request to the backend with the token and variant details
+            const response = await axios.post('http://localhost:5001/api/cart/add-to-cart', 
+                {variantId}, // Payload
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                        'Content-Type': 'application/json' 
+                    }
+                }
+            );
+
+            
+            if (response.status === 200) {
+                alert('Product added to cart successfully!');
+            } else {
+                alert('Failed to add product to cart. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+            alert('An error occurred. Please try again.');
+        }
+        
+
+
+    }
+    else{
+        
+        try {
+        
+        const product = await fetchProductVariantDetails(variantId);
+
+        
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        
+        const cartItem = existingCart.find(item => item.variantId === variantId);
+
+        
+        const newQuantity = cartItem ? cartItem.quantity + quantity : quantity;
+
+        
+        if (newQuantity > product.stock) {
+            alert(`Only ${product.stock} units of this product are available.`);
+            return;
+        }
+
+        
+        if (cartItem) {
+            cartItem.quantity = newQuantity;
+        } else {
+            existingCart.push({
+                variantId: product.variantId,
+                product_name: product.product_name,  
+                price: product.price,
+                weight: product.weight,
+                image: product.image,
+                quantity: newQuantity
+            });
+        }
+
+        
+        localStorage.setItem('cart', JSON.stringify(existingCart));
+        alert('Product added to cart successfully!');
+    } catch (error) {
+        alert('Failed to add product to cart. Please try again.');
+        console.error(error);
+    }
+     }
+};
+
 
   return (
       <Link to={`/product/${coffee.variant_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -172,7 +249,7 @@ const CoffeeCard = ({ coffee, addToCart }) => {
                   <button onClick={(e) => e.preventDefault(handleDecrement())}>-</button>
                   <span>{quantity}</span>
                   <button onClick={(e) => e.preventDefault(handleIncrement())}>+</button>
-                  <button onClick={handleAddToCart}>Add to Cart</button>
+                  <button onClick={handleAddToCart(coffee.variant_id,1)}>Add to Cart</button>
               </div>
           </div>
       </Link>

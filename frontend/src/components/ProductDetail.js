@@ -1,14 +1,12 @@
 // ProductDetail.jsx
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { CartContext } from "../CartContext";
 import "./ProductDetail.css"; // Import the CSS file for styling
 
 const ProductDetail = () => {
     const { variant_id } = useParams(); // Assuming variant_id is passed via route
     const [product, setProduct] = useState(null);
-    const { addToCart } = useContext(CartContext);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [selectedVariant, setSelectedVariant] = useState({
         stock: 0,
@@ -70,18 +68,102 @@ const ProductDetail = () => {
         setCurrentImageIndex(0); // Reset image index when variant changes
     };
 
-    const handleAddToCart = () => {
-        if (quantity > product.stock) {
-            alert('Not enough stock available!');
-            return;
-        }
-        addToCart(selectedVariant.name, selectedVariant.variant_id, quantity, selectedVariant.price, selectedVariant.weight_grams); // Call addToCart
-        alert(`${quantity} item(s) of ${product.name} added to cart.`);
-    };
+    
 
-    if (!product || !selectedVariant) {
-        return <div>Loading...</div>;
-    }
+
+
+
+
+    const fetchProductVariantDetails = async (variantId) => {
+        try {
+            const response = await axios.get(`http://localhost:5001/api/cart/variant/${variantId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching product details:', error.response?.data || error.message);
+            throw new Error(error.response?.data?.error || 'Failed to fetch product details');
+        }
+    };
+    
+    const handleAddToCart= async (variantId, quantity) => {
+
+        const token = localStorage.getItem('token');
+        if(token){
+ 
+            try {
+                // Send a POST request to the backend with the token and variant details
+                const response = await axios.post('http://localhost:5001/api/cart/add-to-cart', 
+                    {variantId}, // Payload
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`, 
+                            'Content-Type': 'application/json' 
+                        }
+                    }
+                );
+    
+                
+                if (response.status === 200) {
+                    alert('Product added to cart successfully!');
+                } else {
+                    alert('Failed to add product to cart. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
+                alert('An error occurred. Please try again.');
+            }
+            
+    
+    
+        }
+        else{
+            
+            try {
+            
+            const product = await fetchProductVariantDetails(variantId);
+    
+            // Retrieve the cart from localStorage, initializing as an empty array if it doesn't exist
+            const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            
+            const cartItem = existingCart.find(item => item.variantId === variantId);
+    
+            
+            const newQuantity = cartItem ? cartItem.quantity + quantity : quantity;
+    
+            
+            if (newQuantity > product.stock) {
+                alert(`Only ${product.stock} units of this product are available.`);
+                return;
+            }
+    
+            // Update cart item quantity or add new item
+            if (cartItem) {
+                cartItem.quantity = newQuantity;
+            } else {
+                existingCart.push({
+                    variantId: product.variantId,
+                    product_name: product.product_name,
+                    price: product.price,
+                    weight: product.weight,
+                    image: product.image,
+                    quantity: newQuantity
+                });
+            }
+    
+            
+            localStorage.setItem('cart', JSON.stringify(existingCart));
+            alert('Product added to cart successfully!');
+        } catch (error) {
+            alert('Failed to add product to cart. Please try again.');
+            console.error(error);
+        }
+         }
+    };
+    
+
+
+
+
 
     return (
         <div className="product-detail-container">
@@ -182,7 +264,7 @@ const ProductDetail = () => {
                     </p>
                     <button
                         className="add-to-cart-button"
-                        onClick={handleAddToCart}
+                        onClick={handleAddToCart(variant_id,1)}
                         disabled={selectedVariant.stock === 0}
                     >
                         {selectedVariant.stock === 0
