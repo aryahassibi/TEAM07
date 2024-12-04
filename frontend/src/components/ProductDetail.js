@@ -210,28 +210,44 @@ const ProductDetail = () => {
                 </div>
             </div>
             <div className="reviews-section">
-                <h2>Customer Reviews</h2>
-                {reviews.length > 0 ? (
-                    reviews.map((review, index) => (
-                        <div key={index} className="review">
-                            <p><strong>{review.rating} Stars</strong></p>
-                            <p>{review.content}</p>
-                            <p>
-                                <small>
-                                    {review.first_name} {review.last_name},{" "}
-                                    {new Date(review.created_at).toLocaleDateString()}
-                                </small>
-                            </p>
+    <h2>Customer Reviews</h2>
+    {reviews.length > 0 ? (
+        <div className="reviews-container">
+            {reviews.map((review, index) => (
+                <div key={index} className="review-box">
+                    {/* Stars next to the comment */}
+                    <div className="review-header">
+                        <div className="star-rating">
+                            {[...Array(5)].map((_, starIndex) => (
+                                <span
+                                    key={starIndex}
+                                    className={`star ${
+                                        starIndex < review.rating ? "filled" : ""
+                                    }`}
+                                >
+                                    ★
+                                </span>
+                            ))}
                         </div>
-                    ))
-                ) : (
-                    <p>No reviews yet.</p>
-                )}
-                {/* Add a "Write Review" button */}
-                <button onClick={handleWriteReviewClick} className="write-review-button">
-                    Write a Review
-                </button>
-            </div>
+                        <p className="review-author">
+                            {review.first_name} {review.last_name}
+                        </p>
+                    </div>
+                    <p className="review-content">{review.content}</p>
+                    <p className="review-date">
+                        {new Date(review.created_at).toLocaleDateString()}
+                    </p>
+                </div>
+            ))}
+        </div>
+    ) : (
+        <p>No reviews yet.</p>
+    )}
+    <button onClick={handleWriteReviewClick} className="write-review-button">
+        Write a Review
+    </button>
+</div>
+
         </div>
     );
 };

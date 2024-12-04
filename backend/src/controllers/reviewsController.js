@@ -78,6 +78,32 @@ exports.addReview = (req, res) => {
     });
 };
 
+exports.getReviewsByProduct = (req, res) => {
+    const { product_id } = req.params;
+
+    if (!product_id) {
+        return res.status(400).json({ error: 'Product ID is required' });
+    }
+
+    const query = `
+        SELECT c.comment_id, c.rating, c.content, c.created_at, u.first_name, u.last_name
+        FROM Comments c
+        JOIN Users u ON c.user_id = u.user_id
+        WHERE c.product_id = ? AND c.approved = TRUE
+        ORDER BY c.created_at DESC
+    `;
+
+    db.query(query, [product_id], (err, results) => {
+        if (err) {
+            console.error('Error fetching reviews:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.status(200).json({ reviews: results });
+    });
+};
+
+
 // Get pending reviews (admin-only)
 exports.getPendingReviews = (req, res) => {
     const query = `
