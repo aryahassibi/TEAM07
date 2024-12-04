@@ -96,7 +96,7 @@ const Navbar = () => {
             <img src={searchIcon} alt="Search" className="search-icon" />
           </button>
         </form>
-        <Link to="/loginregister"><img src={userIcon} alt="User Icon" className="user-icon" /></Link>
+        <Link to="/login"><img src={userIcon} alt="User Icon" className="user-icon" /></Link>
         <Link to="/cart"><img src={shopIcon} alt="Shop Icon" className="shop-icon" /></Link>
       </div>
     </nav>
