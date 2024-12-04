@@ -99,12 +99,8 @@ const Navbar = () => {
               </div>
             )}
           </li>
-          <li>
-            <Link to="/about">ABOUT US</Link>
-          </li>
-          <li>
-            <a href="#contact">CONTACT</a>
-          </li>
+          <li><Link to="/about">ABOUT US</Link></li>
+          <li><a href="#contact">CONTACT</a></li>
         </ul>
       </div>
       <div className="navbar-actions">
