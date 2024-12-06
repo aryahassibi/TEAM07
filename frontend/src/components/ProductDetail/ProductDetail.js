@@ -4,6 +4,8 @@ import useProductDetail from "../../hooks/useProductDetail";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import ProductInfoTable from "./ProductInfoTable";
 import ReviewsSection from "./ReviewsSection";
+import wishlistIcon from '../../assets/images/icons/wishlist-light.svg';
+
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
@@ -14,7 +16,6 @@ const ProductDetail = () => {
     const { product, variants, reviews, averageRating, error } = useProductDetail(variant_id);
 
     // State for quantity, selected variant, and image navigation
-    const [quantity, setQuantity] = useState(1);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [selectedVariant, setSelectedVariant] = useState(null);
 
@@ -28,25 +29,16 @@ const ProductDetail = () => {
         }
     }, [variants, variant_id, selectedVariant]);
 
-    // Handle variant selection
-    const handleVariantChange = (e) => {
-        const variantId = e.target.value;
-        const selected = variants.find(
-            (variant) => variant.variant_id === parseInt(variantId)
-        );
-        setSelectedVariant(selected);
-        setCurrentImageIndex(0); // Reset carousel to the first image
-    };
 
     // Add to Cart Handler
     const handleAddToCart = () => {
-        if (!selectedVariant || quantity > selectedVariant.stock) {
+        if (!selectedVariant || selectedVariant.stock !== 0) {
             alert("Not enough stock available!");
             return;
         }
 
         // Add logic for adding to cart (e.g., context, API call)
-        alert(`${quantity} item(s) of ${product.name} added to cart.`);
+        alert(`${product.name} added to cart.`);
     };
 
     // Write Review Navigation
@@ -63,62 +55,47 @@ const ProductDetail = () => {
         <div className="product-detail-container">
             {/* Top Section: Images and Key Info */}
             <div className="top-section">
+                {/* Left: Product Images */}
                 <ProductImagesCarousel
                     images={product.images}
                     currentImageIndex={currentImageIndex}
                     setCurrentImageIndex={setCurrentImageIndex}
                 />
+
+                {/* Right: Product Info */}
                 <div className="key-info">
-                    <h1 className="product-name">{product.name}</h1>
-                    <p className="product-description">{product.description}</p>
-                    
-                    {/* Variant Selection */}
-                    <div className="variant-selection">
-                        <label htmlFor="variant">Choose Weight:</label>
-                        <select
-                            id="variant"
-                            value={selectedVariant?.variant_id || ""}
-                            onChange={handleVariantChange}
-                        >
-                            {variants.map((variant) => (
-                                <option
-                                    key={variant.variant_id}
-                                    value={variant.variant_id}
-                                    disabled={variant.stock === 0}
-                                >
-                                    {variant.weight_grams}g - ${variant.price}{" "}
-                                    {variant.stock === 0 ? "(Out of Stock)" : ""}
-                                </option>
-                            ))}
-                        </select>
+                    {/* Name, Description, and Price */}
+                    <div className="top-info">
+                        <h1 className="product-name">{product.name}</h1>
+                        <p className="product-description">{product.description}</p>
+                        <h2 className="product-price">${Number(selectedVariant?.price || 0).toFixed(2)}</h2>
                     </div>
 
-                    {/* Quantity Selection */}
-                    <div className="quantity-selection">
-                        <label htmlFor="quantity">Quantity:</label>
-                        <input
-                            type="number"
-                            id="quantity"
-                            min="1"
-                            max={selectedVariant?.stock || 1}
-                            value={quantity}
-                            onChange={(e) =>
-                                setQuantity(
-                                    Math.min(
-                                        Math.max(1, parseInt(e.target.value) || 1),
-                                        selectedVariant?.stock || 1
-                                    )
-                                )
-                            }
-                        />
-                        <span className="stock-info">
-                            {selectedVariant?.stock || 0} in stock
-                        </span>
+                    {/* Variant Selection */}
+                    <div className="variant-selection">
+                        <h3 className="variant-header">Weight Options</h3> {/* Label stacked above buttons */}
+                        <div className="variant-buttons">
+                            {variants.map((variant) => (
+                                <button
+                                    key={variant.variant_id}
+                                    className={`variant-button ${
+                                        selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
+                                    }`}
+                                    onClick={() => setSelectedVariant(variant)}
+                                    disabled={variant.stock === 0}
+                                >
+                                    {variant.weight_grams}g - ${variant.price}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    <div className="price-add">
-                        <p className="price">
-                            ${Number(selectedVariant?.price || 0).toFixed(2)}
-                        </p>
+
+                    {/* Add to Cart, Stock Info, and Wishlist */}
+                    <div className="actions">
+                        <div className="stock-info boxy-rectangle">
+                            <strong>Stock:</strong>
+                            <span>{selectedVariant?.stock || 0}</span>
+                        </div>
                         <button
                             className="add-to-cart-button"
                             onClick={handleAddToCart}
@@ -126,9 +103,14 @@ const ProductDetail = () => {
                         >
                             {selectedVariant?.stock === 0 ? "Out of Stock" : "Add to Cart"}
                         </button>
+                        <button className="wishlist-button">
+                            <img src={wishlistIcon} alt="Add to Wishlist" />
+                        </button>
                     </div>
                 </div>
+
             </div>
+
 
             {/* Product Information Table */}
             <ProductInfoTable product={product} />
