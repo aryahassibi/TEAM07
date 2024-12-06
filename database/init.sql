@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS Products (
     flavor_profile VARCHAR(255),
     processing_method ENUM('Washed', 'Natural', 'Honey-processed', 'Other') DEFAULT 'Other',
     caffeine_content ENUM('High', 'Decaf', 'Half-Caf') DEFAULT 'High',
+    average_rating DECIMAL(3, 2) DEFAULT 0.00,
     category_id INT,
     description TEXT,
     warranty_status BOOLEAN DEFAULT FALSE,
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS Product_Variant (
     price DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
     sku VARCHAR(50) UNIQUE,
+    serial_number VARCHAR(100) UNIQUE,
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
@@ -64,8 +66,6 @@ CREATE TABLE IF NOT EXISTS Product_Images (
     alt_text VARCHAR(255),
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
-
-ALTER TABLE Products ADD COLUMN average_rating DECIMAL(3, 2) DEFAULT 0.00;
 
 CREATE TABLE IF NOT EXISTS DeliveryOptions (
     delivery_option_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +129,6 @@ CREATE TABLE IF NOT EXISTS Invoices (
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE IF NOT EXISTS Discounts (
     discount_id INT AUTO_INCREMENT PRIMARY KEY,
