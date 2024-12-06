@@ -58,7 +58,7 @@ const ProductDetail = () => {
 
     if (error) return <div className="error-message">{error}</div>;
     if (!product || !variants) return <div className="loading-message">Loading...</div>;
-
+    // selectedVariant.stock = 0;
     return (
         <div className="product-detail-container">
             {/* Top Section: Images and Key Info */}
@@ -76,7 +76,7 @@ const ProductDetail = () => {
                     <div className="top-info">
                         <h1 className="product-name">{product.name}</h1>
                         <p className="product-description">{product.description}</p>
-                        <h2 className="product-price">${Number(selectedVariant?.price || 0).toFixed(2)}</h2>
+                        <div className="product-price">{Number(selectedVariant?.price || 0).toFixed(2)} TL</div>
                     </div>
 
                     {/* Variant Selection */}

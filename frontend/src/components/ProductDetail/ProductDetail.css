@@ -47,7 +47,7 @@
 
 /* Price Styling */
 .product-price {
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 100;
   color: var(--neutral-black);
   margin-top: var(--spacing-lg);
