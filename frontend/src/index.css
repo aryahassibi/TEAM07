@@ -5,9 +5,9 @@
 :root {
   
   /* Primary Colors */
-  --primary-color: #97c9ff;    /* Basic Blue */
-  --primary-light: #89b5e6;    /* Light Blue */
-  --primary-dark: #6b89aa;     /* Dark Blue */
+  --primary-color: #1b10e4;    /* Basic Blue */
+  --primary-light: #e9edfc;    /* Light Blue */
+  --primary-dark: #111747;     /* Dark Blue */
 
   /* Secondary Colors */
   --secondary-color: #ffd595;  /* Basic Orange */
