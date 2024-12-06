@@ -96,15 +96,6 @@ body {
   text-transform: uppercase;
 }
 
-/* /* .main-content h2 {
-  font-size: 3rem;
-  padding-bottom: 0.5em;
-}
-
-.main-content h3 {
-  font-size: var(--font-size-lg);
-} */
-
 .main-content p {
   font-size: var(--font-size-base);
 }
