@@ -17,41 +17,6 @@
     font-size: var(--font-size-lg);
 }
 
-.star-rating {
-    display: flex;
-}
-
-.star {
-    position: relative;
-    display: inline-block;
-    font-size: 16px;
-    color: var(--neutral-light-gray); /* Base color for empty stars */
-}
-
-.star-filled {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: var(--star-color);
-    overflow: hidden; /* Ensures partial fill works */
-    width: 0%;
-}
-
-.star {
-    margin-right: 4px;
-    animation: fadeIn 0.3s ease-in-out;
-    transition: color 0.3s ease-in-out;
-}
-
-.star.filled {
-    color: var(--star-color);
-    animation: pop 0.5s ease-in-out;
-}
-
-.star-empty {
-    display: inline-block;
-}
-
 .reviews-section {
     width: 100%;
     margin-top: var(--spacing-lg);
