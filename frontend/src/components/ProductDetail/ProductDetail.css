@@ -62,7 +62,7 @@
 .stock-info {
   padding: var(--spacing-sm);
   border: 2px solid var(--neutral-black); /* Black border */
-  border-radius: 4px; /* Boxy shape */
+  border-radius: var(--box-border-radius);
   font-size: 1rem;
   color: var(--neutral-black); /* Black text */
   display: flex;
@@ -78,7 +78,7 @@
 .stock-info.boxy-rectangle {
   padding: var(--spacing-sm);
   border: 2px solid var(--neutral-black); /* Black border */
-  border-radius: 4px; /* Boxy shape */
+  border-radius: var(--box-border-radius);
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between "Stock:" and number */
@@ -127,7 +127,7 @@
 .variant-button {
   padding: var(--spacing-sm) var(--spacing-md);
   border: 2px solid var(--neutral-light-gray);
-  border-radius: 8px;
+  border-radius: var(--box-border-radius);
   font-size: 1rem;
   background-color: #f9f9f9;
   cursor: pointer;
@@ -166,7 +166,7 @@
   background-color: var(--neutral-black); /* Black button */
   color: var(--neutral-white);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--box-border-radius);
   cursor: pointer;
   font-size: 1rem;
   transition: background-color var(--transition-speed);
@@ -191,7 +191,7 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--neutral-black); /* Black border */
-  border-radius: 4px; /* Boxy shape */
+  border-radius: var(--box-border-radius);
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -222,7 +222,7 @@
 .quantity-selection input {
   padding: var(--spacing-sm);
   border: 1px solid var(--neutral-light-gray);
-  border-radius: 4px;
+  border-radius: var(--box-border-radius);
   min-width: 100px;
   font-size: 1rem;
 }

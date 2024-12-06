@@ -50,6 +50,8 @@
   --line-height-lg: 1.8;
 
   --transition-speed: 0.3s;
+
+  --box-border-radius: 4px;
 }
 
 /* Reset Styles */
@@ -90,7 +92,7 @@ body {
 
 .main-content h2 {
   font-size: 2rem;
-  padding-bottom: 0.5em;
+  padding-bottom: 0.2em;
   text-transform: uppercase;
 }
 
