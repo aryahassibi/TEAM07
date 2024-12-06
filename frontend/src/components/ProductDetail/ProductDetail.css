@@ -1,5 +1,4 @@
-/* ProductDetail.css */
-
+/* Container Styling */
 .product-detail-container {
   display: flex;
   flex-direction: column;
@@ -10,6 +9,7 @@
   gap: 40px;
 }
 
+/* Top Section Styling */
 .top-section {
   display: flex;
   width: 100%;
@@ -26,6 +26,25 @@
   padding-top: 0;
 }
 
+/* Product Info Styling */
+.product-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000000;
+}
+
+.product-description {
+  font-size: 1.1rem;
+  color: var(--neutral-black);
+  line-height: var(--line-height-md);
+}
+
+.product-short-description {
+  font-size: 1.2rem;
+  color: #777;
+  margin-bottom: 10px;
+}
+
 /* Price Styling */
 .product-price {
   font-size: 5rem;
@@ -35,12 +54,23 @@
   /* text-align: right; */
 }
 
-/* Top section for Name and Description */
+/* Top Info Section */
 .top-info {
   margin-bottom: auto;
 }
 
-/* Boxy Rectangle for Stock Info */
+/* Stock Info Styling */
+.stock-info {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--neutral-dark-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .stock-info.boxy-rectangle {
   padding: 10px;
   border: 2px solid #ccc;
@@ -50,6 +80,7 @@
   color: var(--neutral-dark-gray);
 }
 
+/* Variant Selection Styling */
 .variant-selection {
   display: flex;
   flex-direction: column;
@@ -58,16 +89,15 @@
   padding-bottom: 40px;
 }
 
-/* Variant Selection Header */
 .variant-header {
   font-size: 1.5rem;
   font-weight: bold;
+  margin-bottom: 10px;
   text-transform: uppercase;
   text-align: left; /* Align label to the left */
   align-self: flex-start; /* Align header to the left */
 }
 
-/* Variant Buttons */
 .variant-buttons {
   justify-content: flex-start; /* Aligns to the left */
   display: flex;
@@ -104,68 +134,6 @@
   /* justify-content: flex-start; Aligns items in one line */
   gap: 10px;
   margin-top: 20px;
-}
-
-/* Stock Info Box */
-.stock-info {
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: var(--neutral-dark-gray);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.product-description {
-  font-size: 1.1rem;
-  color: var(--neutral-black);
-  line-height: var(--line-height-md);
-}
-
-
-.product-name {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #000000;
-}
-
-.product-short-description {
-  font-size: 1.2rem;
-  color: #777;
-  margin-bottom: 10px;
-}
-
-.variant-selection,
-.quantity-selection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.variant-selection select,
-.quantity-selection input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  min-width: 100px;
-  font-size: 1rem;
-}
-
-.quantity-selection .stock {
-  margin-left: 10px;
-  font-size: 0.9rem;
-  color: #888;
-}
-
-.price-add {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  /* margin-top: 20px; */
-  margin-top: auto; /* Push to the bottom */
 }
 
 /* Add to Cart Button */
@@ -208,6 +176,38 @@
   height: 20px;
 }
 
+/* Quantity Selection Styling */
+.quantity-selection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-selection .stock {
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.variant-selection select,
+.quantity-selection input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 100px;
+  font-size: 1rem;
+}
+
+/* Price and Add to Cart Section */
+.price-add {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* margin-top: 20px; */
+  margin-top: auto; /* Push to the bottom */
+}
+
+/* Responsive Styling */
 @media (max-width: 768px) {
   .product-detail-container {
     flex-direction: column;
@@ -221,4 +221,4 @@
   .key-info {
     width: 100%;
   }
-} 
+}
