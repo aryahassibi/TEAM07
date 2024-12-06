@@ -1,0 +1,92 @@
+.average-rating-section {
+    width: 100%;
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.average-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+}
+
+.star-rating {
+    display: flex;
+}
+
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 24px;
+    color: lightgray; /* Base color for empty stars */
+}
+
+.star-filled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: gold; /* Color for filled stars */
+    overflow: hidden; /* Ensures partial fill works */
+    width: 0%;
+}
+
+.star-empty {
+    display: inline-block;
+}
+
+.reviews-section {
+    width: 100%;
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-box {
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.review-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.write-review-button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.write-review-button:hover {
+    background-color: #555;
+}
+
+@media (max-width: 768px) {
+    .average-rating-section,
+    .reviews-section {
+        width: 100%;
+    }
+}

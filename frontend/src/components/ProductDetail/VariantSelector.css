@@ -1,0 +1,42 @@
+/* VariantSelector.css */
+
+/* Variant selection dropdown */
+.variant-selection {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.variant-selection label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.variant-selection select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Quantity selector */
+.quantity-selection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.quantity-selection input {
+    width: 50px;
+    padding: 0.25rem;
+    font-size: 1rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.quantity-selection .stock {
+    font-size: 0.875rem;
+    color: #666;
+}
