@@ -55,14 +55,16 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  padding-bottom: 40px;
 }
 
 /* Variant Selection Header */
 .variant-header {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  text-transform: uppercase;
   text-align: left; /* Align label to the left */
+  align-self: flex-start; /* Align header to the left */
 }
 
 /* Variant Buttons */
@@ -71,6 +73,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-self: flex-start; /* Align buttons to the left */
 }
 
 .variant-button {
@@ -99,7 +102,7 @@
   display: flex;
   align-items: center;
   /* justify-content: flex-start; Aligns items in one line */
-  gap: 20px;
+  gap: 10px;
   margin-top: 20px;
 }
 
