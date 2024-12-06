@@ -1,10 +1,11 @@
-:root{
+:root {
     --star-color: #f4b400;
 }
 
 .average-rating-section {
     width: 100%;
     margin-top: var(--spacing-lg);
+    margin-bottom: calc(2 * var(--spacing-md));
     background-color: var(--neutral-white);
     padding: var(--spacing-md);
     border-radius: 6px;
@@ -15,6 +16,7 @@
     align-items: center;
     gap: var(--spacing-sm);
     font-size: var(--font-size-lg);
+    margin-bottom: calc(2 * var(--spacing-md));
 }
 
 .reviews-section {
@@ -24,6 +26,7 @@
     padding: var(--spacing-md);
     border-radius: 6px;
     border: 1px solid #e0e0e0;
+    margin-bottom: calc(var(--spacing-md) * 2);
 }
 
 .reviews-container {
@@ -63,7 +66,7 @@
 }
 
 .write-review-button {
-    margin-top: var(--spacing-md);
+    margin-top: calc(2 * var(--spacing-lg));
     padding: var(--spacing-sm) var(--spacing-md);
     background-color: var(--neutral-black);
     color: var(--neutral-white);

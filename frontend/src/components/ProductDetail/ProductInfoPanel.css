@@ -7,6 +7,7 @@
     padding: var(--spacing-md);
     border-radius: 6px;
     padding-top: 0;
+    padding-right: 0;
   }
   
   /* Product Info Styling */
@@ -101,7 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between; /* Space between "Stock:" and number */
-    width: 150px; /* Set a longer width */
+    width: 110px; /* Fixed width */
     background-color: transparent; /* Transparent background */
     transition: background-color var(--transition-speed), border-color var(--transition-speed);
     height: 100%; /* Match height with other action buttons */
