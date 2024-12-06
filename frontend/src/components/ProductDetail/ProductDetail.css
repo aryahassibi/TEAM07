@@ -62,22 +62,40 @@
 /* Stock Info Styling */
 .stock-info {
   padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
+  border: 2px solid #000; /* Black border */
+  border-radius: 4px; /* Boxy shape */
   font-size: 1rem;
-  color: var(--neutral-dark-gray);
+  color: #000; /* Black text */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between; /* Space between "Stock:" and number */
+  width: 100px; /* Set a fixed width */
+  background-color: transparent; /* Transparent background */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  height: 100%; /* Match height with other action buttons */
+  text-align: center; /* Center text */
 }
 
 .stock-info.boxy-rectangle {
   padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  display: inline-block;
+  border: 2px solid #000; /* Black border */
+  border-radius: 4px; /* Boxy shape */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between "Stock:" and number */
   font-size: 1rem;
-  color: var(--neutral-dark-gray);
+  color: #000; /* Black text */
+  width: 110px; /* Set a fixed width */
+  background-color: transparent; /* Transparent background */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  height: 100%; /* Match height with other action buttons */
+  text-align: center; /* Center text */
+}
+
+.stock-info.out-of-stock {
+  border-color: rgb(184, 10, 10);
+  background-color: transparent;
+  color: rgb(184, 10, 10);
 }
 
 /* Variant Selection Styling */
@@ -106,6 +124,7 @@
   align-self: flex-start; /* Align buttons to the left */
 }
 
+/* Variant Button Styling */
 .variant-button {
   padding: 10px 20px;
   border: 2px solid #ccc;
@@ -113,7 +132,7 @@
   font-size: 1rem;
   background-color: #f9f9f9;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .variant-button.selected {
@@ -121,19 +140,25 @@
   background-color: #ffe5d5;
 }
 
-.variant-button:disabled {
+.variant-button.out-of-stock {
+  background-color: #e0e0e0;
+  color: #888;
   border-color: #ccc;
-  background-color: #eee;
-  cursor: not-allowed;
+}
+
+.variant-button.selected.out-of-stock {
+  border-color: #ff7f50;
+  background-color: #ffe5d5;
+  color: #888;
 }
 
 /* Actions Section */
 .actions {
   display: flex;
   align-items: center;
-  /* justify-content: flex-start; Aligns items in one line */
   gap: 10px;
   margin-top: 20px;
+  height: 50px; /* Set a fixed height for all elements */
 }
 
 /* Add to Cart Button */
@@ -160,20 +185,25 @@
 
 /* Wishlist Button */
 .wishlist-button {
-  background-color: #000; /* Black button */
-  width: 40px; /* Square shape */
-  height: 40px;
+  background-color: transparent; /* Transparent background */
+  width: 50px; /* Square shape */
+  height: 100%; /* Match height with stock info and add to cart */
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 4px; /* Optional: remove for sharp edges */
+  border: 2px solid #000; /* Black border */
+  border-radius: 4px; /* Boxy shape */
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .wishlist-button img {
   width: 20px; /* Adjust icon size */
   height: 20px;
+}
+
+.wishlist-button:active {
+  transform: scale(0.9);
 }
 
 /* Quantity Selection Styling */

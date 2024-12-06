@@ -4,7 +4,8 @@ import useProductDetail from "../../hooks/useProductDetail";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import ProductInfoTable from "./ProductInfoTable";
 import ReviewsSection from "./ReviewsSection";
-import wishlistIcon from '../../assets/images/icons/wishlist-light.svg';
+import wishlistIcon from '../../assets/images/icons/wishlist/wishlist-dark.svg';
+import wishlistIconFilled from '../../assets/images/icons/wishlist/wishlist-dark-filled.svg';
 
 import "./ProductDetail.css";
 
@@ -18,6 +19,7 @@ const ProductDetail = () => {
     // State for quantity, selected variant, and image navigation
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [selectedVariant, setSelectedVariant] = useState(null);
+    const [wishlistFilled, setWishlistFilled] = useState(false);
 
     // Set default variant when product or variants change
     useEffect(() => {
@@ -26,19 +28,25 @@ const ProductDetail = () => {
                 (variant) => variant.variant_id === parseInt(variant_id)
             );
             setSelectedVariant(initialVariant || variants[0]); // Fallback to the first variant if not found
+            
         }
     }, [variants, variant_id, selectedVariant]);
 
-
     // Add to Cart Handler
     const handleAddToCart = () => {
-        if (!selectedVariant || selectedVariant.stock !== 0) {
+        if (!selectedVariant || selectedVariant.stock === 0) {
             alert("Not enough stock available!");
             return;
         }
 
         // Add logic for adding to cart (e.g., context, API call)
         alert(`${product.name} added to cart.`);
+    };
+
+    // Wishlist Button Handler
+    const handleWishlistClick = () => {
+        setWishlistFilled(!wishlistFilled);
+        // Add logic for adding/removing from wishlist (e.g., context, API call)
     };
 
     // Write Review Navigation
@@ -80,9 +88,8 @@ const ProductDetail = () => {
                                     key={variant.variant_id}
                                     className={`variant-button ${
                                         selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
-                                    }`}
+                                    } ${variant.stock === 0 ? "out-of-stock" : ""}`}
                                     onClick={() => setSelectedVariant(variant)}
-                                    disabled={variant.stock === 0}
                                 >
                                     {variant.weight_grams}g   ●   ${variant.price}
                                 </button>
@@ -92,7 +99,7 @@ const ProductDetail = () => {
 
                     {/* Add to Cart, Stock Info, and Wishlist */}
                     <div className="actions">
-                        <div className="stock-info boxy-rectangle">
+                        <div className={`stock-info boxy-rectangle ${selectedVariant?.stock === 0 ? "out-of-stock" : ""}`}>
                             <strong>Stock:</strong>
                             <span>{selectedVariant?.stock || 0}</span>
                         </div>
@@ -103,14 +110,12 @@ const ProductDetail = () => {
                         >
                             {selectedVariant?.stock === 0 ? "Out of Stock" : "Add to Cart"}
                         </button>
-                        <button className="wishlist-button">
-                            <img src={wishlistIcon} alt="Add to Wishlist" />
+                        <button className="wishlist-button" onClick={handleWishlistClick}>
+                            <img src={wishlistFilled ? wishlistIconFilled : wishlistIcon} alt="Add to Wishlist" />
                         </button>
                     </div>
                 </div>
-
             </div>
-
 
             {/* Product Information Table */}
             <ProductInfoTable product={product} />
