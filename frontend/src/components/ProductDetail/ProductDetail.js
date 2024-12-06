@@ -84,7 +84,7 @@ const ProductDetail = () => {
                                     onClick={() => setSelectedVariant(variant)}
                                     disabled={variant.stock === 0}
                                 >
-                                    {variant.weight_grams}g - ${variant.price}
+                                    {variant.weight_grams}g   ●   ${variant.price}
                                 </button>
                             ))}
                         </div>
