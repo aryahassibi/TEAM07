@@ -16,7 +16,7 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [variants, setVariants] = useState([]);
     const [reviews, setReviews] = useState([]);
-    const [averageRating, setAverageRating] = useState(0); // State for average rating
+    const [averageRating, setAverageRating] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -93,7 +93,7 @@ const ProductDetail = () => {
     };
 
     const handleAddToCart = () => {
-        if (quantity > product.stock) {
+        if (quantity > selectedVariant.stock) {
             alert("Not enough stock available!");
             return;
         }
@@ -113,50 +113,148 @@ const ProductDetail = () => {
 
     return (
         <div className="product-detail-container">
-            <div className="image-carousel">
-                {product.images && product.images.length > 0 ? (
-                    <>
-                        <div className="main-image">
-                            <img
-                                src={`http://localhost:5001${product.images[currentImageIndex].url}`}
-                                alt={product.images[currentImageIndex].alt}
-                            />
-                            <button
-                                className="nav-button left"
-                                onClick={handlePrevImage}
-                                aria-label="Previous Image"
-                            >
-                                &#10094;
-                            </button>
-                            <button
-                                className="nav-button right"
-                                onClick={handleNextImage}
-                                aria-label="Next Image"
-                            >
-                                &#10095;
-                            </button>
-                        </div>
-                        <div className="dots-container">
-                            {product.images.map((image, index) => (
-                                <span
-                                    key={index}
-                                    className={`dot ${
-                                        index === currentImageIndex
-                                            ? "active"
-                                            : ""
-                                    }`}
-                                    onClick={() => handleDotClick(index)}
-                                    aria-label={`View image ${index + 1}`}
-                                ></span>
+            {/* Image and Key Product Info */}
+            <div className="top-section">
+                <div className="image-carousel">
+                    {product.images && product.images.length > 0 ? (
+                        <>
+                            <div className="main-image">
+                                <img
+                                    src={`http://localhost:5001${product.images[currentImageIndex].url}`}
+                                    alt={product.images[currentImageIndex].alt}
+                                />
+                                <button
+                                    className="nav-button left"
+                                    onClick={handlePrevImage}
+                                    aria-label="Previous Image"
+                                >
+                                    &#10094;
+                                </button>
+                                <button
+                                    className="nav-button right"
+                                    onClick={handleNextImage}
+                                    aria-label="Next Image"
+                                >
+                                    &#10095;
+                                </button>
+                            </div>
+                            <div className="dots-container">
+                                {product.images.map((image, index) => (
+                                    <span
+                                        key={index}
+                                        className={`dot ${
+                                            index === currentImageIndex
+                                                ? "active"
+                                                : ""
+                                        }`}
+                                        onClick={() => handleDotClick(index)}
+                                        aria-label={`View image ${index + 1}`}
+                                    ></span>
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="no-image">No images available</div>
+                    )}
+                </div>
+                <div className="key-info">
+                    <h1 className="product-name">{product.name}</h1>
+                    <p className="product-short-description">${Number(selectedVariant.price).toFixed(2)} - {selectedVariant.weight_grams}g</p>
+                    <div className="variant-selection">
+                        <label htmlFor="variant">Choose Weight:</label>
+                        <select
+                            id="variant"
+                            value={selectedVariant.variant_id}
+                            onChange={handleVariantChange}
+                        >
+                            {variants.map((variant) => (
+                                <option
+                                    key={variant.variant_id}
+                                    value={variant.variant_id}
+                                >
+                                    {variant.weight_grams}g - ${variant.price}
+                                </option>
                             ))}
-                        </div>
-                    </>
-                ) : (
-                    <div className="no-image">No images available</div>
-                )}
+                        </select>
+                    </div>
+                    <div className="quantity-selection">
+                        <label htmlFor="quantity">Quantity:</label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            min="1"
+                            max={selectedVariant.stock}
+                            value={quantity}
+                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                        />
+                        <span className="stock">
+                            {selectedVariant.stock} in stock
+                        </span>
+                    </div>
+                    <div className="price-add">
+                        <p className="price">
+                            ${Number(selectedVariant.price).toFixed(2)}
+                        </p>
+                        <button
+                            className="add-to-cart-button"
+                            onClick={handleAddToCart}
+                            disabled={selectedVariant.stock === 0}
+                        >
+                            {selectedVariant.stock === 0
+                                ? "Out of Stock"
+                                : "Add to Cart"}
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="product-details">
-                <h1 className="product-name">{product.name}</h1>
+
+            {/* Product Information Table */}
+            <div className="product-info-section">
+                <table className="product-info-table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Model:</strong></td>
+                            <td>{product.model || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Serial Number:</strong></td>
+                            <td>{selectedVariant.serial_number || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Origin:</strong></td>
+                            <td>{product.origin}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Roast Level:</strong></td>
+                            <td>{product.roast_level}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bean Type:</strong></td>
+                            <td>{product.bean_type}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flavor Profile:</strong></td>
+                            <td>{product.flavor_profile || 'N/A'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Processing Method:</strong></td>
+                            <td>{product.processing_method}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Warranty Status:</strong></td>
+                            <td>{product.warranty_status ? 'Yes' : 'No'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Distributor Information:</strong></td>
+                            <td>{product.distributor_info || 'N/A'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="reviews-section">
+                <h2>Customer Reviews</h2>
                 <div className="average-rating">
                     <strong>Average Rating:</strong>
                     <div className="star-rating">
@@ -183,70 +281,6 @@ const ProductDetail = () => {
                     </div>
                     <p>({averageRating.toFixed(2)})</p>
                 </div>
-                <p className="product-origin">
-                    <strong>Origin:</strong> {product.origin}
-                </p>
-                <p className="product-roast">
-                    <strong>Roast Level:</strong> {product.roast_level}
-                </p>
-                <p className="product-bean">
-                    <strong>Bean Type:</strong> {product.bean_type}
-                </p>
-                <p className="product-flavor">
-                    <strong>Flavor Profile:</strong> {product.flavor_profile}
-                </p>
-                <p className="product-description">{product.description}</p>
-
-                <div className="variant-selection">
-                    <label htmlFor="variant">Choose Weight:</label>
-                    <select
-                        id="variant"
-                        value={selectedVariant.variant_id}
-                        onChange={handleVariantChange}
-                    >
-                        {variants.map((variant) => (
-                            <option
-                                key={variant.variant_id}
-                                value={variant.variant_id}
-                            >
-                                {variant.weight_grams}g - ${variant.price}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="quantity-selection">
-                    <label htmlFor="quantity">Quantity:</label>
-                    <input
-                        type="number"
-                        id="quantity"
-                        min="1"
-                        max={selectedVariant.stock}
-                        value={quantity}
-                        onChange={(e) => setQuantity(parseInt(e.target.value))}
-                    />
-                    <span className="stock">
-                        {selectedVariant.stock} in stock
-                    </span>
-                </div>
-
-                <div className="price-add">
-                    <p className="price">
-                        ${Number(selectedVariant.price).toFixed(2)}
-                    </p>
-                    <button
-                        className="add-to-cart-button"
-                        onClick={handleAddToCart}
-                        disabled={selectedVariant.stock === 0}
-                    >
-                        {selectedVariant.stock === 0
-                            ? "Out of Stock"
-                            : "Add to Cart"}
-                    </button>
-                </div>
-            </div>
-            <div className="reviews-section">
-                <h2>Customer Reviews</h2>
                 {reviews.length > 0 ? (
                     <div className="reviews-container">
                         {reviews.map((review, index) => (
@@ -257,8 +291,7 @@ const ProductDetail = () => {
                                             <span
                                                 key={starIndex}
                                                 className={`star ${
-                                                    starIndex <
-                                                    review.rating
+                                                    starIndex < review.rating
                                                         ? "filled"
                                                         : ""
                                                 }`}
@@ -275,9 +308,7 @@ const ProductDetail = () => {
                                     {review.content}
                                 </p>
                                 <p className="review-date">
-                                    {new Date(
-                                        review.created_at
-                                    ).toLocaleDateString()}
+                                    {new Date(review.created_at).toLocaleDateString()}
                                 </p>
                             </div>
                         ))}
@@ -294,7 +325,6 @@ const ProductDetail = () => {
             </div>
         </div>
     );
-
 };
 
 export default ProductDetail;
