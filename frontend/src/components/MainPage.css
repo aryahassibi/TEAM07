@@ -7,7 +7,9 @@
   background-color: var(--background);
   color: var(--neutral-white);
   min-height: 100vh;
-  padding-top: var(--spacing-lg);
+  /* padding-top: var(--spacing-lg); */
+  /* padding-top: 0; */
+  padding-top: var(--spacing-sm);
 }
 
 

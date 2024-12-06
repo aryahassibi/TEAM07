@@ -1,6 +1,6 @@
 import './MainPage.css';
-import mainCoffee from '../assets/images/featured/main_page_banner.jpg';
-
+//import mainCoffee from '../assets/images/featured/main_page_banner.jpg';
+import LandingPage from "./LandingPage";
 // Import images directly from the src/assets/images/origins folder
 import colombia from '../assets/images/origins/colombia.png';
 import honduras from '../assets/images/origins/honduras.png';
@@ -37,7 +37,8 @@ const coffeeOptions = [
 const MainPage = () => {
   return (
     <div className="main-page">
-      <img src={mainCoffee} alt="Main Coffee" className="main-page-image" />
+      {/* <img src={mainCoffee} alt="Main Coffee" className="main-page-image" /> */}
+      <LandingPage/>
       <div className="main-page-content">
         <p>Your one-stop solution for efficient and effective compression services.</p>
       </div>

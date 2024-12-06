@@ -19,7 +19,7 @@ import './index.css';
 function App() {
   // Use the products state, for example by passing it to a component
   return (
-    <CartProvider> {/* Wrap the app with CartProvider */}
+    <CartProvider> 
       <Router>
         <div className="main-content">
           <Navbar />

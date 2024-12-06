@@ -14,9 +14,9 @@
 }
 
 /* Padding to avoid overlap */
-.navbar + .page-content {
+/* .navbar + .page-content {
   padding-top: 80px;
-}
+} */
 
 /* Logo */
 .navbar-logo {

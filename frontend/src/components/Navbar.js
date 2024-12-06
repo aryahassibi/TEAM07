@@ -27,7 +27,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <img src={compressoLogo} alt="Compresso Logo" className="navbar-logo" />
+      <Link to="/">
+        <img src={compressoLogo} alt="Compresso Logo" className="navbar-logo" />
+      </Link>
       <div className="navbar-center">
         <ul className="navbar-links">
           <li><Link to="/">HOME</Link></li>
