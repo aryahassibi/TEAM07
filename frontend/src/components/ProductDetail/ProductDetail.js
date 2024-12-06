@@ -4,8 +4,7 @@ import useProductDetail from "../../hooks/useProductDetail";
 import ProductImagesCarousel from "./ProductImagesCarousel";
 import ProductInfoTable from "./ProductInfoTable";
 import ReviewsSection from "./ReviewsSection";
-import wishlistIcon from '../../assets/images/icons/wishlist/wishlist-dark.svg';
-import wishlistIconFilled from '../../assets/images/icons/wishlist/wishlist-dark-filled.svg';
+import ProductInfoPanel from "./ProductInfoPanel";
 
 import "./ProductDetail.css";
 
@@ -28,7 +27,6 @@ const ProductDetail = () => {
                 (variant) => variant.variant_id === parseInt(variant_id)
             );
             setSelectedVariant(initialVariant || variants[0]); // Fallback to the first variant if not found
-            
         }
     }, [variants, variant_id, selectedVariant]);
 
@@ -58,7 +56,7 @@ const ProductDetail = () => {
 
     if (error) return <div className="error-message">{error}</div>;
     if (!product || !variants) return <div className="loading-message">Loading...</div>;
-    // selectedVariant.stock = 0;
+
     return (
         <div className="product-detail-container">
             {/* Top Section: Images and Key Info */}
@@ -71,50 +69,15 @@ const ProductDetail = () => {
                 />
 
                 {/* Right: Product Info */}
-                <div className="key-info">
-                    {/* Name, Description, and Price */}
-                    <div className="top-info">
-                        <h1 className="product-name">{product.name}</h1>
-                        <p className="product-description">{product.description}</p>
-                        <div className="product-price">{Number(selectedVariant?.price || 0).toFixed(2)} TL</div>
-                    </div>
-
-                    {/* Variant Selection */}
-                    <div className="variant-selection">
-                        <h3 className="variant-header">Weight Options</h3> {/* Label stacked above buttons */}
-                        <div className="variant-buttons">
-                            {variants.map((variant) => (
-                                <button
-                                    key={variant.variant_id}
-                                    className={`variant-button ${
-                                        selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
-                                    } ${variant.stock === 0 ? "out-of-stock" : ""}`}
-                                    onClick={() => setSelectedVariant(variant)}
-                                >
-                                    {variant.weight_grams}g   ●   ${variant.price}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Add to Cart, Stock Info, and Wishlist */}
-                    <div className="actions">
-                        <div className={`stock-info boxy-rectangle ${selectedVariant?.stock === 0 ? "out-of-stock" : ""}`}>
-                            <strong>Stock:</strong>
-                            <span>{selectedVariant?.stock || 0}</span>
-                        </div>
-                        <button
-                            className="add-to-cart-button"
-                            onClick={handleAddToCart}
-                            disabled={!selectedVariant || selectedVariant.stock === 0}
-                        >
-                            {selectedVariant?.stock === 0 ? "Out of Stock" : "Add to Cart"}
-                        </button>
-                        <button className="wishlist-button" onClick={handleWishlistClick}>
-                            <img src={wishlistFilled ? wishlistIconFilled : wishlistIcon} alt="Add to Wishlist" />
-                        </button>
-                    </div>
-                </div>
+                <ProductInfoPanel
+                    product={product}
+                    selectedVariant={selectedVariant}
+                    variants={variants}
+                    setSelectedVariant={setSelectedVariant}
+                    handleAddToCart={handleAddToCart}
+                    wishlistFilled={wishlistFilled}
+                    handleWishlistClick={handleWishlistClick}
+                />
             </div>
 
             {/* Product Information Table */}
