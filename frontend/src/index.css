@@ -83,8 +83,13 @@ body {
   margin: 0;
 }
 
+.main-content h1 {
+  font-size: 3.5rem;
+  text-transform: uppercase;
+}
+
 .main-content h2 {
-  font-size: 3rem;
+  font-size: 2rem;
   padding-bottom: 0.5em;
   text-transform: uppercase;
 }
