@@ -2,18 +2,18 @@
 .product-detail-container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  padding-top: 80px;
+  padding: var(--spacing-md);
+  padding-top: calc(var(--spacing-lg) * 2); /* Adjusted for 80px */
   max-width: 1400px;
   margin: 0 auto;
-  gap: 40px;
+  gap: var(--spacing-lg);
 }
 
 /* Top Section Styling */
 .top-section {
   display: flex;
   width: 100%;
-  gap: 40px;
+  gap: var(--spacing-lg);
 }
 
 .key-info {
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Align content to top and bottom */
-  padding: 20px;
+  padding: var(--spacing-md);
   border-radius: 6px;
   padding-top: 0;
 }
@@ -30,7 +30,7 @@
 .product-name {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #000000;
+  color: var(--neutral-black);
 }
 
 .product-description {
@@ -42,16 +42,15 @@
 .product-short-description {
   font-size: 1.2rem;
   color: #777;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm);
 }
 
 /* Price Styling */
 .product-price {
   font-size: 5rem;
   font-weight: 100;
-  color: #000000;
-  margin-top: 40px;
-  /* text-align: right; */
+  color: var(--neutral-black);
+  margin-top: var(--spacing-lg);
 }
 
 /* Top Info Section */
@@ -61,41 +60,41 @@
 
 /* Stock Info Styling */
 .stock-info {
-  padding: 10px;
-  border: 2px solid #000; /* Black border */
+  padding: var(--spacing-sm);
+  border: 2px solid var(--neutral-black); /* Black border */
   border-radius: 4px; /* Boxy shape */
   font-size: 1rem;
-  color: #000; /* Black text */
+  color: var(--neutral-black); /* Black text */
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between "Stock:" and number */
-  width: 100px; /* Set a fixed width */
+  width: 150px; /* Set a longer width */
   background-color: transparent; /* Transparent background */
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color var(--transition-speed), border-color var(--transition-speed);
   height: 100%; /* Match height with other action buttons */
   text-align: center; /* Center text */
 }
 
 .stock-info.boxy-rectangle {
-  padding: 10px;
-  border: 2px solid #000; /* Black border */
+  padding: var(--spacing-sm);
+  border: 2px solid var(--neutral-black); /* Black border */
   border-radius: 4px; /* Boxy shape */
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between "Stock:" and number */
   font-size: 1rem;
-  color: #000; /* Black text */
-  width: 110px; /* Set a fixed width */
+  color: var(--neutral-black); /* Black text */
+  width: 115px; 
   background-color: transparent; /* Transparent background */
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color var(--transition-speed), border-color var(--transition-speed);
   height: 100%; /* Match height with other action buttons */
   text-align: center; /* Center text */
 }
 
 .stock-info.out-of-stock {
-  border-color: rgb(184, 10, 10);
+  border-color: var(--error-color);
   background-color: transparent;
-  color: rgb(184, 10, 10);
+  color: var(--error-color);
 }
 
 /* Variant Selection Styling */
@@ -103,14 +102,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding-bottom: 40px;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-lg);
 }
 
 .variant-header {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm);
   text-transform: uppercase;
   text-align: left; /* Align label to the left */
   align-self: flex-start; /* Align header to the left */
@@ -120,35 +119,35 @@
   justify-content: flex-start; /* Aligns to the left */
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--spacing-sm);
   align-self: flex-start; /* Align buttons to the left */
 }
 
 /* Variant Button Styling */
 .variant-button {
-  padding: 10px 20px;
-  border: 2px solid #ccc;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--neutral-light-gray);
   border-radius: 8px;
   font-size: 1rem;
   background-color: #f9f9f9;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 .variant-button.selected {
-  border-color: #ff7f50;
-  background-color: #ffe5d5;
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
 }
 
 .variant-button.out-of-stock {
   background-color: #e0e0e0;
   color: #888;
-  border-color: #ccc;
+  border-color: var(--neutral-light-gray);
 }
 
 .variant-button.selected.out-of-stock {
-  border-color: #ff7f50;
-  background-color: #ffe5d5;
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
   color: #888;
 }
 
@@ -156,21 +155,21 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
   height: 50px; /* Set a fixed height for all elements */
 }
 
 /* Add to Cart Button */
 .add-to-cart-button {
   flex: 1;
-  background-color: #000; /* Black button */
-  color: white;
+  background-color: var(--neutral-black); /* Black button */
+  color: var(--neutral-white);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-speed);
   height: 100%; /* Match height with stock info and wishlist */
 }
 
@@ -191,7 +190,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #000; /* Black border */
+  border: 2px solid var(--neutral-black); /* Black border */
   border-radius: 4px; /* Boxy shape */
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -210,19 +209,19 @@
 .quantity-selection {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-sm);
 }
 
 .quantity-selection .stock {
-  margin-left: 10px;
+  margin-left: var(--spacing-sm);
   font-size: 0.9rem;
   color: #888;
 }
 
 .variant-selection select,
 .quantity-selection input {
-  padding: 8px;
-  border: 1px solid #ccc;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--neutral-light-gray);
   border-radius: 4px;
   min-width: 100px;
   font-size: 1rem;
@@ -233,12 +232,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-top: 20px; */
   margin-top: auto; /* Push to the bottom */
 }
 
 /* Responsive Styling */
-@media (max-width: 768px) {
+@media (max-width: 950px) {
   .product-detail-container {
     flex-direction: column;
     align-items: center;
