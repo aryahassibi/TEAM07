@@ -47,6 +47,24 @@ CREATE TABLE IF NOT EXISTS Products (
     FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Product_Variant (
+    variant_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    weight_grams INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    sku VARCHAR(50) UNIQUE,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Product_Images (
+    image_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    image_url VARCHAR(500),
+    alt_text VARCHAR(255),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+);
+
 ALTER TABLE Products ADD COLUMN average_rating DECIMAL(3, 2) DEFAULT 0.00;
 
 CREATE TABLE IF NOT EXISTS DeliveryOptions (
@@ -112,23 +130,6 @@ CREATE TABLE IF NOT EXISTS Invoices (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Product_Variant (
-    variant_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_id INT NOT NULL,
-    weight_grams INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    stock INT NOT NULL DEFAULT 0,
-    sku VARCHAR(50) UNIQUE,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Product_Images (
-    image_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
-    image_url VARCHAR(500),
-    alt_text VARCHAR(255),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS Discounts (
     discount_id INT AUTO_INCREMENT PRIMARY KEY,
