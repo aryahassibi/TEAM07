@@ -248,7 +248,7 @@ exports.getProductDetails = (req, res) => {
 
 
 // Retrieve product details by variant ID
-exports.getProductByVariantId = (req, res) => {
+exports.getProductDetailsByVariant = (req, res) => {
     const variantId = req.params.variant_id;
 
     const productQuery = `
@@ -263,7 +263,10 @@ exports.getProductByVariantId = (req, res) => {
             p.processing_method, 
             p.caffeine_content, 
             p.description, 
+            p.warranty_status,
+            p.distributor_info,
             pv.variant_id, 
+            pv.serial_number,
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
@@ -277,7 +280,9 @@ exports.getProductByVariantId = (req, res) => {
     `;
 
     const imagesQuery = `
-        SELECT image_url, alt_text FROM Product_Images WHERE product_id = ?;
+        SELECT image_url, alt_text 
+        FROM Product_Images 
+        WHERE product_id = ?;
     `;
 
     db.query(productQuery, [variantId], (error, results) => {
@@ -303,3 +308,4 @@ exports.getProductByVariantId = (req, res) => {
         });
     });
 };
+
