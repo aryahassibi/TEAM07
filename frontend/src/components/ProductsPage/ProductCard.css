@@ -29,11 +29,11 @@
     color: inherit;
 }
 
-.out-of-stock .product-image {
+.out-of-stock .product-card .product-image {
     opacity: 0.4;
 }
 
-.out-of-stock .stock-overlay {
+.out-of-stock .product-card .stock-overlay {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -48,7 +48,7 @@
 }
 
 /* Image Section */
-.product-image-wrapper {
+.product-card .product-image-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1;
     position: relative;
@@ -56,7 +56,7 @@
     border-bottom: 1px solid #ddd;
 }
 
-.product-image {
+.product-card .product-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -64,14 +64,14 @@
 }
 
 /* Wishlist Icon */
-.wishlist-icon {
+.product-card .wishlist-icon {
     position: absolute;
     top: 10px;
     right: 10px;
     width: var(--button-size);
     height: var(--button-size);
     background-color: var(--button-bg-color); /* Transparent background */
-    border: 2px solid var(--neutral-black); /* Black border */
+    border: none;
     border-radius: var(--box-border-radius);
     font-size: 1rem;
     display: flex;
@@ -82,29 +82,29 @@
     z-index: 2;
 }
 
-.wishlist-icon:hover {
+.product-card .wishlist-icon:hover {
     background-color: var(--button-hover-bg-color);
 }
 
-.wishlist-icon:active {
+.product-card .wishlist-icon:active {
     transform: scale(0.9);
 }
 
 /* Product Details Section */
-.product-details {
-    padding: 10px 12px;
+.product-card .product-details {
+    padding: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
-.product-info {
+.product-card .product-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+
 }
 
-.product-name {
+.product-card .product-name {
     font-size: 1rem;
     font-weight: bold;
     color: var(--neutral-black);
@@ -113,27 +113,30 @@
     text-overflow: ellipsis;
 }
 
-.product-pricing {
+.product-card .product-pricing {
     margin-top: 4px;
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.product-price {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
+.product-card .product-price {
+    font-size: 2rem;
+    font-weight: 200;
+    color: var(--neutral-black);
 }
 
-.product-original-price {
+.product-card .product-original-price {
     font-size: 0.85rem;
     color: #999;
     text-decoration: line-through;
 }
 
 /* Add to Cart Icon */
-.add-to-cart-icon {
+.product-card .add-to-cart-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
     background: none;
     border: 1px solid #000;
     width: var(--button-size);
@@ -146,18 +149,17 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    aspect-ratio: 1 / 1;
 }
 
-.add-to-cart-icon:hover {
+.product-card .add-to-cart-icon:hover {
     background-color: #f5f5f5;
 }
 
-.add-to-cart-icon:active {
+.product-card .add-to-cart-icon:active {
     transform: scale(0.9);
 }
 
-.product-weight {
+.product-card .product-weight {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -165,10 +167,10 @@
     width: calc(1.5 * var(--button-size));
     height: var(--button-size);
     background-color: var(--button-bg-color); /* Transparent background */
-    border: 2px solid var(--neutral-black); /* Black border */
+     /* Black border */
     border-radius: var(--box-border-radius);
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -205,7 +207,7 @@
 
 /* Filter Panel */
 /* Filter Panel */
-.filter-panel {
+.product-card .filter-panel {
     position: fixed;
     top: 0;
     left: 0;
@@ -225,7 +227,7 @@
     gap: 1rem;
 }
 
-.filter-panel .close-icon {
+.product-card .filter-panel .close-icon {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -240,7 +242,7 @@
     cursor: pointer;
 }
 
-.filter-panel button {
+.product-card .filter-panel button {
     padding: 0.8rem;
     font-size: var(--font-size-sm);
 
@@ -301,15 +303,15 @@ button.clear-filters-button:hover {
 }
 
 /* Sorting Container */
-.sorting-container {
+.product-card .sorting-container {
     margin: 10px 0;
 }
 
-.sorting-container label {
+.product-card .sorting-container label {
     margin-right: 5px;
 }
 
-.sorting-container select {
+.product-card .sorting-container select {
     padding: 5px 10px;
     font-size: 16px;
 }
