@@ -27,7 +27,6 @@ VALUES
 (9, 'Sales', 'Manager', 'sales@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager');
 (10, 'Product', 'Manager', 'product@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
 
--- Insert sample data into Categories
 INSERT INTO Categories (category_id, name, description)
 VALUES
 (1, 'Coffee Beans', "Quality coffee beans, thats all we care about.");
@@ -38,7 +37,6 @@ VALUES
 (2, 'Express Shipping', 59.99, 'Delivery in 2-3 business days.'),
 (3, 'Overnight Shipping', 119.99, 'Next business day delivery.');
 
--- Insert sample data into Products
 INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
 VALUES
 (1, 'Ethiopian Yirgacheffe', 'Ethiopia', 'Light', 'Arabica', 'Whole Bean', 'Floral and citrus notes', 'Washed', 'High', 1, 'A delicate and aromatic coffee with vibrant flavors.', FALSE, 'Ethiopian Distributors Ltd.', 4.5),
@@ -62,7 +60,6 @@ VALUES
 (19, 'Yemen Mocha', 'Yemen', 'Dark', 'Arabica', 'Pods', 'Chocolate and wine', 'Natural', 'High', 1, 'Historic Mocha with rich chocolate and wine flavors.', FALSE, 'Yemen Coffee Traders', 4.3),
 (20, 'Laos Bolaven Plateau', 'Laos', 'Medium', 'Arabica', 'Whole Bean', 'Sweet and balanced', 'Washed', 'High', 1, 'Sweet and balanced with a smooth finish.', TRUE, 'Laos Coffee Export', 4.0);
 
--- Insert sample data into Product_Variant
 INSERT INTO Product_Variant (variant_id, product_id, weight_grams, price, stock, sku)
 VALUES
 -- Product 1 Variants
@@ -141,7 +138,6 @@ VALUES
 (35, 20, 250, 500.00, 90, 'LAO-BOL-250'),
 (36, 20, 500, 980.00, 40, 'LAO-BOL-500');
 
--- Insert sample data into Product_Images
 INSERT INTO Product_Images (image_id, product_id, image_url, alt_text)
 VALUES
 (1, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 250g'),
@@ -201,7 +197,6 @@ VALUES
 (36, 20, '/assets/images/products/product20.png', 'Laos Bolaven Plateau 500g');
 
 
--- Insert sample data into Address
 INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
 VALUES
 (1, 1, '123 Main Street', 'Anytown', 'Anystate', '12345', 'USA'),
@@ -249,7 +244,6 @@ VALUES
     (12, 11, 10, 1, '2024-12-11 20:15:00'),
     (13, 12, 15, 3, '2024-12-12 21:20:00');
 
--- Insert sample data into Comments
 INSERT INTO Comments (comment_id, product_id, user_id, rating, content, approved)
 VALUES
 (1, 1, 1, 5, 'Absolutely love the floral notes!', TRUE, '2024-11-02 10:30:00'),
@@ -364,7 +358,6 @@ VALUES
 (4, 'fixed', 100.00, '2024-12-05', '2024-12-20', 16, NULL, TRUE),
 (5, 'percentage', 5.00, '2024-12-10', '2024-12-25', NULL, 1, TRUE);
 
--- Insert sample data into Wishlist
 INSERT INTO Wishlist (wishlist_id, user_id, product_id)
 VALUES
 (1, 1, 10, '2024-11-10 14:00:00'),
@@ -376,7 +369,6 @@ VALUES
 (7, 7, 3, '2024-12-06 17:10:00'),
 (8, 8, 14, '2024-12-07 19:00:00');
 
--- If the WishlistItems table is needed, insert sample data (assuming the schema is correct)
 INSERT INTO WishlistItems (wishlist_item_id, wishlist_id, product_id)
 VALUES
 (1, 1, 10, '2024-11-10 14:05:00'),
