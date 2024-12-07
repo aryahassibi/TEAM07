@@ -226,9 +226,14 @@ VALUES
 -- Insert sample data into Comments
 INSERT INTO Comments (comment_id, product_id, user_id, rating, content, approved)
 VALUES
-(1, 1, 1, 5, 'Absolutely love this coffee! Smooth and flavorful.', TRUE),
-(2, 2, 2, 4, 'Great espresso blend, rich and bold.', TRUE),
-(3, 3, 3, 3, 'Decent decaf coffee, but a bit too light for my taste.', TRUE);
+(1, 1, 1, 5, 'Absolutely love the floral notes!', TRUE, '2024-11-02 10:30:00'),
+(2, 2, 2, 4, 'Great balance and smooth taste.', TRUE, '2024-11-16 13:45:00'),
+(3, 3, 3, 3, 'Too strong for my liking.', FALSE, '2024-12-02 09:15:00'),
+(4, 4, 4, 5, 'Bright and fruity, perfect for mornings!', TRUE, '2024-12-03 11:00:00'),
+(5, 5, 5, 4, 'Rich and complex flavors.', TRUE, '2024-11-21 16:20:00'),
+(6, 6, 6, 2, 'Not as sweet as I expected.', FALSE, '2024-10-26 17:50:00'),
+(7, 7, 7, 5, 'Delightful and aromatic.', TRUE, '2024-12-07 18:30:00'),
+(8, 8, 8, 4, 'Good quality coffee.', TRUE, '2024-12-08 19:45:00');
 
 INSERT INTO Orders (order_id, user_id, total_price, status, delivery_option_id)
 VALUES
