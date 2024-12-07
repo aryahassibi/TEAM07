@@ -30,10 +30,7 @@ VALUES
 -- Insert sample data into Categories
 INSERT INTO Categories (category_id, name, description)
 VALUES
-(1, 'Espresso Blends', 'Rich and full-bodied espresso blends.'),
-(2, 'Single Origin', 'Unique flavors from specific regions.'),
-(3, 'Decaf', 'Delicious coffee without the caffeine.'),
-(4, 'Organic', 'Coffee produced without synthetic pesticides or fertilizers.');
+(1, 'Coffee Beans', "Quality coffee beans, thats all we care about.");
 
 -- Insert sample data into DeliveryOptions
 INSERT INTO DeliveryOptions (delivery_option_id, name, cost, description)
@@ -45,26 +42,165 @@ VALUES
 -- Insert sample data into Products
 INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
 VALUES
-(1, 'Colombian Single Origin', 'Colombia', 'Medium', 'Arabica', 'Whole Bean', 'Notes of chocolate and caramel', 'Washed', 'High', 2, 'A smooth and balanced coffee from Colombia.', FALSE, 'Distributed by CoffeeCorp'),
-(2, 'Italian Espresso Blend', 'Multiple Origins', 'Espresso', 'Blend', 'Ground', 'Rich and bold with a dark chocolate finish', 'Natural', 'High', 1, 'A traditional Italian espresso blend.', FALSE, 'Imported by Espresso Imports'),
-(3, 'Ethiopian Decaf', 'Ethiopia', 'Light', 'Arabica', 'Whole Bean', 'Floral and citrus notes', 'Honey-processed', 'Decaf', 3, 'A delightful decaf coffee with vibrant flavors.', FALSE, 'Organic Coffee Ltd.');
+(1, 'Ethiopian Yirgacheffe', 'Ethiopia', 'Light', 'Arabica', 'Whole Bean', 'Floral and citrus notes', 'Washed', 'High', 1, 'A delicate and aromatic coffee with vibrant flavors.', FALSE, 'Ethiopian Distributors Ltd.', 4.5),
+(2, 'Colombian Supremo', 'Colombia', 'Medium', 'Arabica', 'Ground', 'Chocolate and nutty', 'Natural', 'High', 1, 'Rich and smooth with a balanced flavor profile.', TRUE, 'Colombian Coffee Co.', 4.2),
+(3, 'Brazilian Santos', 'Brazil', 'Dark', 'Robusta', 'Pods', 'Bold and strong', 'Washed', 'High', 1, 'Strong and full-bodied coffee ideal for espresso.', FALSE, 'Brazilian Beans Inc.', 4.0),
+(4, 'Kenyan AA', 'Kenya', 'Medium', 'Arabica', 'Whole Bean', 'Berry and winey', 'Honey-processed', 'High', 1, 'Bright acidity with fruity undertones.', TRUE, 'Kenyan Coffee Traders', 4.7),
+(5, 'Sumatra Mandheling', 'Indonesia', 'Dark', 'Arabica', 'Ground', 'Earthy and spicy', 'Natural', 'High', 1, 'Complex flavors with a heavy body.', FALSE, 'Indo Beans Exporters', 4.3),
+(6, 'Guatemalan Antigua', 'Guatemala', 'Medium', 'Arabica', 'Whole Bean', 'Chocolate and caramel', 'Washed', 'High', 1, 'Smooth and rich with a lingering finish.', TRUE, 'Guatemala Coffee Ltd.', 4.6),
+(7, 'Costa Rican Tarrazu', 'Costa Rica', 'Light', 'Arabica', 'Pods', 'Citrus and honey', 'Washed', 'High', 1, 'Bright and clean with a sweet aroma.', FALSE, 'Costa Rica Coffee Co.', 4.4),
+(8, 'Nicaraguan Segovia', 'Nicaragua', 'Medium', 'Arabica', 'Whole Bean', 'Nutty and sweet', 'Honey-processed', 'High', 1, 'Balanced and smooth with a pleasant sweetness.', TRUE, 'Nicaraguan Coffee Export', 4.1),
+(9, 'Mexican Altura', 'Mexico', 'Light', 'Arabica', 'Ground', 'Floral and mild', 'Washed', 'High', 1, 'Mild and smooth with subtle floral notes.', FALSE, 'Mexican Beans Ltd.', 3.9),
+(10, 'Honduran Marcala', 'Honduras', 'Medium', 'Arabica', 'Whole Bean', 'Sweet and fruity', 'Natural', 'High', 1, 'Sweet with a fruity acidity and a clean finish.', TRUE, 'Honduras Coffee Traders', 4.3),
+(11, 'Peruvian Chanchamayo', 'Peru', 'Light', 'Arabica', 'Pods', 'Bright and floral', 'Washed', 'High', 1, 'Bright acidity with a floral and fruity profile.', FALSE, 'Peruvian Coffee Co.', 4.2),
+(12, 'Tanzanian Peaberry', 'Tanzania', 'Medium', 'Arabica', 'Whole Bean', 'Citrus and berry', 'Honey-processed', 'High', 1, 'Unique peaberry beans with a vibrant flavor.', TRUE, 'Tanzanian Beans Export', 4.5),
+(13, 'Papua New Guinea Sigri', 'Papua New Guinea', 'Dark', 'Arabica', 'Ground', 'Rich and malty', 'Natural', 'High', 1, 'Deep and malty with a rich aroma.', FALSE, 'Papua Coffee Ltd.', 4.0),
+(14, 'Rwandan Bourbon', 'Rwanda', 'Medium', 'Arabica', 'Whole Bean', 'Sweet and fruity', 'Washed', 'High', 1, 'Sweet and fruity with a balanced acidity.', TRUE, 'Rwanda Coffee Traders', 4.4),
+(15, 'El Salvador Pacamara', 'El Salvador', 'Light', 'Arabica', 'Pods', 'Floral and bright', 'Honey-processed', 'High', 1, 'Floral aromas with a bright and lively taste.', FALSE, 'El Salvador Beans Inc.', 4.1),
+(16, 'Panama Geisha', 'Panama', 'Light', 'Arabica', 'Whole Bean', 'Jasmine and tropical fruit', 'Washed', 'High', 1, 'Exquisite Geisha with jasmine and tropical fruit notes.', TRUE, 'Panama Coffee Co.', 4.8),
+(17, 'Vietnamese Robusta', 'Vietnam', 'Dark', 'Robusta', 'Ground', 'Strong and bitter', 'Washed', 'High', 1, 'Strong and bitter, perfect for instant coffee.', FALSE, 'Vietnam Coffee Export', 3.8),
+(18, 'Indian Monsooned Malabar', 'India', 'Medium', 'Arabica', 'Whole Bean', 'Spicy and earthy', 'Other', 'High', 1, 'Unique monsooned process gives it a spicy earthy flavor.', TRUE, 'Indian Beans Ltd.', 4.2),
+(19, 'Yemen Mocha', 'Yemen', 'Dark', 'Arabica', 'Pods', 'Chocolate and wine', 'Natural', 'High', 1, 'Historic Mocha with rich chocolate and wine flavors.', FALSE, 'Yemen Coffee Traders', 4.3),
+(20, 'Laos Bolaven Plateau', 'Laos', 'Medium', 'Arabica', 'Whole Bean', 'Sweet and balanced', 'Washed', 'High', 1, 'Sweet and balanced with a smooth finish.', TRUE, 'Laos Coffee Export', 4.0);
 
 -- Insert sample data into Product_Variant
 INSERT INTO Product_Variant (variant_id, product_id, weight_grams, price, stock, sku)
 VALUES
-(1, 1, 250, 14.99, 100, 'COL-SO-250'),
-(2, 1, 500, 24.99, 50, 'COL-SO-500'),
-(3, 2, 250, 12.99, 120, 'ITA-ESP-250'),
-(4, 2, 500, 22.99, 80, 'ITA-ESP-500'),
-(5, 3, 250, 15.99, 70, 'ETH-DEC-250');
+-- Product 1 Variants
+(1, 1, 250, 500.00, 100, 'ETH-YIR-250'),
+(2, 1, 500, 950.00, 50, 'ETH-YIR-500'),
+(3, 1, 1000, 1800.00, 25, 'ETH-YIR-1000'),
+
+-- Product 2 Variants
+(4, 2, 250, 450.00, 200, 'COL-SUP-250'),
+(5, 2, 500, 850.00, 80, 'COL-SUP-500'),
+
+-- Product 3 Variants
+(6, 3, 250, 600.00, 150, 'BRA-SAN-250'),
+
+-- Product 4 Variants
+(7, 4, 250, 550.00, 120, 'KEN-AA-250'),
+(8, 4, 500, 1050.00, 60, 'KEN-AA-500'),
+
+-- Product 5 Variants
+(9, 5, 250, 580.00, 90, 'SUM-MAN-250'),
+(10, 5, 500, 1100.00, 40, 'SUM-MAN-500'),
+(11, 5, 1000, 2100.00, 10, 'SUM-MAN-1000'),
+
+-- Product 6 Variants
+(12, 6, 250, 520.00, 130, 'GUA-ANT-250'),
+(13, 6, 500, 1000.00, 70, 'GUA-ANT-500'),
+
+-- Product 7 Variants
+(14, 7, 250, 480.00, 160, 'COS-TAR-250'),
+
+-- Product 8 Variants
+(15, 8, 250, 530.00, 110, 'NIC-SEG-250'),
+(16, 8, 500, 1020.00, 55, 'NIC-SEG-500'),
+
+-- Product 9 Variants
+(17, 9, 250, 400.00, 200, 'MEX-ALT-250'),
+
+-- Product 10 Variants
+(18, 10, 250, 510.00, 140, 'HON-MAR-250'),
+(19, 10, 500, 1000.00, 60, 'HON-MAR-500'),
+
+-- Product 11 Variants
+(20, 11, 250, 495.00, 130, 'PER-SIG-250'),
+
+-- Product 12 Variants
+(21, 12, 250, 575.00, 90, 'TAN-PEA-250'),
+(22, 12, 500, 1150.00, 45, 'TAN-PEA-500'),
+(23, 12, 1000, 2200.00, 20, 'TAN-PEA-1000'),
+
+-- Product 13 Variants
+(24, 13, 250, 610.00, 80, 'PNG-SIG-250'),
+
+-- Product 14 Variants
+(25, 14, 250, 540.00, 100, 'RWA-BUR-250'),
+(26, 14, 500, 1080.00, 50, 'RWA-BUR-500'),
+
+-- Product 15 Variants
+(27, 15, 250, 505.00, 120, 'ELS-PAC-250'),
+
+-- Product 16 Variants
+(28, 16, 250, 700.00, 60, 'PAN-GEI-250'),
+(29, 16, 500, 1350.00, 30, 'PAN-GEI-500'),
+(30, 16, 1000, 2600.00, 15, 'PAN-GEI-1000'),
+
+-- Product 17 Variants
+(31, 17, 250, 380.00, 200, 'VIE-ROB-250'),
+
+-- Product 18 Variants
+(32, 18, 250, 550.00, 100, 'IND-MON-250'),
+
+-- Product 19 Variants
+(33, 19, 250, 620.00, 70, 'YEM-MOH-250'),
+(34, 19, 500, 1200.00, 35, 'YEM-MOH-500'),
+
+-- Product 20 Variants
+(35, 20, 250, 500.00, 90, 'LAO-BOL-250'),
+(36, 20, 500, 980.00, 40, 'LAO-BOL-500');
 
 -- Insert sample data into Product_Images
 INSERT INTO Product_Images (image_id, product_id, image_url, alt_text)
 VALUES
-(1, 1, '/assets/images/products/product1.png', '250g package of Colombian Single Origin'),
-(2, 1, '/assets/images/products/product1.png', '500g package of Colombian Single Origin'),
-(3, 2, '/assets/images/products/product2.png', 'Italian Espresso Blend package'),
-(4, 3, '/assets/images/products/product3.png', 'Ethiopian Decaf package');
+(1, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 250g'),
+(2, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 500g'),
+(3, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 1000g'),
+
+(4, 2, '/assets/images/products/product2.png', 'Colombian Supremo 250g'),
+(5, 2, '/assets/images/products/product2.png', 'Colombian Supremo 500g'),
+
+(6, 3, '/assets/images/products/product3.png', 'Brazilian Santos 250g'),
+
+(7, 4, '/assets/images/products/product4.png', 'Kenyan AA 250g'),
+(8, 4, '/assets/images/products/product4.png', 'Kenyan AA 500g'),
+
+(9, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 250g'),
+(10, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 500g'),
+(11, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 1000g'),
+
+(12, 6, '/assets/images/products/product6.png', 'Guatemalan Antigua 250g'),
+(13, 6, '/assets/images/products/product6.png', 'Guatemalan Antigua 500g'),
+
+(14, 7, '/assets/images/products/product7.png', 'Costa Rican Tarrazu 250g'),
+
+(15, 8, '/assets/images/products/product8.png', 'Nicaraguan Segovia 250g'),
+(16, 8, '/assets/images/products/product8.png', 'Nicaraguan Segovia 500g'),
+
+(17, 9, '/assets/images/products/product9.png', 'Mexican Altura 250g'),
+
+(18, 10, '/assets/images/products/product10.png', 'Honduran Marcala 250g'),
+(19, 10, '/assets/images/products/product10.png', 'Honduran Marcala 500g'),
+
+(20, 11, '/assets/images/products/product11.png', 'Peruvian Chanchamayo 250g'),
+
+(21, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 250g'),
+(22, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 500g'),
+(23, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 1000g'),
+
+(24, 13, '/assets/images/products/product13.png', 'Papua New Guinea Sigri 250g'),
+
+(25, 14, '/assets/images/products/product14.png', 'Rwandan Bourbon 250g'),
+(26, 14, '/assets/images/products/product14.png', 'Rwandan Bourbon 500g'),
+
+(27, 15, '/assets/images/products/product15.png', 'El Salvador Pacamara 250g'),
+
+(28, 16, '/assets/images/products/product16.png', 'Panama Geisha 250g'),
+(29, 16, '/assets/images/products/product16.png', 'Panama Geisha 500g'),
+(30, 16, '/assets/images/products/product16.png', 'Panama Geisha 1000g'),
+
+(31, 17, '/assets/images/products/product17.png', 'Vietnamese Robusta 250g'),
+
+(32, 18, '/assets/images/products/product18.png', 'Indian Monsooned Malabar 250g'),
+
+(33, 19, '/assets/images/products/product19.png', 'Yemen Mocha 250g'),
+(34, 19, '/assets/images/products/product19.png', 'Yemen Mocha 500g'),
+
+(35, 20, '/assets/images/products/product20.png', 'Laos Bolaven Plateau 250g'),
+(36, 20, '/assets/images/products/product20.png', 'Laos Bolaven Plateau 500g');
+
 
 -- Insert sample data into Address
 INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
