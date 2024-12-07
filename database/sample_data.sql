@@ -208,20 +208,46 @@ VALUES
 (2, 2, '456 Elm Street', 'Othertown', 'Otherstate', '67890', 'USA'),
 (3, 3, '789 Oak Avenue', 'Sometown', 'Somestate', '11223', 'USA');
 
--- Insert sample data into ShoppingCart
-INSERT INTO ShoppingCart (cart_id, user_id, session_id)
+-- Insert into ShoppingCart for Registered Users
+INSERT INTO ShoppingCart (cart_id, user_id, session_id, created_at, updated_at)
 VALUES
-(1, 1, 'session_abc123'),
-(2, 2, 'session_def456'),
-(3, NULL, 'session_guest789'); -- Guest user
+    (1, 1, NULL, '2024-12-01 10:00:00', '2024-12-01 10:00:00'),
+    (2, 2, NULL, '2024-12-02 11:00:00', '2024-12-02 11:00:00'),
+    (3, 3, NULL, '2024-12-03 12:00:00', '2024-12-03 12:00:00'),
+    (4, 4, NULL, '2024-12-04 13:00:00', '2024-12-04 13:00:00'),
+    (5, 5, NULL, '2024-12-05 14:00:00', '2024-12-05 14:00:00'),
+    (6, 6, NULL, '2024-12-06 15:00:00', '2024-12-06 15:00:00'),
+    (7, 7, NULL, '2024-12-07 16:00:00', '2024-12-07 16:00:00'),
+    (8, 8, NULL, '2024-12-08 17:00:00', '2024-12-08 17:00:00');
 
--- Insert sample data into ShoppingCartItems
-INSERT INTO ShoppingCartItems (cart_item_id, cart_id, variant_id, quantity)
+-- Insert into ShoppingCart for Guest Users
+INSERT INTO ShoppingCart (cart_id, user_id, session_id, created_at, updated_at)
 VALUES
-(1, 1, 1, 2), -- John has 2x 250g Colombian
-(2, 1, 3, 1), -- John has 1x 250g Espresso
-(3, 2, 5, 3), -- Jane has 3x 250g Ethiopian Decaf
-(4, 3, 2, 4); -- Guest has 4x 500g Colombians
+    (9, NULL, 'session_ABC123', '2024-12-09 18:00:00', '2024-12-09 18:00:00'),
+    (10, NULL, 'session_DEF456', '2024-12-10 19:00:00', '2024-12-10 19:00:00'),
+    (11, NULL, 'session_GHI789', '2024-12-11 20:00:00', '2024-12-11 20:00:00'),
+    (12, NULL, 'session_JKL012', '2024-12-12 21:00:00', '2024-12-12 21:00:00');
+
+-- Insert into ShoppingCartItems for Registered Users
+INSERT INTO ShoppingCartItems (cart_item_id, cart_id, variant_id, quantity, added_at)
+VALUES
+    (1, 1, 1, 2, '2024-12-01 10:05:00'),
+    (2, 1, 4, 1, '2024-12-01 10:10:00'),
+    (3, 2, 6, 3, '2024-12-02 11:05:00'),
+    (4, 3, 7, 1, '2024-12-03 12:15:00'),
+    (5, 4, 9, 2, '2024-12-04 13:20:00'),
+    (6, 5, 12, 1, '2024-12-05 14:25:00'),
+    (7, 6, 14, 4, '2024-12-06 15:30:00'),
+    (8, 7, 17, 1, '2024-12-07 16:35:00'),
+    (9, 8, 20, 2, '2024-12-08 17:40:00');
+
+-- Insert into ShoppingCartItems for Guest Users
+INSERT INTO ShoppingCartItems (cart_item_id, cart_id, variant_id, quantity, added_at)
+VALUES
+    (10, 9, 2, 1, '2024-12-09 18:05:00'),
+    (11, 10, 5, 2, '2024-12-10 19:10:00'),
+    (12, 11, 10, 1, '2024-12-11 20:15:00'),
+    (13, 12, 15, 3, '2024-12-12 21:20:00');
 
 -- Insert sample data into Comments
 INSERT INTO Comments (comment_id, product_id, user_id, rating, content, approved)
