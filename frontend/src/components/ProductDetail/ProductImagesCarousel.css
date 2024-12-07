@@ -3,7 +3,7 @@
     position: relative;
 }
 
-.main-image {
+.image-carousel .main-image {
     position: relative;
     width: 100%;
     padding-top: 100%; /* 1:1 Aspect Ratio */
@@ -12,7 +12,7 @@
     border-radius: 8px;
 }
 
-.main-image img {
+.image-carousel  .main-image img {
     position: absolute;
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@
     border-radius: 8px;
 }
 
-.nav-button {
+.image-carousel .nav-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -36,25 +36,25 @@
     z-index: 1;
 }
 
-.nav-button:hover {
+.image-carousel .nav-button:hover {
     color: #eeeeee;
 }
 
-.nav-button.left {
+.image-carousel .nav-button.left {
     left: 10px;
 }
 
-.nav-button.right {
+.image-carousel .nav-button.right {
     right: 10px;
 }
 
-.dots-container {
+.image-carousel .dots-container {
     display: flex;
     justify-content: center;
     margin-top: 10px;
 }
 
-.dot {
+.image-carousel .dot {
     height: 12px;
     width: 12px;
     margin: 0 5px;
@@ -65,6 +65,6 @@
     transition: background-color 0.3s ease;
 }
 
-.dot.active {
+.image-carousel .dot.active {
     background-color: #333;
 }

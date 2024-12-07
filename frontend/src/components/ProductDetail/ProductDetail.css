@@ -10,7 +10,7 @@
 }
 
 /* Top Section Styling */
-.top-section {
+.product-detail-container  .top-section {
   display: flex;
   width: 100%;
   gap: var(--spacing-lg);

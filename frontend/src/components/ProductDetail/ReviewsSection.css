@@ -2,7 +2,7 @@
     --star-color: #f4b400;
 }
 
-.average-rating-section {
+.reviews-section .average-rating-section {
     width: 100%;
     margin-top: var(--spacing-lg);
     margin-bottom: calc(2 * var(--spacing-md));
@@ -11,7 +11,7 @@
     border-radius: 6px;
 }
 
-.average-rating {
+.reviews-section .average-rating {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
@@ -29,14 +29,14 @@
     margin-bottom: calc(var(--spacing-md) * 2);
 }
 
-.reviews-container {
+.reviews-section .reviews-container {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
     margin-top: var(--spacing-md);
 }
 
-.review-box {
+.reviews-section .review-box {
     padding: var(--spacing-sm);
     background-color: var(--neutral-light-gray);
     border-radius: 6px;
@@ -49,23 +49,23 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.review-box:hover {
+.reviews-section .review-box:hover {
     transform: translateY(-1px);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.review-header {
+.reviews-section .review-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.review-author {
+.reviews-section .review-author {
     font-weight: bold;
     color: var(--neutral-black);
 }
 
-.write-review-button {
+.reviews-section .write-review-button {
     margin-top: var(--spacing-lg);
     padding: var(--spacing-sm) var(--spacing-md);
     background-color: var(--neutral-black);
@@ -77,18 +77,18 @@
     transition: background-color var(--transition-speed);
 }
 
-.write-review-button:hover {
+.reviews-section .write-review-button:hover {
     background-color: var(--neutral-dark-gray);
 }
 
-.review-content {
+.reviews-section .review-content {
     font-size: 16px;
     color: #555;
     margin-top: 8px;
     line-height: 1.5;
 }
 
-.review-date {
+.reviews-section .review-date {
     font-size: 12px;
     color: #999;
     margin-top: 4px;

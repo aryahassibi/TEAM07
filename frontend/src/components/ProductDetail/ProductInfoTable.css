@@ -7,17 +7,17 @@
     border: 1px solid #e0e0e0;
 }
 
-.product-info-table {
+.product-info-section .product-info-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.product-info-table td {
+.product-info-section .product-info-table td {
     padding: 20px;
     border-bottom: 1px solid #eee;
 }
 
-.product-info-table tr:last-child td {
+.product-info-section .product-info-table tr:last-child td {
     border-bottom: none;
 }
 
