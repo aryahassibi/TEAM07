@@ -10,7 +10,7 @@ VALUES
 (5, 'Eid', 'Alhamali', 'eid@user.com', '+905305678901', '56789012345', SHA2('password', 256)),
 (6, 'Ecem', 'Akın', 'ecem@user.com', '+905306789012', '67890123456', SHA2('password', 256)),
 (7, 'Zeynep', 'Işık', 'zeynep.isik@user.com', '+905307890123', '78901234567', SHA2('password', 256)),
-(8, 'Cemal', 'Yılmaz', 'cemal.yilmaz@user.com', '+905308901234', '89012345678', SHA2('password', 256));
+(8, 'Cemal', 'Yılmaz', 'cemal.yilmaz@user.com', '+905308901234', '89012345678', SHA2('password', 256)),
 (9, 'Test', 'User', 'test@user.com', '+905309012345', '90123456789', SHA2('password', 256));
 
 -- Note: Passwords are all 'password'
@@ -21,10 +21,10 @@ VALUES
 (3, 'Mustafa', 'Topcu', 'mustafa@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
 (4, 'Orhun', 'Ege Ozpay', 'orhun@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
 (5, 'Eid', 'Alhamali', 'eid@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
-(6, 'Ecem', 'Akın', 'ecem@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
-(7, 'Zeynep', 'Işık', 'zeynep@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
-(8, 'Cemal', 'Yılmaz', 'cemal@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
-(9, 'Sales', 'Manager', 'sales@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager');
+(6, 'Ecem', 'Akın', 'ecem@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
+(7, 'Zeynep', 'Işık', 'zeynep@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
+(8, 'Cemal', 'Yılmaz', 'cemal@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
+(9, 'Sales', 'Manager', 'sales@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
 (10, 'Product', 'Manager', 'product@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
 
 INSERT INTO Categories (category_id, name, description)
@@ -37,7 +37,7 @@ VALUES
 (2, 'Express Shipping', 59.99, 'Delivery in 2-3 business days.'),
 (3, 'Overnight Shipping', 119.99, 'Next business day delivery.');
 
-INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
+INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info, average_rating)
 VALUES
 (1, 'Ethiopian Yirgacheffe', 'Ethiopia', 'Light', 'Arabica', 'Whole Bean', 'Floral and citrus notes', 'Washed', 'High', 1, 'A delicate and aromatic coffee with vibrant flavors.', FALSE, 'Ethiopian Distributors Ltd.', 4.5),
 (2, 'Colombian Supremo', 'Colombia', 'Medium', 'Arabica', 'Ground', 'Chocolate and nutty', 'Natural', 'High', 1, 'Rich and smooth with a balanced flavor profile.', TRUE, 'Colombian Coffee Co.', 4.2),
