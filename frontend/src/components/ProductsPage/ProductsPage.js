@@ -192,21 +192,24 @@ const ProductsPage = () => {
       )}
 
       {/* Product List */}
-      <div className="coffee-list">
+      
+      <div className="products-grid">
         {products.length > 0 ? (
           products.map((product) => (
-            <ProductCard
-                key={product.id} // Assuming each product has a unique 'id' property
-                product={product}
-                onAddToCart={handleAddToCart}
-                onAddToWishlist={handleAddToWishlist}
-            />
-            // <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
+              <ProductCard
+                  key={product.id} // Ensure each product has a unique `id` property
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                  onAddToWishlist={handleAddToWishlist}
+              />
           ))
-        ) : (
-          <p>No products available.</p>
-        )}
+            ) : (
+              <p>No products available.</p>
+            )
+          }
       </div>
+
+
     </div>
   );
 };
