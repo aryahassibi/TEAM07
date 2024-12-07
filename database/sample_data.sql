@@ -249,7 +249,7 @@ VALUES
     (12, 11, 10, 1, '2024-12-11 20:15:00'),
     (13, 12, 15, 3, '2024-12-12 21:20:00');
 
-INSERT INTO Comments (comment_id, product_id, user_id, rating, content, approved)
+INSERT INTO Comments (comment_id, product_id, user_id, rating, content, approved, created_at)
 VALUES
 (1, 1, 1, 5, 'Absolutely love the floral notes!', TRUE, '2024-11-02 10:30:00'),
 (2, 2, 2, 4, 'Great balance and smooth taste.', TRUE, '2024-11-16 13:45:00'),
@@ -260,7 +260,7 @@ VALUES
 (7, 7, 7, 5, 'Delightful and aromatic.', TRUE, '2024-12-07 18:30:00'),
 (8, 8, 8, 4, 'Good quality coffee.', TRUE, '2024-12-08 19:45:00');
 
-INSERT INTO Orders (order_id, user_id, total_price, status, delivery_option_id)
+INSERT INTO Orders (order_id, user_id, total_price, status, delivery_option_id, created_at, updated_at)
 VALUES
 -- Orders for User 1
 (1, 1, 1500.00, 'delivered', 1, '2024-11-01 10:00:00', '2024-11-05 15:00:00'),
@@ -318,7 +318,7 @@ VALUES
 (14, 9, 14, 3, 540.00),
 (15, 9, 15, 1, 505.00);
 
-INSERT INTO Payments (payment_id, order_id, user_id, amount, card_holder_name, card_number, card_expiration, cvv)
+INSERT INTO Payments (payment_id, order_id, user_id, payment_date, amount, card_holder_name, card_number, card_expiration, cvv)
 VALUES
 (1, 1, 1, '2024-11-01 10:05:00', 1500.00, 'Arya Hassibi', AES_ENCRYPT('4111111111111111', 'encryption_key'), '2026-05-01', AES_ENCRYPT('123', 'encryption_key')),
 (2, 2, 1, '2024-11-15 12:35:00', 800.00, 'Arya Hassibi', AES_ENCRYPT('4111111111111111', 'encryption_key'), '2026-05-01', AES_ENCRYPT('123', 'encryption_key')),
@@ -330,7 +330,7 @@ VALUES
 (8, 8, 6, '2024-12-02 13:45:00', 600.00, 'Ecem Akın', AES_ENCRYPT('4555555555555555', 'encryption_key'), '2024-09-01', AES_ENCRYPT('345', 'encryption_key')),
 (9, 9, 8, '2024-12-06 17:30:00', 900.00, 'Cemal Yılmaz', AES_ENCRYPT('4666666666666666', 'encryption_key'), '2026-10-01', AES_ENCRYPT('678', 'encryption_key'));
 
-INSERT INTO RefundRequests (refund_request_id, order_id, user_id, status, notes)
+INSERT INTO RefundRequests (refund_request_id, order_id, user_id, request_date, status, notes)
 VALUES
 (1, 2, 1, '2024-11-20 10:00:00', 'approved', 'Product arrived damaged.'),
 (2, 4, 2, '2024-12-10 12:00:00', 'pending', 'Wrong product delivered.'),
@@ -355,7 +355,7 @@ VALUES
 (8, 8, 6, NULL, '2024-12-02 13:45:00'),
 (9, 9, 8, NULL, '2024-12-06 17:30:00');
 
-INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, category_id, active)
+INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, product_id, category_id, active)
 VALUES
 (1, 'percentage', 10.00, '2024-12-01', '2024-12-31', 1, NULL, TRUE),
 (2, 'fixed', 50.00, '2024-11-15', '2024-11-30', NULL, 1, TRUE),
