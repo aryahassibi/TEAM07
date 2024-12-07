@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Products (
     origin VARCHAR(100),
     roast_level ENUM('Light', 'Medium', 'Dark', 'French', 'Espresso') NOT NULL,
     bean_type ENUM('Arabica', 'Robusta', 'Liberica', 'Blend') NOT NULL,
-    grind_type ENUM('Whole Bean', 'Ground', 'Pods', 'Other') DEFAULT 'Whole Bean',
+    grind_type ENUM('Whole Bean', 'Ground', 'Other') DEFAULT 'Whole Bean',
     flavor_profile VARCHAR(255),
     processing_method ENUM('Washed', 'Natural', 'Honey-processed', 'Other') DEFAULT 'Other',
     caffeine_content ENUM('High', 'Decaf', 'Half-Caf') DEFAULT 'High',

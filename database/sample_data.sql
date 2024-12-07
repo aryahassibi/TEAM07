@@ -47,7 +47,7 @@ VALUES
     "A quiet symphony that lingers in the soul like the echoes of Andean pan flutes. Its nutty richness and subtle cocoa notes evoke mountain trails and misty mornings.", 
     TRUE, "Bolivia Bean Collective", 4.5),
 
-(3, "The Midnight Drifter", "Ethiopia", "Espresso", "Arabica", "Pods", "Dark chocolate and blackberry", "Natural", "High", 1, 
+(3, "The Midnight Drifter", "Ethiopia", "Espresso", "Arabica", "Ground", "Dark chocolate and blackberry", "Natural", "High", 1, 
     "A bold companion for sleepless nights and untold stories. Its intense dark chocolate depth and blackberry intrigue feel like wandering under a canopy of stars.", 
     FALSE, "Ethiopian Coffee Routes", 4.8),
 
@@ -59,7 +59,7 @@ VALUES
     "Forged in the heart of volcanic soil, this coffee ignites the senses with rich caramel sweetness and a red wine finish. A tribute to the land's fiery soul.", 
     FALSE, "Guatemala Coffee Legends", 4.7),
 
-(6, "Cuban Memory Lane", "Cuba", "Espresso", "Robusta", "Pods", "Cocoa and brown sugar", "Washed", "High", 1, 
+(6, "Cuban Memory Lane", "Cuba", "Espresso", "Robusta", "Whole Bean", "Cocoa and brown sugar", "Washed", "High", 1, 
     "A rich, nostalgic blend that whispers of Havana's cobbled streets and sunlit afternoons. Hints of cocoa and brown sugar evoke the rhythm of a simpler time.", 
     TRUE, "Havana Coffee Roasters", 4.5),
 
@@ -75,7 +75,7 @@ VALUES
     "Deep and grounding, like the fading light on Santiago's streets. Its earthy warmth and molasses undertone linger, wrapping you in twilight's embrace.", 
     FALSE, "Chilean Coffee Routes", 4.3),
 
-(10, "Panama Geisha Dream", "Panama", "Light", "Arabica", "Pods", "Jasmine and tropical fruit", "Washed", "High", 1, 
+(10, "Panama Geisha Dream", "Panama", "Light", "Arabica", "Whole Bean", "Jasmine and tropical fruit", "Washed", "High", 1, 
     "An ethereal experience. Jasmine notes entwined with tropical fruit sweetness make this a coffee to savor slowly, like a daydream slipping into reality.", 
     TRUE, "Panama Coffee Treasures", 4.9),
 
@@ -99,7 +99,7 @@ VALUES
     "Rich as a Kenyan sunset fading to red, this coffee's berry and wine notes evoke a boldness that commands attention.", 
     FALSE, "Kenyan Bean Collective", 4.7),
 
-(16, "Honduran Stargazer", "Honduras", "Medium", "Arabica", "Pods", "Sweet and herbal", "Washed", "Decaf", 1, 
+(16, "Honduran Stargazer", "Honduras", "Medium", "Arabica", "Whole Bean", "Sweet and herbal", "Washed", "Decaf", 1, 
     "A coffee for quiet nights under infinite skies. Sweetness and herbal notes blend in harmony, like constellations above.", 
     TRUE, "Honduran Coffee Routes", 4.4),
 
@@ -111,7 +111,7 @@ VALUES
     "Rich, spiced, and complex as the tales of caravans crossing ancient lands. Cardamom and dark chocolate transport you to a world of wonder.", 
     FALSE, "Turkish Coffee Routes", 4.8),
 
-(19, "Colombian Daybreak", "Colombia", "Light", "Arabica", "Pods", "Bright and citrusy", "Washed", "High", 1, 
+(19, "Colombian Daybreak", "Colombia", "Light", "Arabica", "Ground", "Bright and citrusy", "Washed", "High", 1, 
     "Fresh as dawn breaking over Colombian hills, this coffee's brightness awakens the senses and inspires hope for the day ahead.", 
     TRUE, "Colombian Coffee Legends", 4.6),
 
