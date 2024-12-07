@@ -32,12 +32,11 @@ INSERT INTO Categories (category_id, name, description)
 VALUES
 (1, 'Coffee Beans', "Quality coffee beans, thats all we care about.");
 
--- Insert sample data into DeliveryOptions
 INSERT INTO DeliveryOptions (delivery_option_id, name, cost, description)
 VALUES
-(1, 'Standard Shipping', 5.99, 'Delivery in 5-7 business days.'),
-(2, 'Express Shipping', 9.99, 'Delivery in 2-3 business days.'),
-(3, 'Overnight Shipping', 19.99, 'Next business day delivery.');
+(1, 'Standard Shipping', 29.99, 'Delivery in 5-7 business days.'),
+(2, 'Express Shipping', 59.99, 'Delivery in 2-3 business days.'),
+(3, 'Overnight Shipping', 119.99, 'Next business day delivery.');
 
 -- Insert sample data into Products
 INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
