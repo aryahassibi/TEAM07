@@ -3,8 +3,8 @@ const mysql = require("mysql2");
 // Database connection
 const db = require('../config/db');
 
-// List all products with filtering and sorting
-exports.listProducts = (req, res) => {
+// List all products variants with filtering, sorting, images, and discounts
+exports.listProductsWithDetails = (req, res) => {
     const {
         category_id,
         roast_level,
@@ -47,11 +47,26 @@ exports.listProducts = (req, res) => {
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
-            pv.sku
+            pv.sku,
+            pi.image_url,
+            pi.alt_text,
+            d.discount_type,
+            d.value AS discount_value,
+            d.start_date AS discount_start_date,
+            d.end_date AS discount_end_date,
+            CASE 
+                WHEN d.discount_type = 'percentage' THEN pv.price - (pv.price * d.value / 100)
+                WHEN d.discount_type = 'fixed' THEN pv.price - d.value
+                ELSE pv.price
+            END AS discounted_price
         FROM 
             Products p
         JOIN 
             Product_Variant pv ON p.product_id = pv.product_id
+        LEFT JOIN 
+            Product_Images pi ON p.product_id = pi.product_id
+        LEFT JOIN 
+            Discounts d ON (p.product_id = d.product_id AND d.active = TRUE)
     `;
 
     let conditions = [];
@@ -95,10 +110,11 @@ exports.listProducts = (req, res) => {
             return res.status(500).json({ error: 'Failed to retrieve products.' });
         }
 
-        // Instead of returning 404 for no results, return an empty array
+        // Return results
         res.json(results);
     });
 };
+
 
 // Retrieve a single product by ID
 exports.getProductById = (req, res) => {
