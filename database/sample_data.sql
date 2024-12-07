@@ -1,17 +1,31 @@
 USE ecommerce_db;
 
--- Insert sample data into Users
+-- Note: Passwords are all 'password'
 INSERT INTO Users (user_id, first_name, last_name, email, phone_number, tax_id, password_hash)
 VALUES
-(1, 'John', 'Doe', 'johndoe@example.com', '+1234567890', '123456789', SHA2('password',256)),
-(2, 'Jane', 'Smith', 'janesmith@example.com', '+0987654321', '987654321', SHA2('password',256)),
-(3, 'Alice', 'Johnson', 'alicej@example.com', '+1122334455', '555555555', SHA2('password',256));
+(1, 'Arya', 'Hassibi', 'arya@user.com', '+905301234567', '12345678901', SHA2('password', 256)),
+(2, 'Beste', 'Bayhan', 'beste@user.com', '+905302345678', '23456789012', SHA2('password', 256)),
+(3, 'Mustafa', 'Topcu', 'mustafa@user.com', '+905303456789', '34567890123', SHA2('password', 256)),
+(4, 'Orhun Ege', 'Ozpay', 'orhun@user.com', '+905304567890', '45678901234', SHA2('password', 256)),
+(5, 'Eid', 'Alhamali', 'eid@user.com', '+905305678901', '56789012345', SHA2('password', 256)),
+(6, 'Ecem', 'Akın', 'ecem@user.com', '+905306789012', '67890123456', SHA2('password', 256)),
+(7, 'Zeynep', 'Işık', 'zeynep.isik@user.com', '+905307890123', '78901234567', SHA2('password', 256)),
+(8, 'Cemal', 'Yılmaz', 'cemal.yilmaz@user.com', '+905308901234', '89012345678', SHA2('password', 256));
+(9, 'Test', 'User', 'test@user.com', '+905309012345', '90123456789', SHA2('password', 256));
 
--- Insert sample data into Managers
+-- Note: Passwords are all 'password'
 INSERT INTO Managers (manager_id, first_name, last_name, email, password_hash, role)
 VALUES
-(1, 'Michael', 'Brown', 'michaelb@example.com', SHA2('password',256), 'sales_manager'),
-(2, 'Laura', 'Wilson', 'lauraw@example.com', SHA2('password',256), 'product_manager');
+(1, 'Arya', 'Hassibi', 'arya@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
+(2, 'Beste', 'Bayhan', 'beste@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
+(3, 'Mustafa', 'Topcu', 'mustafa@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
+(4, 'Orhun', 'Ege Ozpay', 'orhun@manager.com', UNHEX(SHA2('password', 256)), 'product_manager'),
+(5, 'Eid', 'Alhamali', 'eid@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager'),
+(6, 'Ecem', 'Akın', 'ecem@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
+(7, 'Zeynep', 'Işık', 'zeynep@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
+(8, 'Cemal', 'Yılmaz', 'cemal@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
+(9, 'Sales', 'Manager', 'sales@manager.com', UNHEX(SHA2('password', 256)), 'sales_manager');
+(10, 'Product', 'Manager', 'product@manager.com', UNHEX(SHA2('password', 256)), 'product_manager');
 
 -- Insert sample data into Categories
 INSERT INTO Categories (category_id, name, description)
