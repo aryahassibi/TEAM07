@@ -293,22 +293,30 @@ VALUES
 (14, 9, 14, 3, 540.00),
 (15, 9, 15, 1, 505.00);
 
--- Insert sample data into Payments
 INSERT INTO Payments (payment_id, order_id, user_id, amount, card_holder_name, card_number, card_expiration, cvv)
 VALUES
-(1, 1, 1, 29.98, 'John Doe', AES_ENCRYPT('4111111111111111', 'secretkey'), '2025-12-31', AES_ENCRYPT('123', 'secretkey')),
-(2, 2, 2, 12.99, 'Jane Smith', AES_ENCRYPT('5555555555554444', 'secretkey'), '2024-10-31', AES_ENCRYPT('456', 'secretkey')),
-(3, 3, 3, 15.99, 'Alice Johnson', AES_ENCRYPT('378282246310005', 'secretkey'), '2026-06-30', AES_ENCRYPT('789', 'secretkey'));
+(1, 1, 1, '2024-11-01 10:05:00', 1500.00, 'Arya Hassibi', AES_ENCRYPT('4111111111111111', 'encryption_key'), '2026-05-01', AES_ENCRYPT('123', 'encryption_key')),
+(2, 2, 1, '2024-11-15 12:35:00', 800.00, 'Arya Hassibi', AES_ENCRYPT('4111111111111111', 'encryption_key'), '2026-05-01', AES_ENCRYPT('123', 'encryption_key')),
+(3, 3, 1, '2024-12-01 09:50:00', 300.00, 'Arya Hassibi', AES_ENCRYPT('4111111111111111', 'encryption_key'), '2026-05-01', AES_ENCRYPT('123', 'encryption_key')),
+(4, 4, 2, '2024-12-05 11:25:00', 500.00, 'Beste Bayhan', AES_ENCRYPT('4222222222222222', 'encryption_key'), '2025-06-01', AES_ENCRYPT('456', 'encryption_key')),
+(5, 5, 3, '2024-12-07 08:20:00', 2500.00, 'Mustafa Topcu', AES_ENCRYPT('4333333333333333', 'encryption_key'), '2027-07-01', AES_ENCRYPT('789', 'encryption_key')),
+(6, 6, 5, '2024-11-20 14:55:00', 750.00, 'Eid Alhamali', AES_ENCRYPT('4444444444444444', 'encryption_key'), '2025-08-01', AES_ENCRYPT('012', 'encryption_key')),
+(7, 7, 6, '2024-10-25 16:35:00', 1200.00, 'Ecem Akın', AES_ENCRYPT('4555555555555555', 'encryption_key'), '2024-09-01', AES_ENCRYPT('345', 'encryption_key')),
+(8, 8, 6, '2024-12-02 13:45:00', 600.00, 'Ecem Akın', AES_ENCRYPT('4555555555555555', 'encryption_key'), '2024-09-01', AES_ENCRYPT('345', 'encryption_key')),
+(9, 9, 8, '2024-12-06 17:30:00', 900.00, 'Cemal Yılmaz', AES_ENCRYPT('4666666666666666', 'encryption_key'), '2026-10-01', AES_ENCRYPT('678', 'encryption_key'));
 
--- Insert sample data into RefundRequests
 INSERT INTO RefundRequests (refund_request_id, order_id, user_id, status, notes)
 VALUES
-(1, 2, 2, 'pending', 'Product did not meet expectations.');
+(1, 2, 1, '2024-11-20 10:00:00', 'approved', 'Product arrived damaged.'),
+(2, 4, 2, '2024-12-10 12:00:00', 'pending', 'Wrong product delivered.'),
+(3, 7, 6, '2024-10-30 09:30:00', 'rejected', 'No reason provided.');
 
--- Insert sample data into ReturnItems
+
 INSERT INTO ReturnItems (return_item_id, refund_request_id, product_id, quantity, price_at_purchase, reason)
 VALUES
-(1, 1, 2, 1, 12.99, 'Did not like the taste.');
+(1, 1, 3, 1, 600.00, 'Damaged packaging.'),
+(2, 2, 6, 2, 520.00, 'Incorrect variant received.'),
+(3, 3, 12, 1, 575.00, 'Did not like the taste.');
 
 -- Insert sample data into Invoices
 INSERT INTO Invoices (invoice_id, order_id, user_id, invoice_pdf)
