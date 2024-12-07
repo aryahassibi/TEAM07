@@ -123,8 +123,8 @@ INSERT INTO Product_Variant (variant_id, product_id, weight_grams, price, stock,
 VALUES
 -- Product 1 Variants
 (1, 1, 250, 500.00, 100, "ETH-YIR-250"),
-(2, 1, 500, 950.00, 50, "ETH-YIR-500"),
-(3, 1, 1000, 1800.00, 25, "ETH-YIR-1000"),
+(2, 1, 500, 950.00, 1, "ETH-YIR-500"),          -- Only 1 left in stock
+(3, 1, 1000, 1800.00, 1, "ETH-YIR-1000"),       -- Only 1 left in stock
 
 -- Product 2 Variants
 (4, 2, 250, 450.00, 200, "COL-SUP-250"),
@@ -134,13 +134,13 @@ VALUES
 (6, 3, 250, 600.00, 150, "BRA-SAN-250"),
 
 -- Product 4 Variants
-(7, 4, 250, 550.00, 120, "KEN-AA-250"),
+(7, 4, 250, 550.00, 0, "KEN-AA-250"),           -- Out of stock
 (8, 4, 500, 1050.00, 60, "KEN-AA-500"),
 
 -- Product 5 Variants
 (9, 5, 250, 580.00, 90, "SUM-MAN-250"),
-(10, 5, 500, 1100.00, 40, "SUM-MAN-500"),
-(11, 5, 1000, 2100.00, 10, "SUM-MAN-1000"),
+(10, 5, 500, 1100.00, 0, "SUM-MAN-500"),        -- Out of stock
+(11, 5, 1000, 2100.00, 1, "SUM-MAN-1000"),      -- Out of stock
 
 -- Product 6 Variants
 (12, 6, 250, 520.00, 130, "GUA-ANT-250"),
@@ -157,15 +157,15 @@ VALUES
 (17, 9, 250, 400.00, 200, "MEX-ALT-250"),
 
 -- Product 10 Variants
-(18, 10, 250, 510.00, 140, "HON-MAR-250"),
-(19, 10, 500, 1000.00, 60, "HON-MAR-500"),
+(18, 10, 250, 510.00, 0, "HON-MAR-250"),        -- Out of stock
+(19, 10, 500, 1000.00, 1, "HON-MAR-500"),       -- Only 1 left in stock
 
 -- Product 11 Variants
 (20, 11, 250, 495.00, 130, "PER-SIG-250"),
 
 -- Product 12 Variants
 (21, 12, 250, 575.00, 90, "TAN-PEA-250"),
-(22, 12, 500, 1150.00, 45, "TAN-PEA-500"),
+(22, 12, 500, 1150.00, 1, "TAN-PEA-500"),       -- Only 1 left in stock
 (23, 12, 1000, 2200.00, 20, "TAN-PEA-1000"),
 
 -- Product 13 Variants
@@ -180,7 +180,7 @@ VALUES
 
 -- Product 16 Variants
 (28, 16, 250, 700.00, 60, "PAN-GEI-250"),
-(29, 16, 500, 1350.00, 30, "PAN-GEI-500"),
+(29, 16, 500, 1350.00, 0, "PAN-GEI-500"),       -- Out of stock
 (30, 16, 1000, 2600.00, 15, "PAN-GEI-1000"),
 
 -- Product 17 Variants
@@ -191,11 +191,11 @@ VALUES
 
 -- Product 19 Variants
 (33, 19, 250, 620.00, 70, "YEM-MOH-250"),
-(34, 19, 500, 1200.00, 35, "YEM-MOH-500"),
+(34, 19, 500, 1200.00, 1, "YEM-MOH-500"),       -- Only 1 left in stock
 
 -- Product 20 Variants
-(35, 20, 250, 500.00, 90, "LAO-BOL-250"),
-(36, 20, 500, 980.00, 40, "LAO-BOL-500");
+(35, 20, 250, 500.00, 0, "LAO-BOL-250"),
+(36, 20, 500, 980.00, 40, "LAO-BOL-500");       -- Out of stock
 
 INSERT INTO Product_Images (image_id, product_id, image_url, alt_text)
 VALUES
