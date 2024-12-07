@@ -317,11 +317,13 @@ VALUES
 (2, 2, 2, NULL),
 (3, 3, 3, NULL);
 
--- Insert sample data into Discounts
 INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, category_id, active)
 VALUES
-(1, 'percentage', 10.00, '2023-01-01', '2023-12-31', 2, TRUE),
-(2, 'fixed', 2.00, '2023-06-01', '2023-12-31', 3, TRUE);
+(1, 'percentage', 10.00, '2024-12-01', '2024-12-31', 1, NULL, TRUE),
+(2, 'fixed', 50.00, '2024-11-15', '2024-11-30', NULL, 1, TRUE),
+(3, 'percentage', 15.00, '2024-10-01', '2024-10-31', 5, NULL, FALSE),
+(4, 'fixed', 100.00, '2024-12-05', '2024-12-20', 16, NULL, TRUE),
+(5, 'percentage', 5.00, '2024-12-10', '2024-12-25', NULL, 1, TRUE);
 
 -- Insert sample data into Wishlist
 INSERT INTO Wishlist (wishlist_id, user_id, product_id)
