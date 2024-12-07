@@ -146,19 +146,18 @@ CREATE TABLE IF NOT EXISTS Discounts (
 CREATE TABLE IF NOT EXISTS Wishlist (
     wishlist_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    product_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS WishlistItems (
     wishlist_item_id INT AUTO_INCREMENT PRIMARY KEY,
     wishlist_id INT NOT NULL,
-    product_id INT NOT NULL,
+    variant_id INT NOT NULL, -- Linked to Product_Variant
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (wishlist_id) REFERENCES Wishlist(wishlist_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+    FOREIGN KEY (variant_id) REFERENCES Product_Variant(variant_id) ON DELETE CASCADE,
+    UNIQUE(wishlist_id, variant_id) -- Prevent duplicate variants in a single wishlist
 );
 
 CREATE TABLE IF NOT EXISTS Payments (
