@@ -11,10 +11,30 @@ const ProductCard = ({ product, onAddToCart, onAddToWishlist }) => {
         isDiscounted,
     } = product;
 
+    const defaultImage = {
+        url: "/assets/images/products/default_mockup.png",
+        alt: "Default Mockup Image"
+    };
+
+    if (!product.image_url || product.image_url.length === 0) {
+        product.image_url = "/assets/images/products/default_mockup.png";
+    }
+
+    const handleImageError = (event) => {
+        event.target.src = `http://localhost:5001${defaultImage.url}`;
+        event.target.alt = defaultImage.alt;
+    };
+
+
     return (
         <div className={`product-card ${stock === 0 ? "out-of-stock" : ""}`}>
             <div className="product-image-wrapper">
-                <img src={image_url} alt={name} className="product-image" />
+                <img 
+                    src={`http://localhost:5001${image_url}`}
+                    alt={name} 
+                    className="product-image" 
+                    onError={handleImageError}
+                />
                 {stock === 0 && <div className="stock-overlay">Out of Stock</div>}
                 <button
                     className="wishlist-icon"
