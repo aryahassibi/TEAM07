@@ -230,19 +230,63 @@ VALUES
 (2, 2, 2, 4, 'Great espresso blend, rich and bold.', TRUE),
 (3, 3, 3, 3, 'Decent decaf coffee, but a bit too light for my taste.', TRUE);
 
--- Insert sample data into Orders
 INSERT INTO Orders (order_id, user_id, total_price, status, delivery_option_id)
 VALUES
-(1, 1, 29.98, 'processing', 1),
-(2, 2, 12.99, 'in-transit', 2),
-(3, 3, 15.99, 'delivered', 1);
+-- Orders for User 1
+(1, 1, 1500.00, 'delivered', 1, '2024-11-01 10:00:00', '2024-11-05 15:00:00'),
+(2, 1, 800.00, 'delivered', 2, '2024-11-15 12:30:00', '2024-11-17 18:00:00'),
+(3, 1, 300.00, 'delivered', 1, '2024-12-01 09:45:00', '2024-12-06 14:30:00'),
 
--- Insert sample data into OrderItems
+-- Orders for User 2
+(4, 2, 500.00, 'in-transit', 1, '2024-12-05 11:20:00', '2024-12-05 11:20:00'),
+
+-- Orders for User 3
+(5, 3, 2500.00, 'processing', 3, '2024-12-07 08:15:00', '2024-12-07 08:15:00'),
+
+-- Orders for User 5
+(6, 5, 750.00, 'delivered', 2, '2024-11-20 14:50:00', '2024-11-23 16:00:00'),
+
+-- Orders for User 6
+(7, 6, 1200.00, 'delivered', 1, '2024-10-25 16:30:00', '2024-10-30 10:00:00'),
+(8, 6, 600.00, 'in-transit', 2, '2024-12-02 13:40:00', '2024-12-02 13:40:00'),
+
+-- Orders for User 8
+(9, 8, 900.00, 'processing', 3, '2024-12-06 17:25:00', '2024-12-06 17:25:00');
+
 INSERT INTO OrderItems (order_item_id, order_id, product_id, quantity, price_at_purchase)
 VALUES
-(1, 1, 1, 2, 14.99),
-(2, 2, 2, 1, 12.99),
-(3, 3, 3, 1, 15.99);
+-- Order 1
+(1, 1, 1, 2, 500.00),
+(2, 1, 2, 1, 450.00),
+
+-- Order 2
+(3, 2, 3, 1, 600.00),
+(4, 2, 4, 1, 550.00),
+
+-- Order 3
+(5, 3, 5, 3, 580.00),
+
+-- Order 4
+(6, 4, 6, 2, 520.00),
+
+-- Order 5
+(7, 5, 7, 4, 480.00),
+(8, 5, 8, 2, 530.00),
+
+-- Order 6
+(9, 6, 9, 1, 400.00),
+(10, 6, 10, 1, 510.00),
+
+-- Order 7
+(11, 7, 11, 5, 495.00),
+
+-- Order 8
+(12, 8, 12, 2, 575.00),
+(13, 8, 13, 1, 610.00),
+
+-- Order 9
+(14, 9, 14, 3, 540.00),
+(15, 9, 15, 1, 505.00);
 
 -- Insert sample data into Payments
 INSERT INTO Payments (payment_id, order_id, user_id, amount, card_holder_name, card_number, card_expiration, cvv)
