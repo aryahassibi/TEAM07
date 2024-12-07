@@ -199,61 +199,61 @@ VALUES
 
 INSERT INTO Product_Images (image_id, product_id, image_url, alt_text)
 VALUES
-(1, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 250g'),
-(2, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 500g'),
-(3, 1, '/assets/images/products/product1.png', 'Ethiopian Yirgacheffe 1000g'),
+(1, 1, '/assets/images/products/product1.png', 'Sunrise Over the Serengeti 250g'),
+(2, 1, '/assets/images/products/product1.png', 'Sunrise Over the Serengeti 500g'),
+(3, 1, '/assets/images/products/product1.png', 'Sunrise Over the Serengeti 1000g'),
 
-(4, 2, '/assets/images/products/product2.png', 'Colombian Supremo 250g'),
-(5, 2, '/assets/images/products/product2.png', 'Colombian Supremo 500g'),
+(4, 2, '/assets/images/products/product2.png', 'Bolivian Echoes 250g'),
+(5, 2, '/assets/images/products/product2.png', 'Bolivian Echoes 500g'),
 
-(6, 3, '/assets/images/products/product3.png', 'Brazilian Santos 250g'),
+(6, 3, '/assets/images/products/product3.png', 'The Midnight Drifter 250g'),
 
-(7, 4, '/assets/images/products/product4.png', 'Kenyan AA 250g'),
-(8, 4, '/assets/images/products/product4.png', 'Kenyan AA 500g'),
+(7, 4, '/assets/images/products/product4.png', 'Costa Rican Summer 250g'),
+(8, 4, '/assets/images/products/product4.png', 'Costa Rican Summer 500g'),
 
-(9, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 250g'),
-(10, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 500g'),
-(11, 5, '/assets/images/products/product5.png', 'Sumatra Mandheling 1000g'),
+(9, 5, '/assets/images/products/product5.png', 'Guatemalan Volcano Heart 250g'),
+(10, 5, '/assets/images/products/product5.png', 'Guatemalan Volcano Heart 500g'),
+(11, 5, '/assets/images/products/product5.png', 'Guatemalan Volcano Heart 1000g'),
 
-(12, 6, '/assets/images/products/product6.png', 'Guatemalan Antigua 250g'),
-(13, 6, '/assets/images/products/product6.png', 'Guatemalan Antigua 500g'),
+(12, 6, '/assets/images/products/product6.png', 'Cuban Memory Lane 250g'),
+(13, 6, '/assets/images/products/product6.png', 'Cuban Memory Lane 500g'),
 
-(14, 7, '/assets/images/products/product7.png', 'Costa Rican Tarrazu 250g'),
+(14, 7, '/assets/images/products/product7.png', 'Indonesian Silk 250g'),
 
-(15, 8, '/assets/images/products/product8.png', 'Nicaraguan Segovia 250g'),
-(16, 8, '/assets/images/products/product8.png', 'Nicaraguan Segovia 500g'),
+(15, 8, '/assets/images/products/product8.png', 'Misty Hills of Rwanda 250g'),
+(16, 8, '/assets/images/products/product8.png', 'Misty Hills of Rwanda 500g'),
 
-(17, 9, '/assets/images/products/product9.png', 'Mexican Altura 250g'),
+(17, 9, '/assets/images/products/product9.png', 'Santiago at Dusk 250g'),
 
-(18, 10, '/assets/images/products/product10.png', 'Honduran Marcala 250g'),
-(19, 10, '/assets/images/products/product10.png', 'Honduran Marcala 500g'),
+(18, 10, '/assets/images/products/product10.png', 'Panama Geisha Dream 250g'),
+(19, 10, '/assets/images/products/product10.png', 'Panama Geisha Dream 500g'),
 
-(20, 11, '/assets/images/products/product11.png', 'Peruvian Chanchamayo 250g'),
+(20, 11, '/assets/images/products/product11.png', 'Mexican Firewood 250g'),
 
-(21, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 250g'),
-(22, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 500g'),
-(23, 12, '/assets/images/products/product12.png', 'Tanzanian Peaberry 1000g'),
+(21, 12, '/assets/images/products/product12.png', 'Peruvian Secret Garden 250g'),
+(22, 12, '/assets/images/products/product12.png', 'Peruvian Secret Garden 500g'),
+(23, 12, '/assets/images/products/product12.png', 'Peruvian Secret Garden 1000g'),
 
-(24, 13, '/assets/images/products/product13.png', 'Papua New Guinea Sigri 250g'),
+(24, 13, '/assets/images/products/product13.png', 'Yemen Desert Mirage 250g'),
 
-(25, 14, '/assets/images/products/product14.png', 'Rwandan Bourbon 250g'),
-(26, 14, '/assets/images/products/product14.png', 'Rwandan Bourbon 500g'),
+(25, 14, '/assets/images/products/product14.png', 'Vietnamese Bold Horizon 250g'),
+(26, 14, '/assets/images/products/product14.png', 'Vietnamese Bold Horizon 500g'),
 
-(27, 15, '/assets/images/products/product15.png', 'El Salvador Pacamara 250g'),
+(27, 15, '/assets/images/products/product15.png', 'Kenyan Red Sunset 250g'),
 
-(28, 16, '/assets/images/products/product16.png', 'Panama Geisha 250g'),
-(29, 16, '/assets/images/products/product16.png', 'Panama Geisha 500g'),
-(30, 16, '/assets/images/products/product16.png', 'Panama Geisha 1000g'),
+(28, 16, '/assets/images/products/product16.png', 'Honduran Stargazer 250g'),
+(29, 16, '/assets/images/products/product16.png', 'Honduran Stargazer 500g'),
+(30, 16, '/assets/images/products/product16.png', 'Honduran Stargazer 1000g'),
 
-(31, 17, '/assets/images/products/product17.png', 'Vietnamese Robusta 250g'),
+(31, 17, '/assets/images/products/product17.png', 'Laos Whispering Rain 250g'),
 
-(32, 18, '/assets/images/products/product18.png', 'Indian Monsooned Malabar 250g'),
+(32, 18, '/assets/images/products/product18.png', 'Turkish Caravan Tale 250g'),
 
-(33, 19, '/assets/images/products/product19.png', 'Yemen Mocha 250g'),
-(34, 19, '/assets/images/products/product19.png', 'Yemen Mocha 500g'),
+(33, 19, '/assets/images/products/product19.png', 'Colombian Daybreak 250g'),
+(34, 19, '/assets/images/products/product19.png', 'Colombian Daybreak 500g'),
 
-(35, 20, '/assets/images/products/product20.png', 'Laos Bolaven Plateau 250g'),
-(36, 20, '/assets/images/products/product20.png', 'Laos Bolaven Plateau 500g');
+(35, 20, '/assets/images/products/product20.png', 'Ecuadorian High Spirits 250g'),
+(36, 20, '/assets/images/products/product20.png', 'Ecuadorian High Spirits 500g');
 
 
 INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
