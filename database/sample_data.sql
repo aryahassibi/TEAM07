@@ -199,9 +199,14 @@ VALUES
 
 INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
 VALUES
-(1, 1, '123 Main Street', 'Anytown', 'Anystate', '12345', 'USA'),
-(2, 2, '456 Elm Street', 'Othertown', 'Otherstate', '67890', 'USA'),
-(3, 3, '789 Oak Avenue', 'Sometown', 'Somestate', '11223', 'USA');
+(1, 1, 'İstiklal Cad. No:1', 'İstanbul', 'İstanbul', '34433', 'Turkey'),
+(2, 2, 'Atatürk Bulvarı No:45', 'Ankara', 'Ankara', '06690', 'Turkey'),
+(3, 3, 'Çankaya Sok. No:12', 'İzmir', 'İzmir', '35210', 'Turkey'),
+(4, 4, 'Fatih Mah. No:7', 'Bursa', 'Bursa', '16010', 'Turkey'),
+(5, 5, 'Merkez Cad. No:5', 'Antalya', 'Antalya', '07020', 'Turkey'),
+(6, 6, 'Bağdat Cad. No:8', 'İstanbul', 'İstanbul', '34726', 'Turkey'),
+(7, 7, 'Kızılay Meydanı No:3', 'Ankara', 'Ankara', '06420', 'Turkey'),
+(8, 8, 'Konak Cad. No:10', 'İzmir', 'İzmir', '35220', 'Turkey');
 
 -- Insert into ShoppingCart for Registered Users
 INSERT INTO ShoppingCart (cart_id, user_id, session_id, created_at, updated_at)
