@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { CartContext } from '../CartContext';
-import FilterPanel from './FilterPanel';
+import { CartContext } from '../../CartContext';
+import FilterPanel from '../FilterPanel';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ProductsPage.css';  
+
+import ProductCard from './ProductCard';
 
 const ProductsPage = () => {
   const { addToCart } = useContext(CartContext);
@@ -139,6 +141,15 @@ const ProductsPage = () => {
   const openPanel = () => setIsPanelOpen(true);
   const closePanel = () => setIsPanelOpen(false);
 
+  const handleAddToCart = (product) => {
+    addToCart(product);
+  };
+
+  const handleAddToWishlist = (product) => {
+    // Add to wishlist logic here
+    console.log('Added to wishlist:', product);
+  };
+
   return (
     <div className="products-page">
       <h1>Our Coffee Products</h1>
@@ -183,8 +194,14 @@ const ProductsPage = () => {
       {/* Product List */}
       <div className="coffee-list">
         {products.length > 0 ? (
-          products.map((coffee) => (
-            <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
+          products.map((product) => (
+            <ProductCard
+                key={product.id} // Assuming each product has a unique 'id' property
+                product={product}
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
+            />
+            // <CoffeeCard key={coffee.variant_id} coffee={coffee} addToCart={addToCart} />
           ))
         ) : (
           <p>No products available.</p>
