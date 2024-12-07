@@ -96,6 +96,12 @@ body {
   text-transform: uppercase;
 }
 
+.main-content h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .main-content p {
   font-size: var(--font-size-base);
 }
