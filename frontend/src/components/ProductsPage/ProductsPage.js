@@ -1,28 +1,19 @@
-// src/components/ProductsPage.js
-
-import { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { CartContext } from '../../CartContext';
-import FilterPanel from '../FilterPanel';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './ProductsPage.css';  
-
-import ProductCard from './ProductCard';
+import { useState, useEffect } from "react";
+import FilterPanel from "../FilterPanel";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import ProductCard from "./ProductCard";
+import "./ProductsPage.css";
 
 const ProductsPage = () => {
-  const { addToCart } = useContext(CartContext);
-  const [filters, setFilters] = useState({});
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [tempFilters, setTempFilters] = useState(filters);
   const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [sortOption, setSortOption] = useState("asc");
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // State for sorting option
-  const [sortOption, setSortOption] = useState('asc'); // Default sort order
-
-  // Fetch products data from backend based on location.search
+  // Fetch products data based on filters and sort order
   useEffect(() => {
     const fetchProducts = async () => {
       const query = new URLSearchParams(location.search);
@@ -37,67 +28,33 @@ const ProductsPage = () => {
           setProducts(response.data);
         }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
     fetchProducts();
   }, [location.search]);
 
-  // Synchronize sortOption state with URL
-  useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    if (query.has('sort_order')) {
-      setSortOption(query.get('sort_order'));
-    } else {
-      setSortOption('asc'); // Default to 'asc'
-    }
-  }, [location.search]);
-
+  // Handle sort option change
   const handleSortChange = (event) => {
     const newSortOption = event.target.value;
     setSortOption(newSortOption);
 
-    // Update the URL query parameters
     const queryParams = new URLSearchParams(location.search);
-    queryParams.set('sort_by', 'price');
-    queryParams.set('sort_order', newSortOption);
-
-    // Update the URL without reloading the page
+    queryParams.set("sort_by", "price");
+    queryParams.set("sort_order", newSortOption);
     navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setTempFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
-
-  const applyFilters = () => {
-    setFilters(tempFilters);
-    setIsPanelOpen(false);
-
-    // Update the URL with new filters
+  // Apply filters
+  const applyFilters = (newFilters) => {
+    setFilters(newFilters);
     const queryParams = new URLSearchParams(location.search);
 
-    // Remove existing filter parameters
-    ['roast_level', 'bean_type', 'grind_type', 'caffeine_content', 'origin'].forEach((param) => {
-      queryParams.delete(param);
-    });
-
-    // Add new filters
-    Object.entries(tempFilters).forEach(([key, value]) => {
-      if (value) {
-        queryParams.set(key, value);
-      }
+    Object.entries(newFilters).forEach(([key, value]) => {
+      value ? queryParams.set(key, value) : queryParams.delete(key);
     });
 
     navigate(`${location.pathname}?${queryParams.toString()}`);
-  };
-
-  const clearFilters = () => {
-    setTempFilters({});
   };
 
   // Generate breadcrumb from location.search
@@ -137,127 +94,61 @@ const ProductsPage = () => {
   };
 
   const breadcrumbs = generateBreadcrumb();
-
-  const openPanel = () => setIsPanelOpen(true);
-  const closePanel = () => setIsPanelOpen(false);
-
+  console.log(breadcrumbs);
   const handleAddToCart = (product) => {
-    addToCart(product);
+    alert(`${product.name} has been added to the cart!`);
   };
 
-  const handleAddToWishlist = (product) => {
-    // Add to wishlist logic here
-    console.log('Added to wishlist:', product);
-  };
 
   return (
     <div className="products-page">
-      <h1>Our Coffee Products</h1>
-
+      <h1 className="page-title">Our Coffee Products</h1>
       {/* Breadcrumb Navigation */}
       <div className="breadcrumb">
-        <Link to="/products">All Products</Link>
+        <a href="/products">All Products</a>
         {breadcrumbs.map((crumb, index) => (
           <span key={index}>
-            {' > '}
+            {' / '}
             <span>{crumb.label}: </span>
             <span>{crumb.value}</span>
           </span>
         ))}
       </div>
-
-      {/* Sorting Dropdown */}
-      <div className="sorting-container">
-        <label htmlFor="sort">Sort: </label>
-        <select id="sort" value={sortOption} onChange={handleSortChange}>
+      {/* Sorting and Filtering */}
+      <div className="actions">
+        <button onClick={() => setIsPanelOpen(true)} className="filter-button">
+          Filter
+        </button>
+        <select value={sortOption} onChange={handleSortChange} className="sort-dropdown">
           <option value="asc">Lowest to Highest Price</option>
           <option value="desc">Highest to Lowest Price</option>
         </select>
       </div>
 
-      {/* Filter Button */}
-      <button onClick={openPanel} className="filter-button">
-        Filter
-      </button>
-
-      {/* Filter Panel */}
       {isPanelOpen && (
         <FilterPanel
-          filters={tempFilters}
-          handleFilterChange={handleFilterChange}
+          filters={filters}
           applyFilters={applyFilters}
-          closePanel={closePanel}
-          clearFilters={clearFilters}
+          closePanel={() => setIsPanelOpen(false)}
         />
       )}
 
-      {/* Product List */}
-      
+      {/* Product Grid */}
       <div className="products-grid">
-        {products.length > 0 ? (
+        {products.length ? (
           products.map((product) => (
-              <ProductCard
-                  key={product.id} // Ensure each product has a unique `id` property
-                  product={product}
-                  onAddToCart={handleAddToCart}
-                  onAddToWishlist={handleAddToWishlist}
-              />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={handleAddToCart}
+            />
           ))
-            ) : (
-              <p>No products available.</p>
-            )
-          }
+        ) : (
+          <p className="no-products">No products available.</p>
+        )}
       </div>
-
-
     </div>
   );
-};
-
-const CoffeeCard = ({ coffee, addToCart }) => {
-  const [quantity, setQuantity] = useState(1);
-
-  const handleIncrement = () => setQuantity((prev) => prev + 1);
-  const handleDecrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
-  const handleAddToCart = (e) => {
-    e.preventDefault(); // Prevent page navigation
-    if (quantity > coffee.stock) {
-      alert('Not enough stock available!');
-      return;
-    }
-    addToCart(coffee.name, coffee.variant_id, quantity, coffee.price, coffee.weight_grams);
-    alert(`${quantity} item(s) of ${coffee.name} added to cart.`);
-  };
-
-  return (
-    <Link to={`/product/${coffee.variant_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <div className="coffee-card">
-        <div className="image-placeholder"></div>
-        <h3>{coffee.name}</h3>
-        <p>Weight: {coffee.weight_grams}g</p>
-        <p>Price: ${coffee.price}</p>
-        <p>Stock Available: {coffee.stock}</p>
-        <div className="cart-controls">
-          <button onClick={(e) => { e.preventDefault(); handleDecrement(); }}>-</button>
-          <span>{quantity}</span>
-          <button onClick={(e) => { e.preventDefault(); handleIncrement(); }}>+</button>
-          <button onClick={handleAddToCart}>Add to Cart</button>
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-CoffeeCard.propTypes = {
-  coffee: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    weight_grams: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    stock: PropTypes.number.isRequired,
-    variant_id: PropTypes.number.isRequired,
-  }).isRequired,
-  addToCart: PropTypes.func.isRequired,
 };
 
 export default ProductsPage;
