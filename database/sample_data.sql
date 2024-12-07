@@ -318,12 +318,17 @@ VALUES
 (2, 2, 6, 2, 520.00, 'Incorrect variant received.'),
 (3, 3, 12, 1, 575.00, 'Did not like the taste.');
 
--- Insert sample data into Invoices
-INSERT INTO Invoices (invoice_id, order_id, user_id, invoice_pdf)
+INSERT INTO Invoices (invoice_id, order_id, user_id, invoice_pdf, created_at)
 VALUES
-(1, 1, 1, NULL),
-(2, 2, 2, NULL),
-(3, 3, 3, NULL);
+(1, 1, 1, NULL, '2024-11-05 15:05:00'),
+(2, 2, 1, NULL, '2024-11-17 18:05:00'),
+(3, 3, 1, NULL, '2024-12-06 14:35:00'),
+(4, 4, 2, NULL, '2024-12-05 11:25:00'),
+(5, 5, 3, NULL, '2024-12-07 08:25:00'),
+(6, 6, 5, NULL, '2024-11-23 16:05:00'),
+(7, 7, 6, NULL, '2024-10-30 10:05:00'),
+(8, 8, 6, NULL, '2024-12-02 13:45:00'),
+(9, 9, 8, NULL, '2024-12-06 17:30:00');
 
 INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, category_id, active)
 VALUES
