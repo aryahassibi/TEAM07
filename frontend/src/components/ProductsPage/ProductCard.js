@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./ProductCard.css";
@@ -30,8 +29,6 @@ const ProductCard = ({ product, onAddToCart }) => {
         e.preventDefault(); // Prevent navigation
         setIsWishlist((prev) => !prev); // Toggle wishlist state
     };
-
-    // cor
 
     const handleImageError = (event) => {
         event.target.src = defaultImage.url;
@@ -84,17 +81,19 @@ const ProductCard = ({ product, onAddToCart }) => {
                             )}
                         </div>
                     </div>
-                    <button
-                        className="add-to-cart-icon"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            onAddToCart(product);
-                        }}
-                        aria-label="Add to Cart"
-                    >
-                        <img src={cartIcon} alt="Add to Cart" />
-                    </button>
+                    {stock > 0 && (
+                        <button
+                            className="add-to-cart-icon"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onAddToCart(product);
+                            }}
+                            aria-label="Add to Cart"
+                        >
+                            <img src={cartIcon} alt="Add to Cart" />
+                        </button>
+                    )}
                 </div>
             </div>
         </Link>
