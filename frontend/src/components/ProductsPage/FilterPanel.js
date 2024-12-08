@@ -1,7 +1,7 @@
 // src/components/FilterPanel.js
 
 import PropTypes from 'prop-types';
-import './ProductsPage/ProductsPage.css';
+import './FilterPanel.css';
 
 const FilterPanel = ({ filters, handleFilterChange, applyFilters, closePanel, clearFilters }) => (
   <div className="filter-panel">
