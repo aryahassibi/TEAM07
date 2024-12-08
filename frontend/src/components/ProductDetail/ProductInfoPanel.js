@@ -116,7 +116,6 @@ const ProductInfoPanel = ({
                                     selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
                                 } ${variant.stock === 0 ? "out-of-stock" : ""}`}
                                 onClick={() => setSelectedVariant(variant)}
-                                disabled={variant.stock === 0}
                             >
                                 {variant.weight_grams}g ● {Number(discountedPrice)} TL 
                                 {isDiscounted && (
