@@ -61,10 +61,10 @@ CREATE TABLE IF NOT EXISTS Product_Variant (
 
 CREATE TABLE IF NOT EXISTS Product_Images (
     image_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
+    variant_id INT NOT NULL,
     image_url VARCHAR(500),
     alt_text VARCHAR(255),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+    FOREIGN KEY (variant_id) REFERENCES Product_Variant(variant_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS DeliveryOptions (
@@ -136,11 +136,9 @@ CREATE TABLE IF NOT EXISTS Discounts (
     value DECIMAL(10, 2) NOT NULL,  
     start_date DATE,                
     end_date DATE,                 
-    product_id INT,                 
-    category_id INT,                
+    variant_id INT,              
     active BOOLEAN DEFAULT TRUE,  
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE SET NULL
+    FOREIGN KEY (variant_id) REFERENCES Product_Variant(variant_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Wishlist (

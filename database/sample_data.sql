@@ -197,63 +197,63 @@ VALUES
 (35, 20, 250, 500.00, 0, "LAO-BOL-250"),
 (36, 20, 500, 980.00, 40, "LAO-BOL-500");       -- Out of stock
 
-INSERT INTO Product_Images (image_id, product_id, image_url, alt_text)
+INSERT INTO Product_Images (image_id, variant_id, image_url, alt_text)
 VALUES
 (1, 1, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 250g"),
-(2, 1, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 500g"),
-(3, 1, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 1000g"),
+(2, 2, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 500g"),
+(3, 3, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 1000g"),
 
-(4, 2, "/assets/images/products/product2.png", "Bolivian Echoes 250g"),
-(5, 2, "/assets/images/products/product2.png", "Bolivian Echoes 500g"),
+(4, 4, "/assets/images/products/product2.png", "Bolivian Echoes 250g"),
+(5, 5, "/assets/images/products/product2.png", "Bolivian Echoes 500g"),
 
-(6, 3, "/assets/images/products/product3.png", "The Midnight Drifter 250g"),
+(6, 6, "/assets/images/products/product3.png", "The Midnight Drifter 250g"),
 
-(7, 4, "/assets/images/products/product4.png", "Costa Rican Summer 250g"),
-(8, 4, "/assets/images/products/product4.png", "Costa Rican Summer 500g"),
+(7, 7, "/assets/images/products/product4.png", "Costa Rican Summer 250g"),
+(8, 8, "/assets/images/products/product4.png", "Costa Rican Summer 500g"),
 
-(9, 5, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 250g"),
-(10, 5, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 500g"),
-(11, 5, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 1000g"),
+(9, 9, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 250g"),
+(10, 10, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 500g"),
+(11, 11, "/assets/images/products/product5.png", "Guatemalan Volcano Heart 1000g"),
 
-(12, 6, "/assets/images/products/product6.png", "Cuban Memory Lane 250g"),
-(13, 6, "/assets/images/products/product6.png", "Cuban Memory Lane 500g"),
+(12, 12, "/assets/images/products/product6.png", "Cuban Memory Lane 250g"),
+(13, 13, "/assets/images/products/product6.png", "Cuban Memory Lane 500g"),
 
-(14, 7, "/assets/images/products/product7.png", "Indonesian Silk 250g"),
+(14, 14, "/assets/images/products/product7.png", "Indonesian Silk 250g"),
 
-(15, 8, "/assets/images/products/product8.png", "Misty Hills of Rwanda 250g"),
-(16, 8, "/assets/images/products/product8.png", "Misty Hills of Rwanda 500g"),
+(15, 15, "/assets/images/products/product8.png", "Misty Hills of Rwanda 250g"),
+(16, 16, "/assets/images/products/product8.png", "Misty Hills of Rwanda 500g"),
 
-(17, 9, "/assets/images/products/product9.png", "Santiago at Dusk 250g"),
+(17, 17, "/assets/images/products/product9.png", "Santiago at Dusk 250g"),
 
-(18, 10, "/assets/images/products/product10.png", "Panama Geisha Dream 250g"),
-(19, 10, "/assets/images/products/product10.png", "Panama Geisha Dream 500g"),
+(18, 18, "/assets/images/products/product10.png", "Panama Geisha Dream 250g"),
+(19, 19, "/assets/images/products/product10.png", "Panama Geisha Dream 500g"),
 
-(20, 11, "/assets/images/products/product11.png", "Mexican Firewood 250g"),
+(20, 20, "/assets/images/products/product11.png", "Mexican Firewood 250g"),
 
-(21, 12, "/assets/images/products/product12.png", "Peruvian Secret Garden 250g"),
-(22, 12, "/assets/images/products/product12.png", "Peruvian Secret Garden 500g"),
-(23, 12, "/assets/images/products/product12.png", "Peruvian Secret Garden 1000g"),
+(21, 21, "/assets/images/products/product12.png", "Peruvian Secret Garden 250g"),
+(22, 22, "/assets/images/products/product12.png", "Peruvian Secret Garden 500g"),
+(23, 23, "/assets/images/products/product12.png", "Peruvian Secret Garden 1000g"),
 
-(24, 13, "/assets/images/products/product13.png", "Yemen Desert Mirage 250g"),
+(24, 24, "/assets/images/products/product13.png", "Yemen Desert Mirage 250g"),
 
-(25, 14, "/assets/images/products/product14.png", "Vietnamese Bold Horizon 250g"),
-(26, 14, "/assets/images/products/product14.png", "Vietnamese Bold Horizon 500g"),
+(25, 25, "/assets/images/products/product14.png", "Vietnamese Bold Horizon 250g"),
+(26, 26, "/assets/images/products/product14.png", "Vietnamese Bold Horizon 500g"),
 
-(27, 15, "/assets/images/products/product15.png", "Kenyan Red Sunset 250g"),
+(27, 27, "/assets/images/products/product15.png", "Kenyan Red Sunset 250g"),
 
-(28, 16, "/assets/images/products/product16.png", "Honduran Stargazer 250g"),
-(29, 16, "/assets/images/products/product16.png", "Honduran Stargazer 500g"),
-(30, 16, "/assets/images/products/product16.png", "Honduran Stargazer 1000g"),
+(28, 28, "/assets/images/products/product16.png", "Honduran Stargazer 250g"),
+(29, 29, "/assets/images/products/product16.png", "Honduran Stargazer 500g"),
+(30, 30, "/assets/images/products/product16.png", "Honduran Stargazer 1000g"),
 
-(31, 17, "/assets/images/products/product17.png", "Laos Whispering Rain 250g"),
+(31, 31, "/assets/images/products/product17.png", "Laos Whispering Rain 250g"),
 
-(32, 18, "/assets/images/products/product18.png", "Turkish Caravan Tale 250g"),
+(32, 32, "/assets/images/products/product18.png", "Turkish Caravan Tale 250g"),
 
-(33, 19, "/assets/images/products/product19.png", "Colombian Daybreak 250g"),
-(34, 19, "/assets/images/products/product19.png", "Colombian Daybreak 500g"),
+(33, 33, "/assets/images/products/product19.png", "Colombian Daybreak 250g"),
+(34, 34, "/assets/images/products/product19.png", "Colombian Daybreak 500g"),
 
-(35, 20, "/assets/images/products/product20.png", "Ecuadorian High Spirits 250g"),
-(36, 20, "/assets/images/products/product20.png", "Ecuadorian High Spirits 500g");
+(35, 35, "/assets/images/products/product20.png", "Ecuadorian High Spirits 250g"),
+(36, 36, "/assets/images/products/product20.png", "Ecuadorian High Spirits 500g");
 
 
 INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
@@ -414,13 +414,13 @@ VALUES
 (8, 8, 6, NULL, "2024-12-02 13:45:00"),
 (9, 9, 8, NULL, "2024-12-06 17:30:00");
 
-INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, product_id, category_id, active)
+INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, variant_id, active)
 VALUES
-(1, "percentage", 10.00, "2024-12-01", "2024-12-31", 1, NULL, TRUE),
-(2, "fixed", 50.00, "2024-11-15", "2024-11-30", NULL, 1, TRUE),
-(3, "percentage", 15.00, "2024-10-01", "2024-10-31", 5, NULL, FALSE),
-(4, "fixed", 100.00, "2024-12-05", "2024-12-20", 16, NULL, TRUE),
-(5, "percentage", 5.00, "2024-12-10", "2024-12-25", NULL, 1, TRUE);
+(1, "percentage", 10.00, "2024-12-01", "2024-12-31", 1, TRUE),
+(2, "fixed", 50.00, "2024-11-15", "2024-11-30", 5, TRUE),
+(3, "percentage", 15.00, "2024-10-01", "2024-10-31", 9, FALSE),
+(4, "fixed", 100.00, "2024-12-05", "2024-12-20", 28, TRUE),
+(5, "percentage", 5.00, "2024-12-10", "2024-12-25", 16, TRUE);
 
 INSERT INTO Wishlist (wishlist_id, user_id, created_at)
 VALUES
