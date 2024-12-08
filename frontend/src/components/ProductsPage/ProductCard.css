@@ -190,14 +190,6 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .product-card .product-name {
-        font-size: 0.9rem;
-    }
-
-    .product-card .product-price {
-        font-size: 0.95rem;
-    }
-
     .product-card .add-to-cart-icon {
         width: 32px;
         height: 32px;
