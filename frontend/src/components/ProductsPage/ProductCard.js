@@ -104,8 +104,10 @@ const ProductCard = ({ product, onAddToCart }) => {
                     </button>
                 </div>
                 <div className="product-details">
-                    <div className="product-info">
+                    <div className="product-name-container">
                         <h3 className="product-name">{name}</h3>
+                    </div>
+                    <div className="product-bottom">
                         <div className="product-pricing">
                             <span className="product-price">
                                 {Number(discountedPrice)} TL
@@ -116,20 +118,20 @@ const ProductCard = ({ product, onAddToCart }) => {
                                 </span>
                             )}
                         </div>
+                        {stock > 0 && (
+                            <button
+                                className="add-to-cart-icon"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    onAddToCart(product);
+                                }}
+                                aria-label="Add to Cart"
+                            >
+                                <img src={cartIcon} alt="Add to Cart" />
+                            </button>
+                        )}
                     </div>
-                    {stock > 0 && (
-                        <button
-                            className="add-to-cart-icon"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                onAddToCart(product);
-                            }}
-                            aria-label="Add to Cart"
-                        >
-                            <img src={cartIcon} alt="Add to Cart" />
-                        </button>
-                    )}
                 </div>
             </div>
         </Link>

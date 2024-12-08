@@ -7,7 +7,6 @@
 /* General Styles */
 .product-card {
     width: 100%;
-    aspect-ratio: 2.5 / 3.5;
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
@@ -51,13 +50,20 @@
 /* Image Section */
 .product-card .product-image-wrapper {
     width: 100%;
-    aspect-ratio: 1 / 1;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid #ddd;
+}
+
+.product-card .product-image-wrapper::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%; /* Makes the wrapper a square */
 }
 
 .product-card .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -71,9 +77,9 @@
     right: 10px;
     width: var(--button-size);
     height: var(--button-size);
-    background-color: var(--button-bg-color); /* Transparent background */
+    background-color: var(--button-bg-color);
     border: none;
-    border-radius: var(--box-border-radius);
+    border-radius: 4px;
     font-size: 1rem;
     display: flex;
     align-items: center;
@@ -95,33 +101,36 @@
 .product-card .product-details {
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
-.product-card .product-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+.product-card .product-name-container {
+    margin-bottom: 8px;
 }
 
 .product-card .product-name {
     font-weight: bold;
-    color: var(--neutral-black);
+    color: #000;
     margin: 0;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+.product-card .product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .product-card .product-pricing {
-    margin-top: 4px;
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
 .product-card .product-price {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 200;
     color: var(--neutral-black);
 }
@@ -134,15 +143,11 @@
 
 /* Add to Cart Icon */
 .product-card .add-to-cart-icon {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
     background: none;
-    border: 1px solid #000;
+    border: none;
     width: var(--button-size);
     height: var(--button-size);
     border-radius: 4px;
-    border: none;
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -152,166 +157,50 @@
 }
 
 .product-card .add-to-cart-icon:hover {
-    background-color: #f5f5f5;
+    background-color: var(--button-hover-bg-color);
 }
 
 .product-card .add-to-cart-icon:active {
     transform: scale(0.9);
 }
 
+/* Product Weight */
 .product-card .product-weight {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: rgb(0, 0, 0);
+    color: #000;
     width: calc(1.5 * var(--button-size));
     height: var(--button-size);
-    background-color: var(--button-bg-color); /* Transparent background */
-     /* Black border */
-    border-radius: var(--box-border-radius);
+    background-color: var(--button-bg-color);
+    border-radius: 4px;
     font-size: 1rem;
     font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    cursor: default;
     z-index: 2;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .product-card {
-        aspect-ratio: auto; /* Adjust for smaller screens */
-    }
-
-    .product-name {
+    .product-card .product-name {
         font-size: 0.9rem;
     }
 
-    .product-price {
+    .product-card .product-price {
         font-size: 0.95rem;
     }
 
-    .add-to-cart-icon {
-        width: 36px;
-        height: 36px;
+    .product-card .add-to-cart-icon {
+        width: 32px;
+        height: 32px;
         font-size: 16px;
     }
 
-    .wishlist-icon {
+    .product-card .wishlist-icon {
         width: 32px;
         height: 32px;
     }
-}
-
-/* Filter Panel */
-/* Filter Panel */
-.product-card .filter-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    left: 0;
-    width: 300px;
-    height: 100%;
-    background-color: var(--neutral-white);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    padding: 2rem;
-    background-color: var(--neutral-white);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    padding: 2rem;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    gap: 1rem;
-}
-
-.product-card .filter-panel .close-icon {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--neutral-black);
-    font-size: 1.5rem;
-    color: var(--neutral-black);
-    cursor: pointer;
-}
-
-.product-card .filter-panel button {
-    padding: 0.8rem;
-    font-size: var(--font-size-sm);
-
-    .filter-panel button {
-        padding: 0.8rem;
-        font-size: var(--font-size-sm);
-        border-radius: 4px;
-        cursor: pointer;
-        color: var(--neutral-white);
-        transition: background-color 0.3s ease;
-    }
-
-    .apply-filters-button {
-        background-color: var(--success-color);
-        color: var(--neutral-white);
-        transition: background-color 0.3s ease;
-    }
-
-    .apply-filters-button {
-        background-color: var(--success-color);
-    }
-
-    .clear-filters-button {
-        background-color: var(--error-color);
-    }
-
-    button.apply-filters-button:hover {
-        background-color: var(--primary-dark);
-    }
-
-    button.clear-filters-button:hover {
-        background-color: var(--error-color);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .coffee-card {
-            width: 90%;
-        }
-
-        .filter-panel {
-            width: 100%;
-            height: auto;
-            top: auto;
-            bottom: 0;
-        }
-    }
-
-    background-color: var(--error-color);
-}
-
-button.apply-filters-button:hover {
-    background-color: var(--primary-dark);
-}
-
-button.clear-filters-button:hover {
-    background-color: var(--error-color);
-}
-
-/* Sorting Container */
-.product-card .sorting-container {
-    margin: 10px 0;
-}
-
-.product-card .sorting-container label {
-    margin-right: 5px;
-}
-
-.product-card .sorting-container select {
-    padding: 5px 10px;
-    font-size: 16px;
 }
