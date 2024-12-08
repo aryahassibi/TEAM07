@@ -9,7 +9,7 @@
     padding-top: 100%; /* 1:1 Aspect Ratio */
     overflow: hidden;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 6px;
 }
 
 .image-carousel  .main-image img {
@@ -19,7 +19,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
 }
 
 .image-carousel .nav-button {
