@@ -143,7 +143,7 @@ const ProductsPage = () => {
         {products.length ? (
           products.map((product) => (
             <ProductCard
-              key={product.id}
+              key={product.variant_id}
               product={product}
               onAddToCart={handleAddToCart}
             />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./ProductCard.css";
@@ -11,10 +11,8 @@ const ProductCard = ({ product, onAddToCart }) => {
     const {
         name,
         price,
-        discounted_price,
-        image_url,
         stock,
-        isDiscounted,
+        variant_id,
         weight_grams,
     } = product;
 
@@ -24,6 +22,39 @@ const ProductCard = ({ product, onAddToCart }) => {
     };
 
     const [isWishlist, setIsWishlist] = useState(false);
+    const [images, setImages] = useState([defaultImage]); // Default to one default image
+    const [discountedPrice, setDiscountedPrice] = useState(price);
+    const [isDiscounted, setIsDiscounted] = useState(false);
+
+    // Fetch images and discount
+    useEffect(() => {
+        // Fetch images
+        fetch(`http://localhost:5001/api/product/variant/${variant_id}/images`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success && data.data.length > 0) {
+                    setImages(data.data);
+                }
+            })
+            .catch(() => {
+                setImages([defaultImage]); // Use default image on error
+            });
+
+        // Fetch discount
+        fetch(`http://localhost:5001/api/product/variant/${variant_id}/discount`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success && data.data.length > 0) {
+                    const discountData = data.data[0];
+                    setDiscountedPrice(discountData.discounted_price);
+                    setIsDiscounted(discountData.discounted_price < price);
+                }
+            })
+            .catch(() => {
+                setDiscountedPrice(price); // Use original price on error
+                setIsDiscounted(false);
+            });
+    }, [variant_id, price]);
 
     const handleWishlistClick = (e) => {
         e.preventDefault(); // Prevent navigation
@@ -31,21 +62,26 @@ const ProductCard = ({ product, onAddToCart }) => {
     };
 
     const handleImageError = (event) => {
+        if (event.target.src !== defaultImage.url) {
+            console.warn(`Failed to load image from URL: ${event.target.src} for product variant ${variant_id}. Using default image.`);
+        } else { 
+            console.error(`Failed to load default image from URL: ${event.target.src}.`);
+        }
         event.target.src = defaultImage.url;
         event.target.alt = defaultImage.alt;
     };
 
     return (
         <Link
-            to={`/product/${product.variant_id}`}
+            to={`/product/${variant_id}`}
             className={`product-card-link ${stock === 0 ? "out-of-stock" : ""}`}
         >
             <div className="product-card">
                 <div className="product-image-wrapper">
                     <div className="product-weight">{weight_grams}g</div>
                     <img
-                        src={`http://localhost:5001${image_url}`}
-                        alt={name}
+                        src={`http://localhost:5001${images[0]?.image_url}`}
+                        alt={images[0]?.alt_text || name}
                         className="product-image"
                         onError={handleImageError}
                     />
@@ -72,11 +108,11 @@ const ProductCard = ({ product, onAddToCart }) => {
                         <h3 className="product-name">{name}</h3>
                         <div className="product-pricing">
                             <span className="product-price">
-                                {Number(discounted_price || price)} TL
+                                {Number(discountedPrice)} TL
                             </span>
                             {isDiscounted && (
                                 <span className="product-original-price">
-                                    ${price}
+                                    {price} TL
                                 </span>
                             )}
                         </div>
@@ -104,11 +140,8 @@ ProductCard.propTypes = {
     product: PropTypes.shape({
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        discounted_price: PropTypes.number,
-        image_url: PropTypes.string.isRequired,
-        stock: PropTypes.number.isRequired,
-        isDiscounted: PropTypes.bool,
         variant_id: PropTypes.number.isRequired,
+        stock: PropTypes.number.isRequired,
         weight_grams: PropTypes.number.isRequired,
     }).isRequired,
     onAddToCart: PropTypes.func.isRequired,
