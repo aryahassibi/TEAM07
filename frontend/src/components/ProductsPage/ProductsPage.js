@@ -22,11 +22,16 @@ const ProductsPage = () => {
         let response;
         if (location.pathname.includes('/search')) {
           response = await axios.get(`http://localhost:5001/api/search?${query.toString()}`);
-          setProducts(response.data.data);
         } else {
           response = await axios.get(`http://localhost:5001/api/products?${query.toString()}`);
-          setProducts(response.data);
         }
+        const productsData = response.data.map(product => ({
+          ...product,
+          price: Number(product.price),
+          discounted_price: Number(product.discounted_price)
+        }));
+        setProducts(productsData);
+        console.log("Products fetched:", productsData);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
