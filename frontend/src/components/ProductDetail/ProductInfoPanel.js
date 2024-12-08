@@ -15,41 +15,62 @@ const ProductInfoPanel = ({
     wishlistFilled,
     handleWishlistClick
 }) => {
-    const [discountedPrice, setDiscountedPrice] = useState(selectedVariant?.price);
-    const [isDiscounted, setIsDiscounted] = useState(false);
-    const [discountType, setDiscountType] = useState(null);
-    const [discountValue, setDiscountValue] = useState(null);
+    // State to store discount information for all variants
+    const [discountsMap, setDiscountsMap] = useState({});
 
     useEffect(() => {
-        if (selectedVariant) {
-            // Fetch discount for the selected variant
-            fetch(`http://localhost:5001/api/product/variant/${selectedVariant.variant_id}/discount`)
-                .then((response) => response.json())
-                .then((data) => {
+        if (variants && variants.length > 0) {
+            // Function to fetch discount for a single variant
+            const fetchDiscount = async (variant) => {
+                try {
+                    const response = await fetch(`http://localhost:5001/api/product/variant/${variant.variant_id}/discount`);
+                    const data = await response.json();
                     if (data.success && data.discount) {
-                        setDiscountedPrice(data.discounted_price);
-                        setIsDiscounted(data.discounted_price < selectedVariant.price);
-                        setDiscountType(data.discount.discount_type);
-                        setDiscountValue(data.discount.value);
+                        return { 
+                            variant_id: variant.variant_id, 
+                            discounted_price: data.discounted_price,
+                            discount_type: data.discount.discount_type,
+                            discount_value: data.discount.value
+                        };
                     } else {
-                        setDiscountedPrice(selectedVariant.price); // Use original price if not successful
-                        setIsDiscounted(false);
-                        setDiscountType(null);
-                        setDiscountValue(null);
+                        // No discount available
+                        return { 
+                            variant_id: variant.variant_id, 
+                            discounted_price: variant.price,
+                            discount_type: null,
+                            discount_value: null
+                        };
                     }
-                })
-                .catch((error) => {
-                    console.error(
-                        `Error fetching discounted price from URL: http://localhost:5001/api/product/variant/${selectedVariant.variant_id}/discount`,
-                        error
-                    );
-                    setDiscountedPrice(selectedVariant.price); // Use original price on error
-                    setIsDiscounted(false);
-                    setDiscountType(null);
-                    setDiscountValue(null);
+                } catch (error) {
+                    console.error(`Error fetching discount for variant_id ${variant.variant_id}:`, error);
+                    // Fallback to original price on error
+                    return { 
+                        variant_id: variant.variant_id, 
+                        discounted_price: variant.price,
+                        discount_type: null,
+                        discount_value: null
+                    };
+                }
+            };
+
+            // Fetch discounts for all variants concurrently
+            const fetchAllDiscounts = async () => {
+                const discountPromises = variants.map((variant) => fetchDiscount(variant));
+                const discounts = await Promise.all(discountPromises);
+                const discountsObject = {};
+                discounts.forEach(({ variant_id, discounted_price, discount_type, discount_value }) => {
+                    discountsObject[variant_id] = { 
+                        discounted_price, 
+                        discount_type, 
+                        discount_value 
+                    };
                 });
+                setDiscountsMap(discountsObject);
+            };
+
+            fetchAllDiscounts();
         }
-    }, [selectedVariant]);
+    }, [variants]);
 
     return (
         <div className="key-info">
@@ -59,19 +80,20 @@ const ProductInfoPanel = ({
                 <p className="product-description">{product.description}</p>
                 <div className="product-price-section">
                     <div className="product-price">
-                        {Number(discountedPrice).toFixed(2)} TL
+                        {selectedVariant && discountsMap[selectedVariant.variant_id]
+                            ? Number(discountsMap[selectedVariant.variant_id].discounted_price).toFixed(2)
+                            : Number(selectedVariant?.price).toFixed(2)} TL
                     </div>
-                    {isDiscounted && (
+                    {selectedVariant && discountsMap[selectedVariant.variant_id] && discountsMap[selectedVariant.variant_id].discounted_price < selectedVariant.price && (
                         <div className="price-details">
-
-                            <span className="product-original-price">
+                            <span className="product-base-price">
                                 {Number(selectedVariant.price).toFixed(2)} TL
                             </span>
                             <span className="dot">●</span>
                             <span className="discount-label">
-                                {discountType === "percentage"
-                                    ? `-${discountValue}% Sale`
-                                    : `-${Number(discountValue)} TL Off`}
+                                {discountsMap[selectedVariant.variant_id].discount_type === "percentage"
+                                    ? `-${discountsMap[selectedVariant.variant_id].discount_value}% Sale`
+                                    : `-${Number(discountsMap[selectedVariant.variant_id].discount_value)} TL Off`}
                             </span>
                         </div>
                     )}
@@ -82,17 +104,29 @@ const ProductInfoPanel = ({
             <div className="variant-selection">
                 <h3 className="variant-header">Weight Options</h3>
                 <div className="variant-buttons">
-                    {variants.map((variant) => (
-                        <button
-                            key={variant.variant_id}
-                            className={`variant-button ${
-                                selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
-                            } ${variant.stock === 0 ? "out-of-stock" : ""}`}
-                            onClick={() => setSelectedVariant(variant)}
-                        >
-                            {variant.weight_grams}g ● {Number(variant.price).toFixed(2)} TL
-                        </button>
-                    ))}
+                    {variants.map((variant) => {
+                        const discountInfo = discountsMap[variant.variant_id];
+                        const discountedPrice = discountInfo ? discountInfo.discounted_price : variant.price;
+                        const isDiscounted = discountInfo && discountedPrice < variant.price;
+
+                        return (
+                            <button
+                                key={variant.variant_id}
+                                className={`variant-button ${
+                                    selectedVariant?.variant_id === variant.variant_id ? "selected" : ""
+                                } ${variant.stock === 0 ? "out-of-stock" : ""}`}
+                                onClick={() => setSelectedVariant(variant)}
+                                disabled={variant.stock === 0}
+                            >
+                                {variant.weight_grams}g ● {Number(discountedPrice)} TL 
+                                {isDiscounted && (
+                                    <span className="base-price">
+                                        {Number(variant.price)} TL
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 

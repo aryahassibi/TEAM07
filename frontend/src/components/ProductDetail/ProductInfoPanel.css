@@ -37,7 +37,7 @@
     margin: 0;
 }
 
-/* Price Details (Discount Label and Original Price) */
+/* Price Details (Discount Label and Base Price) */
 .key-info .price-details {
     display: flex;
     align-items: center;
@@ -55,11 +55,17 @@
     font-size: 1.2rem;
 }
 
-.key-info .product-original-price {
+.key-info .product-base-price {
     text-decoration: line-through;
     font-weight: 200;
     color: var(--error-color); /* Red color */
 }
+.key-info .variant-buttons .base-price {
+    text-decoration: line-through;
+    color: var(--error-color);
+    margin-left: 5px;
+}
+
 
 /* Variant Selection Styling */
 .key-info .variant-selection {
