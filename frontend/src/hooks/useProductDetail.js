@@ -22,13 +22,26 @@ const useProductDetail = (variant_id) => {
                     `http://localhost:5001/api/product/variants/${variant_id}`
                 );
                 const productData = productResponse.data;
+
+                // Convert warranty_status to boolean
+                if (typeof productData.warranty_status !== "boolean") {
+                    productData.warranty_status = Boolean(productData.warranty_status);
+                }
+
+                // Ensure price is a number
+                productData.price = Number(productData.price);
+                
                 setProduct(productData);
 
                 // Fetch all variants for the product
                 const variantsResponse = await axios.get(
                     `http://localhost:5001/api/products/${productData.product_id}/variants`
                 );
-                setVariants(variantsResponse.data.variants);
+                const formattedVariants = variantsResponse.data.variants.map(variant => ({
+                    ...variant,
+                    price: Number(variant.price),
+                }));
+                setVariants(formattedVariants);
 
                 // Fetch reviews and calculate average rating
                 const reviewsResponse = await axios.get(
