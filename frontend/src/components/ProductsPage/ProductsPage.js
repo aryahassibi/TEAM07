@@ -28,7 +28,6 @@ const ProductsPage = () => {
         const productsData = response.data.map(product => ({
           ...product,
           price: Number(product.price),
-          discounted_price: Number(product.discounted_price)
         }));
         setProducts(productsData);
         console.log("Products fetched:", productsData);

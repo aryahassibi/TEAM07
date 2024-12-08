@@ -44,13 +44,20 @@ const ProductCard = ({ product, onAddToCart }) => {
         fetch(`http://localhost:5001/api/product/variant/${variant_id}/discount`)
             .then((response) => response.json())
             .then((data) => {
-                if (data.success && data.data.length > 0) {
-                    const discountData = data.data[0];
-                    setDiscountedPrice(discountData.discounted_price);
-                    setIsDiscounted(discountData.discounted_price < price);
+                if (data.success) {
+                    setDiscountedPrice(data.discounted_price);
+                    setIsDiscounted(data.discounted_price < price);
+                    console.log("Discounted price fetched:", data.discounted_price);
+                } else {
+                    setDiscountedPrice(price); // Use original price if not successful
+                    setIsDiscounted(false);
                 }
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error(
+                    `Error fetching discounted price from URL: http://localhost:5001/api/product/variant/${variant_id}/discount`,
+                    error
+                );
                 setDiscountedPrice(price); // Use original price on error
                 setIsDiscounted(false);
             });
