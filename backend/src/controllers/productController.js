@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const db = require('../config/db');
 
 // List all products variants with filtering, sorting, images, and discounts
-exports.listProductsWithDetails = (req, res) => {
+exports.listProducts = (req, res) => {
     const {
         category_id,
         roast_level,
@@ -47,26 +47,11 @@ exports.listProductsWithDetails = (req, res) => {
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
-            pv.sku,
-            pi.image_url,
-            pi.alt_text,
-            d.discount_type,
-            d.value AS discount_value,
-            d.start_date AS discount_start_date,
-            d.end_date AS discount_end_date,
-            CASE 
-                WHEN d.discount_type = 'percentage' THEN pv.price - (pv.price * d.value / 100)
-                WHEN d.discount_type = 'fixed' THEN pv.price - d.value
-                ELSE pv.price
-            END AS discounted_price
+            pv.sku
         FROM 
             Products p
         JOIN 
             Product_Variant pv ON p.product_id = pv.product_id
-        LEFT JOIN 
-            Product_Images pi ON p.product_id = pi.product_id
-        LEFT JOIN 
-            Discounts d ON (p.product_id = d.product_id AND d.active = TRUE)
     `;
 
     let conditions = [];
@@ -110,10 +95,11 @@ exports.listProductsWithDetails = (req, res) => {
             return res.status(500).json({ error: 'Failed to retrieve products.' });
         }
 
-        // Return results
+        // Instead of returning 404 for no results, return an empty array
         res.json(results);
     });
 };
+
 
 
 // Retrieve a single product by ID
@@ -264,6 +250,7 @@ exports.getProductDetails = (req, res) => {
 
 
 // Retrieve product details by variant ID
+// Retrieve product details by variant ID
 exports.getProductDetailsByVariant = (req, res) => {
     const variantId = req.params.variant_id;
 
@@ -298,7 +285,7 @@ exports.getProductDetailsByVariant = (req, res) => {
     const imagesQuery = `
         SELECT image_url, alt_text 
         FROM Product_Images 
-        WHERE product_id = ?;
+        WHERE variant_id = ?;
     `;
 
     db.query(productQuery, [variantId], (error, results) => {
@@ -311,7 +298,7 @@ exports.getProductDetailsByVariant = (req, res) => {
         }
         const product = results[0];
 
-        db.query(imagesQuery, [product.product_id], (imgError, imgResults) => {
+        db.query(imagesQuery, [variantId], (imgError, imgResults) => {
             if (imgError) {
                 console.error('Error retrieving product images:', imgError);
                 return res.status(500).json({ error: 'Internal server error' });
@@ -325,3 +312,100 @@ exports.getProductDetailsByVariant = (req, res) => {
     });
 };
 
+
+exports.getImagesForVariant = (req, res) => {
+    const { variantId } = req.params;
+
+    db.query(
+        'SELECT image_id, variant_id, image_url, alt_text FROM Product_Images WHERE variant_id = ?',
+        [variantId],
+        (error, rows) => {
+            if (error) {
+                console.error('Error fetching product variant images:', error);
+                return res.status(500).json({
+                    success: false,
+                    error: 'Internal Server Error'
+                });
+            }
+
+            return res.json({
+                success: true,
+                data: rows
+            });
+        }
+    );
+};
+
+
+exports.getDiscountForVariant = (req, res) => {
+    const { variantId } = req.params;
+
+    // Fetch variant price
+    db.query(
+        'SELECT price FROM Product_Variant WHERE variant_id = ?',
+        [variantId],
+        (error, variantRows) => {
+            if (error) {
+                console.error('Error fetching variant price:', error);
+                return res.status(500).json({ success: false, error: 'Internal Server Error' });
+            }
+
+            if (variantRows.length === 0) {
+                return res.status(404).json({ success: false, error: 'Variant not found' });
+            }
+
+            const basePrice = parseFloat(variantRows[0].price);
+
+            // Fetch any active discount for this variant
+            db.query(
+                `SELECT discount_id, discount_type, value, start_date, end_date, active 
+                 FROM Discounts 
+                 WHERE variant_id = ? 
+                 AND active = TRUE
+                 AND (start_date IS NULL OR start_date <= CURDATE())
+                 AND (end_date IS NULL OR end_date >= CURDATE())
+                 LIMIT 1`,
+                [variantId],
+                (discountError, discountRows) => {
+                    if (discountError) {
+                        console.error('Error fetching discount:', discountError);
+                        return res.status(500).json({ success: false, error: 'Internal Server Error' });
+                    }
+
+                    if (discountRows.length === 0) {
+                        // No active discount
+                        return res.json({
+                            success: true,
+                            discount: null,
+                            discounted_price: basePrice
+                        });
+                    }
+
+                    const discount = discountRows[0];
+                    let discountedPrice = basePrice;
+
+                    if (discount.discount_type === 'percentage') {
+                        discountedPrice = basePrice * (1 - (parseFloat(discount.value) / 100));
+                    } else if (discount.discount_type === 'fixed') {
+                        discountedPrice = basePrice - parseFloat(discount.value);
+                        if (discountedPrice < 0) discountedPrice = 0; // Ensure not negative
+                    }
+
+                    return res.json({
+                        success: true,
+                        discount: {
+                            discount_id: discount.discount_id,
+                            discount_type: discount.discount_type,
+                            value: discount.value,
+                            start_date: discount.start_date,
+                            end_date: discount.end_date,
+                            active: discount.active
+                        },
+                        base_price: basePrice,
+                        discounted_price: discountedPrice
+                    });
+                }
+            );
+        }
+    );
+};
