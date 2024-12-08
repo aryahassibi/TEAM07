@@ -25,6 +25,8 @@ const ProductCard = ({ product, onAddToCart }) => {
     const [images, setImages] = useState([defaultImage]); // Default to one default image
     const [discountedPrice, setDiscountedPrice] = useState(price);
     const [isDiscounted, setIsDiscounted] = useState(false);
+    const [discountType, setDiscountType] = useState(null);
+    const [discountValue, setDiscountValue] = useState(null);
 
     // Fetch images and discount
     useEffect(() => {
@@ -44,13 +46,16 @@ const ProductCard = ({ product, onAddToCart }) => {
         fetch(`http://localhost:5001/api/product/variant/${variant_id}/discount`)
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
+                if (data.success && data.discount) {
                     setDiscountedPrice(data.discounted_price);
                     setIsDiscounted(data.discounted_price < price);
-                    console.log("Discounted price fetched:", data.discounted_price);
+                    setDiscountType(data.discount.discount_type);
+                    setDiscountValue(data.discount.value);
                 } else {
                     setDiscountedPrice(price); // Use original price if not successful
                     setIsDiscounted(false);
+                    setDiscountType(null);
+                    setDiscountValue(null);
                 }
             })
             .catch((error) => {
@@ -60,6 +65,8 @@ const ProductCard = ({ product, onAddToCart }) => {
                 );
                 setDiscountedPrice(price); // Use original price on error
                 setIsDiscounted(false);
+                setDiscountType(null);
+                setDiscountValue(null);
             });
     }, [variant_id, price]);
 
@@ -92,6 +99,13 @@ const ProductCard = ({ product, onAddToCart }) => {
                         className="product-image"
                         onError={handleImageError}
                     />
+                    {isDiscounted && discountType && discountValue && (
+                        <div className="discount-label">
+                            {discountType === "percentage"
+                                ? `-%${Number(discountValue)} Sale`
+                                : `-${Number(discountValue)} TL Off`}
+                        </div>
+                    )}
                     {stock === 0 && (
                         <div className="stock-overlay">Out of Stock</div>
                     )}

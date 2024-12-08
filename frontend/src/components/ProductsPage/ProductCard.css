@@ -140,6 +140,19 @@
     color: var(--neutral-black);
 }
 
+.product-card .discount-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    /* background-color: var(--error-color); */
+    color: var(--error-color);
+    /* padding: 5px 8px; */
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 400;
+    z-index: 2;
+}
+
 .product-card .product-original-price {
     font-size: 1.1rem;
     color: var(--error-color);
