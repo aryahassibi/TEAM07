@@ -23,18 +23,49 @@
     line-height: var(--line-height-md);
 }
 
+/* Price Section */
+.key-info .product-price-section {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+}
+
 .key-info .product-price {
     font-size: 4rem;
     font-weight: 100;
     color: var(--neutral-black);
-    margin-top: var(--spacing-lg);
+    margin: 0;
+}
+
+/* Price Details (Discount Label and Original Price) */
+.key-info .price-details {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 1.5rem;
+    color: var(--error-color);
+}
+
+.key-info .discount-label {
+    font-weight: 400;
+}
+
+.key-info .dot {
+    margin: 0 20px;
+    font-size: 1.2rem;
+}
+
+.key-info .product-original-price {
+    text-decoration: line-through;
+    font-weight: 200;
+    color: var(--error-color); /* Red color */
 }
 
 /* Variant Selection Styling */
 .key-info .variant-selection {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: calc(var(--spacing-md) * 2);
     margin-top: auto; /* Push to the bottom */
 }
@@ -49,7 +80,6 @@
 }
 
 .key-info .variant-buttons {
-    justify-content: flex-start; /* Aligns to the left */
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-sm);
@@ -100,7 +130,7 @@
     border: 2px solid var(--neutral-black); /* Black border */
     border-radius: var(--box-border-radius);
     font-size: 1rem;
-    color: var (--neutral-black); /* Black text */
+    color: var(--neutral-black); /* Black text */
     display: flex;
     align-items: center;
     justify-content: space-between; /* Space between "Stock:" and number */
