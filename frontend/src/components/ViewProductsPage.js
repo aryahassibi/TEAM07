@@ -24,28 +24,30 @@ const ViewProductsPage = () => {
 
     return (
         <div className="view-products-container">
-            {/* Turn Back Button */}
-            <button
-                className="go-back-button"
-                onClick={() => navigate("/admin/product_management")}
-            >
-                Turn Back
-            </button>
+            <div className="view-products-top-buttons">
+                {/* Turn Back Button */}
+                <button
+                    className="view-products-go-back-button"
+                    onClick={() => navigate("/admin/product_management")}
+                >
+                    Turn Back
+                </button>
+
+                {/* Add Product Button */}
+                <button
+                    className="view-products-add-product-button"
+                    onClick={() => navigate("/admin/add_product")}
+                >
+                    Add Product
+                </button>
+            </div>
 
             <h1>All Products</h1>
 
-            {/* Add Product Button */}
-            <button
-                className="add-product-button"
-                onClick={() => navigate("/admin/add_product")}
-            >
-                Add Product
-            </button>
-
-            <div className="product-list">
+            <div className="view-products-list">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.product_id} className="product-card">
+                        <div key={product.product_id} className="view-products-card">
                             <h3>{product.name}</h3>
                             <p><strong>Origin:</strong> {product.origin || "N/A"}</p>
                             <p><strong>Roast Level:</strong> {product.roast_level}</p>

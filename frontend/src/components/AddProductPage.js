@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AddProductPage.css";
 
 const AddProductPage = () => {
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]); // Categories state
+
 
     const [product, setProduct] = useState({
         name: "",
@@ -23,6 +25,19 @@ const AddProductPage = () => {
 
     const [variants, setVariants] = useState([{ weight_grams: "", price: "", stock: "", sku: "" }]);
     const [images, setImages] = useState([{ image_url: "", alt_text: "" }]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get("http://localhost:5001/api/categories");
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                alert("Failed to load categories.");
+            }
+        };
+        fetchCategories();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -56,20 +71,32 @@ const AddProductPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        const payload = {
+            product: {
+                ...product,
+                category_id: product.category_id ? parseInt(product.category_id, 10) : null,
+            },
+            variants,
+            images,
+        };
+    
+        console.log("Payload being sent:", payload);
+    
         try {
-            const payload = { product, variants, images };
-            const response = await axios.post("http://localhost:5001/api/products", payload); // No token needed
+            const response = await axios.post("http://localhost:5001/api/products/create", payload);
+            console.log("Server Response:", response);
             if (response.status === 201) {
                 alert("Product added successfully!");
                 navigate("/admin/main_page");
             } else {
-                alert("Failed to add product. Please check your input.");
+                alert(`Failed to add product. Status: ${response.status}`);
             }
         } catch (error) {
-            console.error("Error adding product:", error.response?.data || error.message);
+            console.error("Error adding product:", error);
             alert(
-                error.response?.data?.error || "Failed to add product. Please check the console for more details."
+                error.response?.data?.error ||
+                    `Failed to add product. Error: ${error.message}`
             );
         }
     };
@@ -78,7 +105,7 @@ const AddProductPage = () => {
         <div className="add-product-container">
             <button
                 className="go-back-button"
-                onClick={() => navigate("/admin/product_management")}
+                onClick={() => navigate("/admin/view_products")}
             >
                 Go Back
             </button>
@@ -125,14 +152,50 @@ const AddProductPage = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label>Category ID:</label>
+                    <label>Grind Type:</label>
+                    <select name="grind_type" value={product.grind_type} onChange={handleInputChange}>
+                        <option value="Whole Bean">Whole Bean</option>
+                        <option value="Ground">Ground</option>
+                        <option value="Pods">Pods</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Flavor Profile:</label>
                     <input
-                        type="number"
-                        name="category_id"
-                        value={product.category_id}
+                        type="text"
+                        name="flavor_profile"
+                        value={product.flavor_profile}
                         onChange={handleInputChange}
-                        required
                     />
+                </div>
+                <div className="form-group">
+                    <label>Processing Method:</label>
+                    <select name="processing_method" value={product.processing_method} onChange={handleInputChange}>
+                        <option value="Washed">Washed</option>
+                        <option value="Natural">Natural</option>
+                        <option value="Honey-processed">Honey-processed</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Caffeine Content:</label>
+                    <select name="caffeine_content" value={product.caffeine_content} onChange={handleInputChange}>
+                        <option value="High">High</option>
+                        <option value="Decaf">Decaf</option>
+                        <option value="Half-Caf">Half-Caf</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Category:</label>
+                    <select name="category_id" value={product.category_id} onChange={handleInputChange} required>
+                        <option value="">-- Select Category --</option>
+                        {categories.map((category) => (
+                            <option key={category.category_id} value={category.category_id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className="form-group">
                     <label>Description:</label>
@@ -142,6 +205,24 @@ const AddProductPage = () => {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
+                <div className="form-group">
+                    <label>Warranty Status:</label>
+                    <input
+                        type="checkbox"
+                        name="warranty_status"
+                        checked={product.warranty_status}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Distributor Info:</label>
+                    <textarea
+                        name="distributor_info"
+                        value={product.distributor_info}
+                        onChange={handleInputChange}
+                    ></textarea>
+                </div>
+
                 <h2>Variants</h2>
                 {variants.map((variant, index) => (
                     <div key={index} className="variant-group">
@@ -182,6 +263,7 @@ const AddProductPage = () => {
                 <button type="button" onClick={addVariant}>
                     Add Another Variant
                 </button>
+
                 <h2>Images</h2>
                 {images.map((image, index) => (
                     <div key={index} className="image-group">
@@ -204,6 +286,7 @@ const AddProductPage = () => {
                 <button type="button" onClick={addImage}>
                     Add Another Image
                 </button>
+
                 <button type="submit">Submit</button>
             </form>
         </div>

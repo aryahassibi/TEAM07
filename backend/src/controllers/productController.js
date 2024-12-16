@@ -138,28 +138,31 @@ exports.getProductById = (req, res) => {
 
 // Create a new product
 exports.createProduct = async (req, res) => {
+    console.log("POST /api/products/create - Request received");
+    console.log("Request Body:", req.body);
+
     const { product, variants, images } = req.body;
+
+    if (!product) {
+        console.error("Product data is missing");
+        return res.status(400).json({ error: "Product details are missing" });
+    }
+
+    const categoryId = product.category_id && Number.isInteger(product.category_id) ? product.category_id : null;
+
+    console.log("Category ID:", categoryId);
 
     const productQuery = `
         INSERT INTO Products (name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const variantQuery = `
-        INSERT INTO Product_Variant (product_id, weight_grams, price, stock, sku)
-        VALUES (?, ?, ?, ?, ?)
-    `;
-
-    const imageQuery = `
-        INSERT INTO Product_Images (product_id, image_url, alt_text)
-        VALUES (?, ?, ?)
-    `;
-
     const connection = await db.promise().getConnection();
+
     try {
         await connection.beginTransaction();
 
-        // Add product to the database
+        // Insert Product
         const [productResult] = await connection.query(productQuery, [
             product.name,
             product.origin,
@@ -169,44 +172,51 @@ exports.createProduct = async (req, res) => {
             product.flavor_profile,
             product.processing_method,
             product.caffeine_content,
-            product.category_id,
+            categoryId,
             product.description,
             product.warranty_status,
             product.distributor_info,
         ]);
 
+        console.log("Product inserted successfully:", productResult);
+
         const productId = productResult.insertId;
 
-        // Add variants
+        // Insert Variants
         if (variants && variants.length > 0) {
             for (const variant of variants) {
-                await connection.query(variantQuery, [
-                    productId,
-                    variant.weight_grams,
-                    variant.price,
-                    variant.stock,
-                    variant.sku,
-                ]);
+                console.log("Inserting Variant:", variant);
+                await connection.query(`
+                    INSERT INTO Product_Variant (product_id, weight_grams, price, stock, sku)
+                    VALUES (?, ?, ?, ?, ?)
+                `, [productId, variant.weight_grams, variant.price, variant.stock, variant.sku]);
             }
         }
 
-        // Add images
+        // Insert Images
         if (images && images.length > 0) {
             for (const image of images) {
-                await connection.query(imageQuery, [productId, image.image_url, image.alt_text]);
+                console.log("Inserting Image:", image);
+                await connection.query(`
+                    INSERT INTO Product_Images (product_id, image_url, alt_text)
+                    VALUES (?, ?, ?)
+                `, [productId, image.image_url, image.alt_text]);
             }
         }
 
         await connection.commit();
-        res.status(201).json({ message: 'Product and associated details added successfully', productId });
+        console.log("Transaction committed successfully");
+        res.status(201).json({ message: "Product added successfully", productId });
     } catch (error) {
         await connection.rollback();
-        console.error('Error creating product:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error("Error during product creation:", error.message);
+        res.status(500).json({ error: "Internal server error", details: error.message });
     } finally {
         connection.release();
     }
 };
+
+
 
 
 // Update a product by ID
@@ -305,6 +315,20 @@ exports.getProductDetails = (req, res) => {
         res.status(200).json(results[0]);
     });
 };
+
+// List all categories
+exports.listCategories = (req, res) => {
+    const query = "SELECT category_id, name FROM Categories";
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error("Error fetching categories:", error.message);
+            return res.status(500).json({ error: "Failed to fetch categories" });
+        }
+        res.status(200).json(results);
+    });
+};
+
 
 
 // Retrieve product details by variant ID

@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS Product_Variant (
     weight_grams INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
-    sku VARCHAR(50) UNIQUE,
+    sku VARCHAR(50),
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
