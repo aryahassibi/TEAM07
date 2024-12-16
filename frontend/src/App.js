@@ -17,6 +17,8 @@ import AdminLoginPage from './components/AdminLoginPage';
 import Checkout from './components/Checkout'; 
 import OrderFailed from './components/OrderFailed';
 import OrderSuccess from './components/OrderSuccess';
+import SidebarLayout from './components/SidebarLayout'; 
+import OrderPage from "./components/OrdersPage";
 import './index.css'; 
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-failed" element={<OrderFailed/>} />
             <Route path="/order-success" element={<OrderSuccess/>} />
+            <Route path="/my-orders" element={<SidebarLayout><OrderPage /></SidebarLayout>} />
           </Routes>
         </div>
       </Router>
