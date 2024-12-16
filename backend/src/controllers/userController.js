@@ -12,6 +12,7 @@
 const config = require('../config/appConfig.js');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
 
 
 const UsersController = class {
@@ -37,22 +38,34 @@ const UsersController = class {
     login(email, password) {
         return new Promise(async (resolve, reject) => {
             try {
+                // Try manager first
+                const manager = await this.getManagerByEmail(email); // Retrieve manager by email
+                const hashedPassword = crypto.createHash("sha256").update(password).digest("hex"); // Hash the input password
+        
+                if (hashedPassword !== manager.password_hash) {
+                  return reject(new Error("Invalid email or password"));
+                }
+        
+                const { password_hash: managerHash, ...managerDetails } = manager;
+                return resolve(managerDetails); // Manager login successful
+              } catch (err) {
+                // Manager not found or error occurred, proceed to user check
+              }
+            // If manager not found, try user
+            try {
                 const user = await this.getUserByEmail(email);
-
-                // Validate password
-                const passwordMatch = await bcrypt.compare(password, user.password_hash);
-                if (!passwordMatch) {
+                const userPasswordMatch = await bcrypt.compare(password, user.password_hash);
+                if (!userPasswordMatch) {
                     return reject(new Error('Invalid email or password'));
                 }
-
-                // Exclude password_hash in response
-                const { password_hash, ...userDetails } = user;
-                resolve(userDetails);
+                const { password_hash: userHash, ...userDetails } = user;
+                resolve(userDetails); // User login successful
             } catch (err) {
                 reject(new Error('Login failed: ' + err.message));
             }
         });
     }
+    
     
     save(user) {
         return new Promise((resolve, reject) => {
@@ -75,6 +88,24 @@ const UsersController = class {
         });
     }
 
+    getManagerByEmail(email) {
+        return new Promise((resolve, reject) => {
+            this.con.query(
+                'SELECT * FROM Managers WHERE email = ?',
+                [email],
+                (err, result) => {
+                    if (err) return reject(err);
+                    if (result.length < 1) {
+                        return reject(new Error("Manager not found"));
+                    } else {
+                        return resolve(result[0]);
+                    }
+                }
+            );
+        });
+    }
+    
+
     getUserByEmail(email) {
         return new Promise((resolve, reject) => {
             this.con.query(
@@ -92,7 +123,7 @@ const UsersController = class {
         });
     }
 
-    isAdmin(id) {
+    /*isAdmin(id) {
         return new Promise((resolve, reject) => {
 
             this.con.query(
@@ -123,7 +154,28 @@ const UsersController = class {
                 }
             );
         });
+    }*/
+
+    isAdmin(id) {
+        return new Promise((resolve, reject) => {
+            this.con.query(
+                'SELECT role FROM Managers WHERE manager_id = ?',
+                [id],
+                (err, result) => {
+                    if (err) return reject(err);
+    
+                    if (result.length > 0) {
+                        return resolve({ isAdmin: true, role: result[0].role });
+                    } else {
+                        return resolve({ isAdmin: false });
+                    }
+                }
+            );
+        });
     }
+    
+        
+        
     
 
     getUserById(id) {

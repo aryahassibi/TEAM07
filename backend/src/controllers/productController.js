@@ -43,6 +43,7 @@ exports.listProducts = (req, res) => {
             p.grind_type, 
             p.caffeine_content, 
             p.origin, 
+            p.description,
             pv.variant_id, 
             pv.weight_grams, 
             pv.price, 
@@ -136,18 +137,77 @@ exports.getProductById = (req, res) => {
 };
 
 // Create a new product
-exports.createProduct = (req, res) => {
-    const productData = req.body;
+exports.createProduct = async (req, res) => {
+    const { product, variants, images } = req.body;
 
-    const query = 'INSERT INTO Products SET ?';
-    db.query(query, productData, (error, results) => {
-        if (error) {
-            console.error('Error creating product:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+    const productQuery = `
+        INSERT INTO Products (name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const variantQuery = `
+        INSERT INTO Product_Variant (product_id, weight_grams, price, stock, sku)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const imageQuery = `
+        INSERT INTO Product_Images (product_id, image_url, alt_text)
+        VALUES (?, ?, ?)
+    `;
+
+    const connection = await db.promise().getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // Add product to the database
+        const [productResult] = await connection.query(productQuery, [
+            product.name,
+            product.origin,
+            product.roast_level,
+            product.bean_type,
+            product.grind_type,
+            product.flavor_profile,
+            product.processing_method,
+            product.caffeine_content,
+            product.category_id,
+            product.description,
+            product.warranty_status,
+            product.distributor_info,
+        ]);
+
+        const productId = productResult.insertId;
+
+        // Add variants
+        if (variants && variants.length > 0) {
+            for (const variant of variants) {
+                await connection.query(variantQuery, [
+                    productId,
+                    variant.weight_grams,
+                    variant.price,
+                    variant.stock,
+                    variant.sku,
+                ]);
+            }
         }
-        res.status(201).json({ message: 'Product created', productId: results.insertId });
-    });
+
+        // Add images
+        if (images && images.length > 0) {
+            for (const image of images) {
+                await connection.query(imageQuery, [productId, image.image_url, image.alt_text]);
+            }
+        }
+
+        await connection.commit();
+        res.status(201).json({ message: 'Product and associated details added successfully', productId });
+    } catch (error) {
+        await connection.rollback();
+        console.error('Error creating product:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    } finally {
+        connection.release();
+    }
 };
+
 
 // Update a product by ID
 exports.updateProduct = (req, res) => {

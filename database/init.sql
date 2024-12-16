@@ -19,10 +19,17 @@ CREATE TABLE IF NOT EXISTS Managers (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARBINARY(256) NOT NULL,
+    password_hash VARCHAR(256) NOT NULL,
     role ENUM('sales_manager', 'product_manager') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO Managers (first_name, last_name, email, password_hash, role)
+VALUES
+('Admin', 'Product', 'product_manager@admin.com', SHA2('admin12345', 256), 'product_manager'),
+('Admin', 'Sales', 'sales_manager@admin.com', SHA2('admin12345', 256), 'sales_manager');
+ON DUPLICATE KEY UPDATE email=email;
+
 
 CREATE TABLE IF NOT EXISTS Categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
