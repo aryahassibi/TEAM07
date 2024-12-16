@@ -28,32 +28,32 @@ exports.listProducts = (req, res) => {
         return res.status(400).json({ error: 'Invalid sort_order parameter.' });
     }
 
-    // Map sort_by to actual database column
-    const sortByColumn = {
-        price: 'pv.price',
-        average_rating: 'COALESCE(p.average_rating, 0)', // Handle NULL values
-    };
+    let sortColumn = 'pv.price';
+    if (sort_by === 'average_rating') {
+        sortColumn = 'average_rating';
+    }
 
     let query = `
-        SELECT 
-            p.product_id, 
-            p.name, 
+        SELECT
+            p.product_id,
+            p.name,
             p.category_id,
-            p.roast_level, 
-            p.bean_type, 
-            p.grind_type, 
-            p.caffeine_content, 
-            p.origin, 
-            pv.variant_id, 
-            pv.weight_grams, 
-            pv.price, 
-            pv.stock, 
-            pv.sku, 
-            COALESCE(p.average_rating, 0) AS average_rating
-        FROM 
-            Products p
-        JOIN 
-            Product_Variant pv ON p.product_id = pv.product_id
+            p.roast_level,
+            p.bean_type,
+            p.grind_type,
+            p.caffeine_content,
+            p.origin,
+            pv.variant_id,
+            pv.weight_grams,
+            pv.price,
+            pv.stock,
+            pv.sku,
+            COALESCE(ROUND(AVG(c.rating), 2), 0) AS average_rating
+        FROM Products p
+        JOIN Product_Variant pv ON p.product_id = pv.product_id
+        LEFT JOIN Comments c 
+            ON p.product_id = c.product_id
+            AND c.approved = 1
     `;
 
     let conditions = [];
@@ -88,17 +88,21 @@ exports.listProducts = (req, res) => {
         query += ` WHERE ` + conditions.join(' AND ');
     }
 
-    // Add ORDER BY clause
-    query += ` ORDER BY ${sortByColumn[sort_by]} ${sort_order.toUpperCase()}`;
 
-    db.query(query, params, (error, results) => {
-        if (error) {
-            console.error('Error retrieving products:', error.message);
-            return res.status(500).json({ error: 'Failed to retrieve products.' });
-        }
+    query += `
+    GROUP BY p.product_id, pv.variant_id
+    ORDER BY ${sortColumn} ${sort_order.toUpperCase()}
+`;
 
-        res.json(results);
-    });
+db.query(query, params, (error, results) => {
+    if (error) {
+        console.error('Error retrieving products:', error.message);
+        return res.status(500).json({ error: 'Failed to retrieve products.' });
+    }
+
+    // results now contain each variant with dynamically computed average_rating
+    res.json(results);
+});
 };
 
 
