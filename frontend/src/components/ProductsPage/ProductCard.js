@@ -145,7 +145,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    onAddToCart(product);
+                                    onAddToCart(product.variant_id);
                                 }}
                                 aria-label="Add to Cart"
                             >

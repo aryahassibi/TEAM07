@@ -76,7 +76,7 @@ const Cart = () => {
               const { stock } = response.data;
              
               
-
+              
               const cart = JSON.parse(localStorage.getItem('cart')) || [];
               const productIndex = cart.findIndex(
                   (item) => item.variantId === variantId
@@ -225,7 +225,6 @@ const Cart = () => {
                   <h3 className="cartPage-itemName">{item.product_name}</h3>
                   <p className="cartPage-itemWeight">{item.weight}</p>
                   <p className="cartPage-itemPrice">${parseFloat(item.price).toFixed(2)}</p>
-                  <p className="cartPage-itemPrice">{item.variantId}</p>
                   <div className="cartPage-quantityControls">
                     <button 
                       className="cartPage-decrementBtn" 
