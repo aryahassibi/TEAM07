@@ -310,12 +310,12 @@ const handlePayment = async () => {
                 <span className="checkout-item-name">{item.product_name}</span>
                 <span className="checkout-item-quantity">x{item.quantity}</span>
               </div>
-              <div className="checkout-item-price">${parseFloat(item.price).toFixed(2)}</div>
+              <div className="checkout-item-price">{parseFloat(item.price).toFixed(2)} TL</div>
             </li>
           ))}
         </ul>
         <div className="checkout-total-price">
-          <h3>Total: ${parseFloat(totalPrice).toFixed(2)}</h3>
+          <h3>Total: {parseFloat(totalPrice).toFixed(2)} TL</h3>
         </div>
       </div>
     </div>

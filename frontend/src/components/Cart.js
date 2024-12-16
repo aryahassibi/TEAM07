@@ -224,7 +224,7 @@ const Cart = () => {
                 <div className="cartPage-itemDetails">
                   <h3 className="cartPage-itemName">{item.product_name}</h3>
                   <p className="cartPage-itemWeight">{item.weight}</p>
-                  <p className="cartPage-itemPrice">${parseFloat(item.price).toFixed(2)}</p>
+                  <p className="cartPage-itemPrice">{parseFloat(item.price).toFixed(2)} TL</p>
                   <div className="cartPage-quantityControls">
                     <button 
                       className="cartPage-decrementBtn" 
@@ -254,7 +254,7 @@ const Cart = () => {
           <div className="cartPage-summary">
             <h3 className="cartPage-summaryHeading">Order Summary</h3>
             <p className="cartPage-totalLabel">Total:</p>
-            <p className="cartPage-totalPrice">${totalPrice.toFixed(2)}</p>
+            <p className="cartPage-totalPrice">{totalPrice.toFixed(2)} TL</p>
             <button 
               className="cartPage-checkoutBtn" 
               onClick={handleCheckout}
