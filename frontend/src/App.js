@@ -14,6 +14,7 @@ import ReviewAdminPage from './components/ReviewAdminPage';
 import MainAdminPage from './components/MainAdminPage'; 
 import About from './components/About';
 import AdminLoginPage from './components/AdminLoginPage'; 
+import Checkout from './components/Checkout'; 
 import './index.css'; 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/admin/main_page" element={<MainAdminPage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/about" element={<About />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </div>
       </Router>
