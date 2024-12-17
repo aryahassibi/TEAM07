@@ -12,6 +12,8 @@ router.delete("/products/:id", productController.deleteProduct);
 router.get("/product/variants/:variant_id", productController.getProductByVariantId);
 router.get("/products/:product_id/variants", productController.allVariantsOfProductId);
 router.get("/categories", productController.listCategories);
+router.get("/product-variants", productController.getAllProductVariants);
+router.put("/product-variants/update", productController.updateProductVariants);
 
 
 module.exports = router;

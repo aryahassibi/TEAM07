@@ -387,3 +387,50 @@ exports.getProductByVariantId = (req, res) => {
         });
     });
 };
+
+exports.getAllProductVariants = (req, res) => {
+    const query = `
+        SELECT pv.variant_id, p.name, pv.weight_grams, pv.price, pv.stock, 0 AS discount
+        FROM Product_Variant pv
+        JOIN Products p ON pv.product_id = p.product_id;
+    `;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.error("Error fetching product variants:", error);
+            return res.status(500).json({ error: "Failed to retrieve product variants." });
+        }
+        res.json({ variants: results });
+    });
+};
+
+exports.updateProductVariants = async (req, res) => {
+    const { variants } = req.body;
+
+    if (!variants || !Array.isArray(variants)) {
+        return res.status(400).json({ error: "Variants data must be an array." });
+    }
+
+    const connection = db.promise();
+    try {
+        await connection.beginTransaction();
+
+        for (const variant of variants) {
+            const { variant_id, price, discount } = variant;
+            const query = `
+                UPDATE Product_Variant 
+                SET price = ?, stock = stock - ?
+                WHERE variant_id = ?;
+            `;
+            await connection.execute(query, [price, discount, variant_id]);
+        }
+
+        await connection.commit();
+        res.status(200).json({ message: "Variants updated successfully." });
+    } catch (error) {
+        await connection.rollback();
+        console.error("Error updating product variants:", error.message);
+        res.status(500).json({ error: "Failed to update product variants." });
+    }
+};
+
