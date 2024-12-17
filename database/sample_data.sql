@@ -11,8 +11,14 @@ VALUES
 INSERT INTO Managers (manager_id, first_name, last_name, email, password_hash, role)
 VALUES
 (1, 'Michael', 'Brown', 'michaelb@example.com', SHA2('password',256), 'sales_manager'),
-(2, 'Laura', 'Wilson', 'lauraw@example.com', SHA2('password',256), 'product_manager');
-
+(2, 'Laura', 'Wilson', 'lauraw@example.com', SHA2('password',256), 'product_manager')
+ON DUPLICATE KEY UPDATE 
+    first_name = VALUES(first_name),
+    last_name = VALUES(last_name),
+    email = VALUES(email),
+    password_hash = VALUES(password_hash),
+    role = VALUES(role);
+    
 -- Insert sample data into Categories
 INSERT INTO Categories (category_id, name, description)
 VALUES

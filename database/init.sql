@@ -28,8 +28,6 @@ INSERT INTO Managers (first_name, last_name, email, password_hash, role)
 VALUES
 ('Admin', 'Product', 'product_manager@admin.com', SHA2('admin12345', 256), 'product_manager'),
 ('Admin', 'Sales', 'sales_manager@admin.com', SHA2('admin12345', 256), 'sales_manager');
-ON DUPLICATE KEY UPDATE email=email;
-
 
 CREATE TABLE IF NOT EXISTS Categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
