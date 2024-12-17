@@ -124,7 +124,7 @@ VALUES
 -- Product 1 Variants
 (1, 1, 250, 500.00, 100, "ETH-YIR-250"),
 (2, 1, 500, 950.00, 1, "ETH-YIR-500"),          -- Only 1 left in stock
-(3, 1, 1000, 1800.00, 1, "ETH-YIR-1000"),       -- Only 1 left in stock
+(3, 1, 1000, 1800.00, 4, "ETH-YIR-1000"),       -- Only 1 left in stock
 
 -- Product 2 Variants
 (4, 2, 250, 450.00, 200, "COL-SUP-250"),
@@ -202,6 +202,7 @@ VALUES
 (1, 1, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 250g"),
 (2, 2, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 500g"),
 (3, 3, "/assets/images/products/product1.png", "Sunrise Over the Serengeti 1000g"),
+
 
 (4, 4, "/assets/images/products/product2.png", "Bolivian Echoes 250g"),
 (5, 5, "/assets/images/products/product2.png", "Bolivian Echoes 500g"),
@@ -342,7 +343,7 @@ VALUES
 -- Orders for User 8
 (9, 8, 900.00, "processing", 3, "2024-12-06 17:25:00", "2024-12-06 17:25:00");
 
-INSERT INTO OrderItems (order_item_id, order_id, product_id, quantity, price_at_purchase)
+INSERT INTO OrderItems (order_item_id, variant_id, product_id, quantity, price_at_purchase)
 VALUES
 -- Order 1
 (1, 1, 1, 2, 500.00),

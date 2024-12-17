@@ -156,7 +156,7 @@ const OrdersPage = () => {
               >
                 <div className="orders-page__order-info">
                   <span className="orders-page__order-id">Order #{order.order_id}</span>
-                  <span className="orders-page__order-total">Total: ${order.total_price}</span>
+                  <span className="orders-page__order-total">Total: {order.total_price} TL</span>
                   <span className="orders-page__order-status">Status: {order.status}</span>
                   <span className="orders-page__order-date">
                     Ordered on: {new Date(order.created_at).toLocaleDateString()}
@@ -179,7 +179,7 @@ const OrdersPage = () => {
                         <div className="orders-page__item-info">
                           <span className="orders-page__item-name">{item.name}</span>
                           <span className="orders-page__item-weight">Weight: {item.weight_grams}g</span>
-                          <span className="orders-page__item-price">Price: ${item.price_at_purchase}</span>
+                          <span className="orders-page__item-price">Price: {item.price_at_purchase} TL</span>
                           <span className="orders-page__item-quantity">Qty: {item.quantity}</span>
                           {!isCanceled && (
                             <div className="orders-page__item-actions">

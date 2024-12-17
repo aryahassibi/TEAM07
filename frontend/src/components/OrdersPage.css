@@ -38,7 +38,7 @@
   }
   
   .orders-page__order {
-    border: 1px solid #8a0606;
+    border: 1px solid #d0cdff;
     border-radius: 20px;
     overflow: hidden;
     background: #fff;
@@ -52,7 +52,7 @@
   .orders-page__order-header {
     display: flex;
     justify-content: space-between;
-    background: #fffbfb;
+    background: #EBEAFF;
     padding: 20px;
     cursor: pointer;
     align-items: center;
@@ -60,7 +60,7 @@
   }
   
   .orders-page__order-header:hover {
-    background: #f7eded;
+    background: #e6e4ff;
   }
   
   .orders-page__order-info {
@@ -83,7 +83,7 @@
   .orders-page__order-status {
     font-style: normal;
     font-weight: 500;
-    color: #8b0f0f;
+    color: #3028d3;
     text-transform: capitalize;
   }
   
@@ -96,7 +96,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     line-height: 1;
-    color: #af2877;
+    color: #381c9e;
     transition: transform 0.2s ease-in-out;
   }
   

@@ -15,7 +15,7 @@
   .sl-sidebar {
     top :0;
     width: 250px;
-    background-color: #325f83;
+    background: linear-gradient(to right, #3e39eb, #5858ee), linear-gradient(to bottom, #3e39eb, #4e36d3);
     color: #ecf0f1;
     display: flex;
     flex-direction: column;

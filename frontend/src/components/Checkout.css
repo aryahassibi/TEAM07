@@ -59,7 +59,7 @@
 .checkout-button {
     width: 100%;
     padding: 15px;
-    background-color: #06790f;
+    background-color: #2f4ed0;
     color: #fff;
     font-size: 1rem;
     font-weight: bold;
@@ -70,7 +70,7 @@
 }
 
 .checkout-button:hover {
-    background-color: #054d0b;
+    background-color: #162c86;
 }
 
 .checkout-error-message {
@@ -173,6 +173,6 @@
     margin-top: 20px;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #06790f;
+    color: #1d37a1;
     text-align: right;
 }
