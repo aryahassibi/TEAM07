@@ -86,7 +86,7 @@ const Navbar = () => {
             )}
           </li>
           <li><Link to="/about">ABOUT US</Link></li>
-          <li><a href="#contact">CONTACT</a></li>
+          <li><Link to="/contact">CONTACT</Link></li>
         </ul>
       </div>
       <div className="navbar-right">
