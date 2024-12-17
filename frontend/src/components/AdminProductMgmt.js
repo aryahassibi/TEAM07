@@ -40,8 +40,13 @@ const AdminProductMgmt = () => {
                 >
                     View Products
                 </button>
-                <button className="action-button">Add Category</button>
-                <button className="action-button">Remove Category</button>
+                <button
+                    className="action-button"
+                    onClick={() => navigate("/admin/categories")}
+                >
+                    View Categories
+                </button>
+
                 <button className="action-button">Adjust Stock Levels</button>
             </div>
             <h2>Delivery List</h2>

@@ -152,10 +152,12 @@ exports.createProduct = async (req, res) => {
 
     console.log("Category ID:", categoryId);
 
-    const productQuery = `
-        INSERT INTO Products (name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    const productQuery = `INSERT INTO Products (
+        name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, 
+        caffeine_content, category_id, description, warranty_status, distributor_info, average_rating
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
 
     const connection = await db.promise().getConnection();
 
@@ -176,6 +178,7 @@ exports.createProduct = async (req, res) => {
             product.description,
             product.warranty_status,
             product.distributor_info,
+            0.00
         ]);
 
         console.log("Product inserted successfully:", productResult);
@@ -318,7 +321,7 @@ exports.getProductDetails = (req, res) => {
 
 // List all categories
 exports.listCategories = (req, res) => {
-    const query = "SELECT category_id, name FROM Categories";
+    const query = "SELECT category_id, name, description FROM Categories";
 
     db.query(query, (error, results) => {
         if (error) {
@@ -330,6 +333,40 @@ exports.listCategories = (req, res) => {
 };
 
 
+// Add a new category
+exports.addCategory = (req, res) => {
+    const { name, description } = req.body;
+
+    if (!name) {
+        return res.status(400).json({ error: "Category name is required" });
+    }
+
+    const query = "INSERT INTO Categories (name, description) VALUES (?, ?)";
+    db.query(query, [name, description || null], (error, result) => {
+        if (error) {
+            console.error("Error adding category:", error.message);
+            return res.status(500).json({ error: "Failed to add category" });
+        }
+        res.status(201).json({ message: "Category added successfully", category_id: result.insertId });
+    });
+};
+
+// Delete a category
+exports.deleteCategory = (req, res) => {
+    const categoryId = req.params.id;
+
+    const query = "DELETE FROM Categories WHERE category_id = ?";
+    db.query(query, [categoryId], (error, result) => {
+        if (error) {
+            console.error("Error deleting category:", error.message);
+            return res.status(500).json({ error: "Failed to delete category" });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Category not found" });
+        }
+        res.json({ message: "Category deleted successfully" });
+    });
+};
 
 // Retrieve product details by variant ID
 exports.getProductByVariantId = (req, res) => {

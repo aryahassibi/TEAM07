@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Managers (
+CREATE TABLE Managers (
     manager_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -28,7 +28,7 @@ INSERT INTO Managers (first_name, last_name, email, password_hash, role)
 VALUES
 ('Admin', 'Product', 'product_manager@admin.com', SHA2('admin12345', 256), 'product_manager'),
 ('Admin', 'Sales', 'sales_manager@admin.com', SHA2('admin12345', 256), 'sales_manager');
-ON DUPLICATE KEY UPDATE email=email;
+
 
 
 CREATE TABLE IF NOT EXISTS Categories (

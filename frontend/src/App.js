@@ -16,6 +16,7 @@ import About from './components/About';
 import AdminLoginPage from './components/AdminLoginPage'; 
 import AdminProductMgmt from './components/AdminProductMgmt'; 
 import AdminSalesMgmt from './components/AdminSalesMgmt';   
+import AdminCategoryPage from './components/AdminCategoryPage';   
 import AddProductPage from "./components/AddProductPage";
 import ViewProductsPage from './components/ViewProductsPage'; // Adjust path as needed
 
@@ -44,6 +45,8 @@ function App() {
             <Route path="/admin/sales_management" element={<AdminSalesMgmt />} />
             <Route path="/admin/view_products" element={<ViewProductsPage />} />
             <Route path="/admin/add_product" element={<AddProductPage />} />
+            <Route path="/admin/categories" element={<AdminCategoryPage />} />
+
             <Route path="/about" element={<About />} />
           </Routes>
         </div>
