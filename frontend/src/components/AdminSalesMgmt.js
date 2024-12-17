@@ -38,7 +38,7 @@ const AdminSalesMgmt = () => {
                 Manage sales operations, invoices, and discounts.
             </p>
             <div className="sales-actions">
-                <button className="action-button">Set Prices/Discounts</button>
+                <button className="action-button" onClick={() => navigate("/admin/set_prices_discounts")}>Set Prices/Discounts </button>
                 <button className="action-button">Notify Users About Discounts</button>
                 <button className="action-button">View Revenue/Profit Chart</button>
                 <button className="action-button">Evaluate Refund Requests</button>

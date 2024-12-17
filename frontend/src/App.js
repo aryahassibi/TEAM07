@@ -18,6 +18,7 @@ import AdminProductMgmt from './components/AdminProductMgmt';
 import AdminSalesMgmt from './components/AdminSalesMgmt';   
 import AddProductPage from "./components/AddProductPage";
 import ViewProductsPage from './components/ViewProductsPage'; // Adjust path as needed
+import SetPricesDiscounts from "./components/SetPricesDiscounts";
 
 import './index.css'; 
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin/product_management" element={<AdminProductMgmt />} />
             <Route path="/admin/sales_management" element={<AdminSalesMgmt />} />
+            <Route path="/admin/set_prices_discounts" element={<SetPricesDiscounts />} />
             <Route path="/admin/view_products" element={<ViewProductsPage />} />
             <Route path="/admin/add_product" element={<AddProductPage />} />
             <Route path="/about" element={<About />} />
