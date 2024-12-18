@@ -93,7 +93,7 @@ const ProductInfoPanel = ({
                             <span className="discount-label">
                                 {discountsMap[selectedVariant.variant_id].discount_type === "percentage"
                                     ? `-${discountsMap[selectedVariant.variant_id].discount_value}% Sale`
-                                    : `-${Number(discountsMap[selectedVariant.variant_id].discount_value)} TL Off`}
+                                    : `-${Number(discountsMap[selectedVariant.variant_id].discount_value).toFixed(2)} TL Off`}
                             </span>
                         </div>
                     )}
@@ -117,10 +117,10 @@ const ProductInfoPanel = ({
                                 } ${variant.stock === 0 ? "out-of-stock" : ""}`}
                                 onClick={() => setSelectedVariant(variant)}
                             >
-                                {variant.weight_grams}g ● {Number(discountedPrice)} TL 
+                                {variant.weight_grams}g ● {Number(discountedPrice).toFixed(2)} TL 
                                 {isDiscounted && (
                                     <span className="base-price">
-                                        {Number(variant.price)} TL
+                                        {Number(variant.price).toFixed(2)} TL
                                     </span>
                                 )}
                             </button>

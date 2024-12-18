@@ -102,8 +102,8 @@ const ProductCard = ({ product, onAddToCart }) => {
                     {isDiscounted && discountType && discountValue && (
                         <div className="discount-label">
                             {discountType === "percentage"
-                                ? `-%${Number(discountValue)} Sale`
-                                : `-${Number(discountValue)} TL Off`}
+                                ? `-%${Number(discountValue).toFixed(2)} Sale`
+                                : `-${Number(discountValue).toFixed(2)} TL Off`}
                         </div>
                     )}
                     {stock === 0 && (
@@ -131,7 +131,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                     <div className="product-bottom">
                         <div className="product-pricing">
                             <span className="product-price">
-                                {Number(discountedPrice)} TL
+                                {Number(discountedPrice).toFixed(2)} TL
                             </span>
                             {isDiscounted && (
                                 <span className="product-original-price">

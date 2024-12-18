@@ -25,7 +25,7 @@ const ProductsPage = () => {
           
           const productsData = response.data.data.map(product => ({
             ...product,
-            price: Number(product.price),
+            price: Number(product.price).toFixed(2),
           }));
           setProducts(productsData);
 
@@ -34,7 +34,7 @@ const ProductsPage = () => {
           setProducts(response.data);
           const productsData = response.data.map(product => ({
             ...product,
-            price: Number(product.price),
+            price: Number(product.price).toFixed(2),
           }));
           setProducts(productsData);
         }
