@@ -13,5 +13,7 @@ router.get("/product/variants/:variant_id", productController.getProductDetailsB
 router.get("/products/:product_id/variants", productController.allVariantsOfProductId);
 router.get('/product/variant/:variantId/images', productController.getImagesForVariant);
 router.get('/product/variant/:variantId/discount', productController.getDiscountForVariant);
+router.get("/product-variants", productController.getAllProductVariants);
+router.put("/product-variants/update", productController.updateProductVariants);
 
 module.exports = router;
