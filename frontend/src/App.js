@@ -14,6 +14,7 @@ import ReviewAdminPage from './components/ReviewAdminPage';
 import MainAdminPage from './components/MainAdminPage'; 
 import About from './components/About';
 import AdminLoginPage from './components/AdminLoginPage'; 
+import SetPricesDiscounts from "./components/SetPricesDiscounts";
 import Checkout from './components/Checkout'; 
 import OrderFailed from './components/OrderFailed';
 import OrderSuccess from './components/OrderSuccess';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/admin/review_management" element={<ReviewAdminPage />} />
             <Route path="/admin/main_page" element={<MainAdminPage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin/set_prices_discounts" element={<SetPricesDiscounts />} />
             <Route path="/about" element={<About />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-failed" element={<OrderFailed/>} />
