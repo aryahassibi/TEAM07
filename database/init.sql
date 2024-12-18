@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS Discounts (
     end_date DATE,                 
     variant_id INT,              
     active BOOLEAN DEFAULT TRUE,  
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (variant_id) REFERENCES Product_Variant(variant_id) ON DELETE CASCADE
 );
 
