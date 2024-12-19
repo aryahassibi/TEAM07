@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import anime from "animejs";
 import axios from "axios";
+//import backgroundImage from "../assets/images/backgrounds/luca-micheli-ruWkmt3nU58-unsplash.jpg";
+import backgroundImage from "../assets/images/backgrounds/samuel-ferrara-1527pjeb6jg-unsplash.jpg";
 import "./AdminLoginPage.css";
 
 const AdminLoginPage = () => {
@@ -10,128 +11,72 @@ const AdminLoginPage = () => {
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
 
-  let current = null;
-
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (token) {
       navigate("/admin/main_page"); // Redirect if already logged in
     }
+    // Set the background dynamically
+    document.body.style.background = `url(${backgroundImage}) no-repeat center center fixed`;
+    document.body.style.backgroundSize = "cover";
 
-    document.body.classList.add("adminlogin-body");
     return () => {
-      document.body.classList.remove("adminlogin-body");
-      // Clear token on navigation away
-      localStorage.removeItem("token");
+      document.body.style.background = "";
     };
   }, [navigate]);
 
-  const handleFocus = (offset, dashArray) => {
-    if (current) current.pause();
-    current = anime({
-      targets: "path",
-      strokeDashoffset: {
-        value: offset,
-        duration: 700,
-        easing: "easeOutQuart",
-      },
-      strokeDasharray: {
-        value: dashArray,
-        duration: 700,
-        easing: "easeOutQuart",
-      },
-    });
-  };
-
   const handleAdminLogin = async (e) => {
     e.preventDefault();
-
     try {
-        const response = await axios.post("http://localhost:5001/auth/login", {
-            email,
-            password,
-        });
+      const response = await axios.post("http://localhost:5001/auth/login", {
+        email,
+        password,
+      });
 
-        const { token, role } = response.data;
+      const { token, role } = response.data;
 
-        // Save token and role in localStorage
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
 
-        // Check if the user is authorized for admin panel
-        if (role === "product_manager" || role === "sales_manager") {
-            alert("Welcome, Admin!");
-            navigate("/admin/main_page");
-        } else {
-            setLoginError("You are not authorized to access the admin panel.");
-        }
+      if (role === "product_manager" || role === "sales_manager") {
+        alert("Welcome, Admin!");
+        navigate("/admin/main_page");
+      } else {
+        setLoginError("You are not authorized to access the admin panel.");
+      }
     } catch (error) {
-        setLoginError(error.response?.data?.error || "Invalid email or password.");
+      setLoginError(error.response?.data?.error || "Invalid email or password.");
     }
-};
-
-
-  
+  };
 
   return (
-    <div className="admin-login-page">
-      <div className="container">
-        <div className="left">
-          <div className="login">Login</div>
-          <div className="eula">Welcome admin.</div>
+    <div className="glass-wrapper">
+      <form onSubmit={handleAdminLogin}>
+        <h2>Admin Login</h2>
+        <div className="glass-input-field">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder=" " // Add this placeholder
+          />
+          <label>Enter your email</label>
         </div>
-        <div className="right">
-          <svg viewBox="0 0 320 300">
-            <defs>
-              <linearGradient
-                id="linearGradient"
-                x1="13"
-                y1="193.5"
-                x2="307"
-                y2="193.5"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop style={{ stopColor: "#ff00ff" }} offset="0" />
-                <stop style={{ stopColor: "#ff0000" }} offset="1" />
-              </linearGradient>
-            </defs>
-            <path d="m 40,120.00016 239.99984,-3.2e-4 ..." />
-          </svg>
-          <div className="form">
-            <form onSubmit={handleAdminLogin}>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => handleFocus(0, "240 1386")}
-                required
-                placeholder="Enter admin email"
-              />
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => handleFocus(-336, "240 1386")}
-                required
-                placeholder="Enter password"
-              />
-              <input
-                type="submit"
-                id="submit"
-                value="Submit"
-                onFocus={() => handleFocus(-730, "530 1386")}
-              />
-              {loginError && <div className="adminlogin-error">{loginError}</div>}
-            </form>
-            
-          </div>
+        <div className="glass-input-field">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder=" " // Add this placeholder
+          />
+          <label>Enter your password</label>
         </div>
-      </div>
+
+        <button type="submit">Log In</button>
+        {loginError && <div className="glass-login-error">{loginError}</div>}
+      </form>
     </div>
   );
 };
