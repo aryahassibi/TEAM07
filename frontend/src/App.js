@@ -46,7 +46,6 @@ function App() {
             <Route path="/admin/view_products" element={<ViewProductsPage />} />
             <Route path="/admin/add_product" element={<AddProductPage />} />
             <Route path="/admin/categories" element={<AdminCategoryPage />} />
-
             <Route path="/about" element={<About />} />
           </Routes>
         </div>

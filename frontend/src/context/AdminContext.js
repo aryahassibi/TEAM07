@@ -1,19 +1,17 @@
 // src/context/AdminContext.js
 import { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const AdminContext = createContext();
 
 export const AdminProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminRole, setAdminRole] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
 
-    // Check if user is logged in as an admin
     if (token && (role === 'product_manager' || role === 'sales_manager')) {
       setIsAdmin(true);
       setAdminRole(role);
@@ -28,8 +26,6 @@ export const AdminProvider = ({ children }) => {
     localStorage.removeItem('role');
     setIsAdmin(false);
     setAdminRole(null);
-    alert('You have been logged out.');
-    navigate('/admin/login'); // Redirect to admin login page
   };
 
   return (
@@ -37,6 +33,10 @@ export const AdminProvider = ({ children }) => {
       {children}
     </AdminContext.Provider>
   );
+};
+
+AdminProvider.propTypes = {
+  children: PropTypes.node.isRequired, // Validate the 'children' prop
 };
 
 export default AdminContext;

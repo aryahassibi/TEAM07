@@ -2,6 +2,7 @@ const express = require('express');
 const UsersController = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
 const mysql = require("mysql2");
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -62,38 +63,59 @@ router.post('/register', async (req, res) => {
 
 
 // Login Endpoint
-// Login Endpoint
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
+    console.error(req.body);
+
 
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
     }
 
+
     // Check for a match in Managers table
-    const managerQuery = "SELECT manager_id, password_hash, role FROM Managers WHERE email = ?";
+    const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
+    //const managerQuery = "SELECT manager_id, first_name, last_name, email, password_hash, role FROM Managers";
+
+    //console.error(managerQuery);
+
     db.query(managerQuery, [email], async (err, results) => {
+
+        console.error("this is the result: ",results);
+
         if (err) {
-            console.error(err);
+            console.error("Database error:", err);
             return res.status(500).json({ error: "Internal server error" });
         }
 
+        
         if (results.length > 0) {
             const manager = results[0];
-            const isPasswordMatch = await bcrypt.compare(password, manager.password_hash);
+            console.error("now we are inside: ",manager);
 
-            if (!isPasswordMatch) {
+
+
+            // Hash the provided password using SHA256 to match the database hash
+            const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+            console.error(hashedPassword);
+
+            if (hashedPassword !== manager.password_hash) {
+                // Password does not match
+                console.error("Password mismatch for manager:", email);
                 return res.status(401).json({ error: "Invalid email or password" });
             }
 
+            // Generate JWT token
             const token = jwt.sign(
                 { manager_id: manager.manager_id, role: manager.role },
                 JWT_SECRET,
                 { expiresIn: "12h" }
             );
 
+            console.log("Manager login successful:", email);
             return res.json({ token, role: manager.role }); // Include role in response
         }
+
 
         // If no match in Managers, check Users table
         const userQuery = "SELECT user_id, password_hash FROM Users WHERE email = ?";
@@ -188,7 +210,6 @@ router.put('/:id/password', async (req, res) => {
     }
 });
 
-// Check if user is an admin
 // Check if user is an admin
 router.get('/:id/is-admin', async (req, res) => {
     const { id } = req.params;

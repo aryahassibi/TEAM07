@@ -10,8 +10,8 @@ VALUES
 -- Insert sample data into Managers
 INSERT INTO Managers (manager_id, first_name, last_name, email, password_hash, role)
 VALUES
-(1, 'Michael', 'Brown', 'michaelb@example.com', SHA2('password',256), 'sales_manager'),
-(2, 'Laura', 'Wilson', 'lauraw@example.com', SHA2('password',256), 'product_manager')
+(1, 'Michael', 'Brown', 'product_manager@admin.com', SHA2('admin12345',256), 'product_manager'),
+(2, 'Laura', 'Wilson', 'sales_manager@admin.com', SHA2('admin12345',256), 'sales_manager')
 ON DUPLICATE KEY UPDATE 
     first_name = VALUES(first_name),
     last_name = VALUES(last_name),
