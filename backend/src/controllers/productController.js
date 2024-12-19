@@ -12,6 +12,7 @@ exports.listProducts = (req, res) => {
         grind_type,
         caffeine_content,
         origin,
+        average_rating,
         sort_by = 'price', // Default sort_by
         sort_order = 'asc', // Default sort_order
     } = req.query;
@@ -37,6 +38,7 @@ exports.listProducts = (req, res) => {
         SELECT 
             p.product_id, 
             p.name, 
+            p.average_rating,
             p.category_id,
             p.roast_level, 
             p.bean_type, 
