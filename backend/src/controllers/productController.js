@@ -42,7 +42,7 @@ exports.listProducts = (req, res) => {
             p.category_id,
             p.roast_level, 
             p.bean_type, 
-            p.grind_type, 
+            p.grind_type,
             p.caffeine_content, 
             p.origin, 
             pv.variant_id, 

@@ -6,7 +6,9 @@ import "./ProductCard.css";
 import cartIcon from "../../assets/images/icons/cart-dark.svg";
 import wishlistIcon from "../../assets/images/icons/wishlist/wishlist-dark.svg";
 import wishlistIconFilled from "../../assets/images/icons/wishlist/wishlist-dark-filled.svg";
-import starIcon from "../../assets/images/icons/star.svg";
+
+import starIcon from "../../assets/images/icons/star.svg"; // Import star icon
+
 
 const ProductCard = ({ product, onAddToCart }) => {
     const {
