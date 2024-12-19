@@ -368,6 +368,30 @@ exports.deleteCategory = (req, res) => {
     });
 };
 
+// Update stock for a product
+exports.updateStock = (req, res) => {
+    const variantId = req.params.variant_id; // Use variant_id instead of product_id
+    const { stock } = req.body;
+
+    if (stock < 0) {
+        return res.status(400).json({ error: "Stock cannot be negative." });
+    }
+
+    const query = "UPDATE Product_Variant SET stock = ? WHERE variant_id = ?";
+    db.query(query, [stock, variantId], (error, results) => {
+        if (error) {
+            console.error("Error updating stock:", error.message);
+            return res.status(500).json({ error: "Failed to update stock." });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Variant not found." });
+        }
+        res.json({ message: "Stock updated successfully." });
+    });
+};
+
+
+
 // Retrieve product details by variant ID
 exports.getProductByVariantId = (req, res) => {
     const variantId = req.params.variant_id;

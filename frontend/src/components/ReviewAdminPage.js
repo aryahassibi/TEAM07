@@ -59,7 +59,7 @@ const ReviewAdminPage = () => {
         <div className="review-admin-container">
             <button
                 className="go-back-button" // Add a class for styling the button
-                onClick={() => navigate("/admin/main_page")} // Navigate back to Admin Main Page
+                onClick={() => navigate("/admin/product_management")} // Navigate back to Admin Main Page
             >
                 Go Back 
             </button>

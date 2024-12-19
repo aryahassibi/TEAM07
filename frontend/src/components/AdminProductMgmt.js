@@ -36,6 +36,12 @@ const AdminProductMgmt = () => {
             <div className="product-actions">
                 <button
                     className="action-button"
+                    onClick={() => window.location.href = '/admin/review_management'}
+                >
+                    View Reviews
+                </button>
+                <button
+                    className="action-button"
                     onClick={() => navigate("/admin/view_products")}
                 >
                     View Products
@@ -47,7 +53,6 @@ const AdminProductMgmt = () => {
                     View Categories
                 </button>
 
-                <button className="action-button">Adjust Stock Levels</button>
             </div>
             <h2>Delivery List</h2>
             <div className="table-container">
