@@ -88,7 +88,7 @@ const AddProductPage = () => {
             console.log("Server Response:", response);
             if (response.status === 201) {
                 alert("Product added successfully!");
-                navigate("/admin/main_page");
+                navigate("/admin/view_products");
             } else {
                 alert(`Failed to add product. Status: ${response.status}`);
             }

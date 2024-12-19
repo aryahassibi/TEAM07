@@ -162,3 +162,28 @@
         width: 100%;
     }
 }
+
+/* Delete Variant Button */
+.delete-variant-button {
+    padding: 8px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-variant-button:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Variant Actions Styling */
+.variant-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+

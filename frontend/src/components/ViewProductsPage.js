@@ -48,6 +48,21 @@ const ViewProductsPage = () => {
         }
     };
 
+    // Delete a specific variant
+    const deleteVariant = async (variantId) => {
+        try {
+            const confirm = window.confirm("Are you sure you want to delete this variant?");
+            if (!confirm) return;
+
+            await axios.delete(`http://localhost:5001/api/products/variants/${variantId}`);
+            alert("Variant deleted successfully!");
+            window.location.reload(); // Refresh the page
+        } catch (error) {
+            console.error("Error deleting variant:", error);
+            alert("Failed to delete variant.");
+        }
+    };
+
     const handleInputChange = (variantId, value) => {
         setStockValues({ ...stockValues, [variantId]: value });
     };
@@ -97,7 +112,7 @@ const ViewProductsPage = () => {
                                                 <strong> Price:</strong> ${variant.price} | 
                                                 <strong> Stock:</strong> {variant.stock}
                                             </p>
-                                            <div className="update-stock">
+                                            <div className="variant-actions">
                                                 <input
                                                     type="number"
                                                     min="0"
@@ -117,6 +132,12 @@ const ViewProductsPage = () => {
                                                     }
                                                 >
                                                     Update Stock
+                                                </button>
+                                                <button
+                                                    className="delete-variant-button"
+                                                    onClick={() => deleteVariant(variant.variant_id)}
+                                                >
+                                                    Delete Variant
                                                 </button>
                                             </div>
                                         </div>

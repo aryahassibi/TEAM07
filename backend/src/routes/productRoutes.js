@@ -15,6 +15,7 @@ router.get("/categories", productController.listCategories);
 router.post("/categories/add", productController.addCategory);
 router.delete("/categories/:id/delete", productController.deleteCategory);
 router.put("/products/variants/:variant_id/stock", productController.updateStock);
+router.delete("/products/variants/:variant_id", productController.deleteVariant);
 
 
 

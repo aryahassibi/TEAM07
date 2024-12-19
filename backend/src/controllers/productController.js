@@ -2,6 +2,7 @@ const mysql = require("mysql2");
 
 // Database connection
 const db = require('../config/db');
+const checkoutPool = require("../config/promise/promise_db");
 
 // List all products with filtering and sorting
 exports.listProducts = (req, res) => {
@@ -152,17 +153,18 @@ exports.createProduct = async (req, res) => {
 
     console.log("Category ID:", categoryId);
 
-    const productQuery = `INSERT INTO Products (
-        name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, 
-        caffeine_content, category_id, description, warranty_status, distributor_info, average_rating
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const productQuery = `
+        INSERT INTO Products (
+            name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, 
+            caffeine_content, category_id, description, warranty_status, distributor_info, average_rating
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-
-    const connection = await db.promise().getConnection();
+    const connection = await checkoutPool.getConnection(); // Use promise-based connection
 
     try {
-        await connection.beginTransaction();
+        await connection.beginTransaction(); // Start transaction
 
         // Insert Product
         const [productResult] = await connection.query(productQuery, [
@@ -176,9 +178,9 @@ exports.createProduct = async (req, res) => {
             product.caffeine_content,
             categoryId,
             product.description,
-            product.warranty_status,
+            product.warranty_status ? 1 : 0, // Ensure boolean is stored as integer
             product.distributor_info,
-            0.00
+            0.00 // Default average_rating
         ]);
 
         console.log("Product inserted successfully:", productResult);
@@ -207,16 +209,33 @@ exports.createProduct = async (req, res) => {
             }
         }
 
-        await connection.commit();
+        await connection.commit(); // Commit transaction
         console.log("Transaction committed successfully");
         res.status(201).json({ message: "Product added successfully", productId });
     } catch (error) {
-        await connection.rollback();
+        await connection.rollback(); // Rollback transaction on error
         console.error("Error during product creation:", error.message);
         res.status(500).json({ error: "Internal server error", details: error.message });
     } finally {
-        connection.release();
+        connection.release(); // Release connection
     }
+};
+
+// Delete a specific variant
+exports.deleteVariant = (req, res) => {
+    const variantId = req.params.variant_id;
+
+    const query = "DELETE FROM Product_Variant WHERE variant_id = ?";
+    db.query(query, [variantId], (error, results) => {
+        if (error) {
+            console.error("Error deleting variant:", error.message);
+            return res.status(500).json({ error: "Failed to delete variant." });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Variant not found." });
+        }
+        res.json({ message: "Variant deleted successfully." });
+    });
 };
 
 

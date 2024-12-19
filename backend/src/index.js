@@ -25,7 +25,7 @@ app.use('/assets', express.static('src/assets'));
 app.use('/auth',authRoutes)
 
 // integrate prodcuts routes
-app.use("/api", productRoutes);
+app.use('/api', productRoutes);
 app.use('/api/reviews', reviewRoutes); // Add review routes integration
 
 // Database connection
