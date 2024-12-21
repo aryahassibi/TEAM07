@@ -1,0 +1,117 @@
+.bestselling-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    text-align: center;
+    background-color: #d9deda;
+}
+
+.bestselling-heading {
+    margin-bottom: 30px;
+}
+
+/* Product list grid */
+.bestselling-list {
+display: flex;
+gap: 20px;
+justify-content: center;
+flex-wrap: wrap;
+}
+
+.bestselling-product-card {
+    background: transparent;
+    background: #fff;
+    width: 200px;
+    border-radius: 10px;
+    overflow: hidden; /* Ensures the image stays within the card */
+    box-shadow: none;
+    text-align: center;
+    position: relative;
+    padding: 0; /* Remove padding to make the image flush with the card */
+}
+
+.bestselling-image-link {
+    display: block; /* Ensures the link takes up the entire space of the image wrapper */
+    text-decoration: none; /* Removes any underline or hover effects */
+    cursor: pointer; /* Keeps the pointer behavior for the link */
+}
+
+.bestselling-image-link:hover {
+    text-decoration: none; /* Prevents underline on hover */
+}
+
+.bestselling-image-wrapper {
+    width: 100%;
+    height: 250px;
+    background-size: cover; /* Ensures the image covers the entire card */
+    background-position: center;
+}
+
+/* Product info styles */
+.bestselling-product-info {
+    padding: 15px; /* Add padding only to the text content */
+    background: #fff; /* Ensure the text content has a background */
+    text-align: left;
+}
+
+.bestselling-name {
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.bestselling-name a {
+    color: #333;
+    text-decoration: none;
+}
+
+.bestselling-rating {
+    margin: 0; /* Removes default margin */
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+    background: #f0f0f0; /* Light background for the rating box */
+    padding: 5px 10px; /* Add padding inside the box */
+    border-radius: 12px; /* Rounded corners */
+    display: inline-block; /* Keeps the text inside the box */
+}
+
+
+.bestselling-price {
+    margin: 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.bestselling-add-button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #333;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.bestselling-add-button:hover {
+    background: #555;
+}
+
+.bestselling-view-all {
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.bestselling-view-all a {
+    color: #333;
+    text-decoration: none;
+}
+
+.bestselling-view-all:hover {
+    text-decoration: underline;
+}
