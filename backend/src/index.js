@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes'); // Import review routes
 const checkoutRoutes = require('./routes/checkoutRoutes'); 
 const orderRoutes = require('./routes/orderRoutes'); 
+const discountRouter = require('./routes/discountRouter'); // Adjust the path as needed
 
 const port = process.env.PORT;
 const bcrypt = require('bcrypt');
@@ -27,6 +28,7 @@ app.use('/assets', express.static('src/assets'));
 app.use('/auth',authRoutes)
 app.use('/checkout', checkoutRoutes);
 app.use('/order',orderRoutes)
+app.use('/api/discounts', discountRouter); 
 
 
 // integrate prodcuts routes

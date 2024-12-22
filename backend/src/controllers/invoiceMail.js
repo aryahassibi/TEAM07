@@ -148,3 +148,54 @@ exports.sendInvoiceEmail = async (userId, pdfPath) => {
   }
 };
 
+
+exports.sendDiscountNotification = async (variantId, discountValue) => {
+  let connection;
+  try {
+    connection = await checkoutPool.getConnection();
+
+    // Get emails of users who have this variant in their wishlist
+    const [users] = await connection.execute(
+      `SELECT DISTINCT u.email, u.first_name
+       FROM Users u
+       INNER JOIN Wishlist w ON u.user_id = w.user_id
+       INNER JOIN WishlistItems wi ON w.wishlist_id = wi.wishlist_id
+       WHERE wi.variant_id = ?`,
+      [variantId]
+    );
+
+    if (users.length === 0) {
+      console.log('No users have this product in their wishlist.');
+      return;
+    }
+
+    // Set up the email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'noreply.compresso@gmail.com',
+        pass: 'ezhnrpwiwzguzdfe',
+      },
+    });
+
+    // Send emails to users
+    for (const user of users) {
+      const mailOptions = {
+        from: 'noreply.compresso@gmail.com',
+        to: user.email,
+        subject: 'Exciting Discount on Your Wishlist Item!',
+        text: `Hi ${user.first_name},\n\nGood news! An item in your wishlist is now discounted by ${discountValue}%. Don't miss this opportunity to grab it at a reduced price.\n\nVisit our website now to shop!\n\nBest regards,\nYour E-commerce Team`,
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log(`Discount notification sent to ${user.email}`);
+    }
+  } catch (err) {
+    console.error('Error sending discount notifications:', err);
+    throw err;
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
