@@ -86,42 +86,44 @@ const SetPricesDiscounts = () => {
         price: variant.basePrice,
         discount: variant.discount || 0,
       }));
-
-      await axios.put(
+  
+      const response = await axios.put(
         "http://localhost:5001/api/product-variants/update",
         { variants: updatedVariants },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-
-      const discountPromises = updatedVariants
-        .filter((variant) => variant.discount > 0)
-        .map(async (variant) => {
-          try {
-            await axios.post(
-              "http://localhost:5001/api/discounts/notify-discount",
-              {
-                variantId: variant.variant_id,
-                discountValue: variant.discount,
-              },
-              {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-              }
-            );
-          } catch (error) {
-            console.error(`Failed to notify users for variant ID ${variant.variant_id}:`, error);
-          }
-        });
-
-      await Promise.all(discountPromises);
-
+  
+      const changedDiscounts = response.data.changedDiscounts || [];
+  
+      // Notify users only for changed discounts
+      const notificationPromises = changedDiscounts.map(async (variantId) => {
+        const variant = updatedVariants.find((v) => v.variant_id === variantId);
+        try {
+          await axios.post(
+            "http://localhost:5001/api/discounts/notify-discount",
+            {
+              variantId: variantId,
+              discountValue: variant.discount,
+            },
+            {
+              headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            }
+          );
+        } catch (error) {
+          console.error(`Failed to notify users for variant ID ${variantId}:`, error);
+        }
+      });
+  
+      await Promise.all(notificationPromises);
+  
       alert("Prices, discounts, and notifications updated successfully!");
     } catch (error) {
       console.error("Error updating prices and discounts:", error);
       alert("Failed to update prices and discounts.");
     }
-  };
+  };  
 
   return (
     <div className="set-prices-container">

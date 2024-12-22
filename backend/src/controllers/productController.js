@@ -437,6 +437,8 @@ exports.updateProductVariants = async (req, res) => {
       const connection = db.promise();
       await connection.beginTransaction();
   
+      const changedDiscounts = [];
+  
       for (const variant of variants) {
         const { variant_id, price, discount } = variant;
   
@@ -450,18 +452,23 @@ exports.updateProductVariants = async (req, res) => {
   
         // Check if a discount already exists
         const checkDiscountQuery = `
-          SELECT discount_id FROM Discounts WHERE variant_id = ? AND active = TRUE;
+          SELECT discount_id, value FROM Discounts WHERE variant_id = ? AND active = TRUE;
         `;
         const [existingDiscount] = await connection.execute(checkDiscountQuery, [variant_id]);
   
         if (existingDiscount.length > 0) {
-          // Update existing discount
-          const updateDiscountQuery = `
-            UPDATE Discounts
-            SET value = ?, discount_type = 'percentage', updated_at = CURRENT_TIMESTAMP
-            WHERE variant_id = ? AND active = TRUE;
-        `;
-          await connection.execute(updateDiscountQuery, [discount, variant_id]);
+          const existingValue = parseFloat(existingDiscount[0].value);
+  
+          // If discount has changed, update it and add to changedDiscounts
+          if (existingValue !== discount) {
+            const updateDiscountQuery = `
+              UPDATE Discounts
+              SET value = ?, discount_type = 'percentage', updated_at = CURRENT_TIMESTAMP
+              WHERE variant_id = ? AND active = TRUE;
+            `;
+            await connection.execute(updateDiscountQuery, [discount, variant_id]);
+            changedDiscounts.push(variant_id);
+          }
         } else {
           // Insert a new discount if none exists
           const insertDiscountQuery = `
@@ -469,13 +476,15 @@ exports.updateProductVariants = async (req, res) => {
             VALUES (?, 'percentage', ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), TRUE);
           `;
           await connection.execute(insertDiscountQuery, [variant_id, discount]);
+          changedDiscounts.push(variant_id); // Treat new discounts as "changed"
         }
       }
   
       await connection.commit();
-      res.status(200).json({ message: "Variants updated successfully." });
+      res.status(200).json({ message: "Variants updated successfully.", changedDiscounts });
     } catch (error) {
       console.error("Error updating product variants:", error);
       res.status(500).json({ error: "Failed to update product variants." });
     }
-  };
+};
+  
