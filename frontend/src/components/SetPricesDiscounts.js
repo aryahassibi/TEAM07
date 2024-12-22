@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SetPricesDiscounts.css"; // Ensure this CSS file exists for styling
 
 const SetPricesDiscounts = () => {
-  const [variants, setVariants] = useState([]); // Manage variant-level data
+  const [variants, setVariants] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch the product variants list
   useEffect(() => {
     const fetchVariants = async () => {
       try {
@@ -19,7 +18,6 @@ const SetPricesDiscounts = () => {
           ? response.data
           : response.data.variants || [];
 
-        // Fetch active discounts for each variant
         const variantsWithDiscounts = await Promise.all(
           fetchedVariants.map(async (variant) => {
             try {
@@ -32,10 +30,10 @@ const SetPricesDiscounts = () => {
 
               return {
                 ...variant,
-                discount: discountValue, // Set correct discount from the database
+                discount: discountValue,
                 discountedPrice: parseFloat((basePrice * (1 - discountValue / 100)).toFixed(2)),
-                basePrice: basePrice, // Keep original price intact
-                initialBasePrice: basePrice, // Preserve initial price for recalculations
+                basePrice: basePrice,
+                initialBasePrice: basePrice,
               };
             } catch (error) {
               console.error("Error fetching discount for variant:", variant.variant_id, error);
@@ -59,7 +57,6 @@ const SetPricesDiscounts = () => {
     fetchVariants();
   }, []);
 
-  // Handle input changes for price and discount
   const handleInputChange = (index, field, value) => {
     const updatedVariants = [...variants];
     const variant = updatedVariants[index];
@@ -73,7 +70,7 @@ const SetPricesDiscounts = () => {
     } else if (field === "basePrice") {
       const newBasePrice = parseFloat(value) || 0;
       variant.basePrice = newBasePrice;
-      variant.initialBasePrice = newBasePrice; // Update the preserved original price
+      variant.initialBasePrice = newBasePrice;
       variant.discountedPrice = parseFloat(
         (newBasePrice * (1 - variant.discount / 100)).toFixed(2)
       );
@@ -82,13 +79,12 @@ const SetPricesDiscounts = () => {
     setVariants(updatedVariants);
   };
 
-  // Submit updated prices and discounts
   const handleSave = async () => {
     try {
       const updatedVariants = variants.map((variant) => ({
         variant_id: variant.variant_id,
-        price: variant.basePrice, // Always save the original price
-        discount: variant.discount || 0, // Save the updated discount
+        price: variant.basePrice,
+        discount: variant.discount || 0,
       }));
 
       await axios.put(
@@ -99,9 +95,30 @@ const SetPricesDiscounts = () => {
         }
       );
 
-      alert("Prices and discounts updated successfully!");
+      const discountPromises = updatedVariants
+        .filter((variant) => variant.discount > 0)
+        .map(async (variant) => {
+          try {
+            await axios.post(
+              "http://localhost:5001/api/discounts/notify-discount",
+              {
+                variantId: variant.variant_id,
+                discountValue: variant.discount,
+              },
+              {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+              }
+            );
+          } catch (error) {
+            console.error(`Failed to notify users for variant ID ${variant.variant_id}:`, error);
+          }
+        });
+
+      await Promise.all(discountPromises);
+
+      alert("Prices, discounts, and notifications updated successfully!");
     } catch (error) {
-      console.error("Error updating product variants:", error);
+      console.error("Error updating prices and discounts:", error);
       alert("Failed to update prices and discounts.");
     }
   };
