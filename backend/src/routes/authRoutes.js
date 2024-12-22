@@ -113,6 +113,7 @@ router.post("/login", async (req, res) => {
             );
 
             console.log("Manager login successful:", email);
+            console.log("Manager token and role is successful:",  token, manager.role );
             return res.json({ token, role: manager.role }); // Include role in response
         }
 

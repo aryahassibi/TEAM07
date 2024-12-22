@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-//import backgroundImage from "../assets/images/backgrounds/luca-micheli-ruWkmt3nU58-unsplash.jpg";
 import backgroundImage from "../assets/images/backgrounds/samuel-ferrara-1527pjeb6jg-unsplash.jpg";
 import "./AdminLoginPage.css";
 
@@ -12,11 +11,19 @@ const AdminLoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
+
     if (token) {
-      navigate("/admin/main_page"); // Redirect if already logged in
+      const role = sessionStorage.getItem("role");
+      if (role === "product_manager") {
+        navigate("/admin/product_management");
+      } else if (role === "sales_manager") {
+        navigate("/admin/sales_management");
+      } else {
+        navigate("/admin/main_page");
+      }
     }
-    // Set the background dynamically
+
     document.body.style.background = `url(${backgroundImage}) no-repeat center center fixed`;
     document.body.style.backgroundSize = "cover";
 
@@ -27,6 +34,7 @@ const AdminLoginPage = () => {
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post("http://localhost:5001/auth/login", {
         email,
@@ -35,12 +43,18 @@ const AdminLoginPage = () => {
 
       const { token, role } = response.data;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("role", role);
 
-      if (role === "product_manager" || role === "sales_manager") {
-        alert("Welcome, Admin!");
-        navigate("/admin/main_page");
+      alert("toke: ",token);
+      alert(" role: ",role);
+
+      if (role === "product_manager") {
+        alert("here");
+        navigate("/admin/product_management");
+      } else if (role === "sales_manager") {
+        alert("there");
+        navigate("/admin/sales_management");
       } else {
         setLoginError("You are not authorized to access the admin panel.");
       }
@@ -59,7 +73,7 @@ const AdminLoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder=" " // Add this placeholder
+            placeholder=" " 
           />
           <label>Enter your email</label>
         </div>
@@ -69,7 +83,7 @@ const AdminLoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder=" " // Add this placeholder
+            placeholder=" " 
           />
           <label>Enter your password</label>
         </div>

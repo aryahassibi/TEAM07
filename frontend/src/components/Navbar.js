@@ -1,15 +1,18 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Navbar.css';
-import compressoLogo from '../assets/images/icons/logo-dark.svg';
-import shopIcon from '../assets/images/icons/cart-dark.svg';
-import userIcon from '../assets/images/icons/user-dark.svg';
-import searchIcon from '../assets/images/icons/icons8-search.svg';
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import "./Navbar.css";
+import compressoLogo from "../assets/images/icons/logo-dark.svg";
+import shopIcon from "../assets/images/icons/cart-dark.svg";
+import userIcon from "../assets/images/icons/user-dark.svg";
+import searchIcon from "../assets/images/icons/icons8-search.svg";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const navigate = useNavigate(); // React Router hook for navigation
+  const location = useLocation(); // React Router hook for current path
+
+  const isAdminRoute = location.pathname.startsWith("/admin"); // Check if current route is admin
 
   // Handle search input changes
   const handleSearchChange = (event) => {
@@ -20,20 +23,43 @@ const Navbar = () => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     if (searchQuery.trim()) {
-      // Changed 'query' to 'search' here
       navigate(`/search?search=${encodeURIComponent(searchQuery)}`);
     }
   };
 
+  // Handle admin logout
+  const handleAdminLogout = () => {
+    sessionStorage.clear(); // Clear session storage
+    navigate("/"); // Redirect to MainPage
+  };
+
+  if (isAdminRoute) {
+    // Admin Navbar
+    return (
+      <nav className="admin-navbar">
+        <div className="navbar-left">
+          <img src={compressoLogo} alt="Compresso Logo" className="navbar-logo" />
+          <span className="admin-navbar-title">Admin Side</span>
+        </div>
+        <div className="navbar-right">
+          <button className="admin-logout-button" onClick={handleAdminLogout}>
+            Logout
+          </button>
+        </div>
+      </nav>
+    );
+  }
+
+  // User Navbar
   return (
     <nav className="navbar">
       <img src={compressoLogo} alt="Compresso Logo" className="navbar-logo" />
       <div className="navbar-center">
         <ul className="navbar-links">
           <li><Link to="/">HOME</Link></li>
-          <li 
-            className="dropdown" 
-            onMouseEnter={() => setDropdownOpen(true)} 
+          <li
+            className="dropdown"
+            onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
             <Link to="/products" className="dropdown-toggle">PRODUCTS</Link>
