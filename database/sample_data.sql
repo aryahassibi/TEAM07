@@ -3,12 +3,12 @@ USE ecommerce_db;
 -- Note: Passwords are all "password"
 INSERT INTO Users (user_id, first_name, last_name, email, phone_number, tax_id, password_hash)
 VALUES
-(1, "Arya", "Hassibi", "arya@user.com", "+905301234567", "12345678901", SHA2("password", 256)),
-(2, "Beste", "Bayhan", "beste@user.com", "+905302345678", "23456789012", SHA2("password", 256)),
+(1, "Arya", "Hassibi", "arya.hassibi@sabanciuniv.edu", "+905301234567", "12345678901", SHA2("password", 256)),
+(2, "Beste", "Bayhan", "bestebayhan@sabanciuniv.edu", "+905302345678", "23456789012", SHA2("password", 256)),
 (3, "Mustafa", "Topcu", "mustafa@user.com", "+905303456789", "34567890123", SHA2("password", 256)),
 (4, "Orhun Ege", "Ozpay", "orhun@user.com", "+905304567890", "45678901234", SHA2("password", 256)),
-(5, "Eid", "Alhamali", "eid@user.com", "+905305678901", "56789012345", SHA2("password", 256)),
-(6, "Ecem", "Akın", "ecem@user.com", "+905306789012", "67890123456", SHA2("password", 256)),
+(5, "Eid", "Alhamali", "eid.alhamali@sabanciuniv.edu", "+905305678901", "56789012345", SHA2("password", 256)),
+(6, "Ecem", "Akın", "ecemakin@sabanciuniv.edu", "+905306789012", "67890123456", SHA2("password", 256)),
 (7, "Zeynep", "Işık", "zeynep.isik@user.com", "+905307890123", "78901234567", SHA2("password", 256)),
 (8, "Cemal", "Yılmaz", "cemal.yilmaz@user.com", "+905308901234", "89012345678", SHA2("password", 256)),
 (9, "Test", "User", "test@user.com", "+905309012345", "90123456789", SHA2("password", 256));
@@ -400,27 +400,27 @@ VALUES
 
 INSERT INTO WishlistItems (wishlist_item_id, wishlist_id, variant_id, added_at)
 VALUES
--- User 1"s Wishlist
+-- User 1"s Wishlist (Arya)
 (1, 1, 3, "2024-12-01 10:15:00"),
 (2, 1, 7, "2024-12-01 10:25:00"),
 
--- User 2"s Wishlist
+-- User 2"s Wishlist (Beste)
 (3, 2, 5, "2024-12-03 09:35:00"),
 (4, 2, 14, "2024-12-03 09:50:00"),
 
--- User 4"s Wishlist
+-- User 4"s Wishlist (Orhun)
 (5, 3, 8, "2024-12-05 15:50:00"),
 (6, 3, 20, "2024-12-05 16:10:00"),
 (7, 3, 25, "2024-12-05 16:20:00"),
 
--- User 5"s Wishlist
+-- User 5"s Wishlist (Eid)
 (8, 4, 2, "2024-12-02 18:25:00"),
 
--- User 6"s Wishlist
+-- User 6"s Wishlist (Ecem)
 (9, 5, 11, "2024-12-07 11:15:00"),
 (10, 5, 13, "2024-12-07 11:25:00"),
-
--- User 8"s Wishlist
+ 
+-- User 8"s Wishlist (Cemal)
 (11, 6, 18, "2024-12-04 13:55:00"),
 (12, 6, 28, "2024-12-04 14:05:00"),
 (13, 6, 30, "2024-12-04 14:20:00");
