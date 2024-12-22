@@ -43,7 +43,7 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-  }, [location.search]);
+  }, [location.search, location.pathname]);
 
   // Handle sort option change
   const handleSortChange = (event) => {
