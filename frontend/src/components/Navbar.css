@@ -216,6 +216,17 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.admin-navbar .back-to-user-button {
+  background-color: transparent; /* Transparent background */
+  color: #fff; /* White text */
+  border: 2px solid #fff; /* White border */
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
 .admin-navbar .admin-logout-button:hover {
   background-color: #e04344;
   transform: scale(1.05);
