@@ -140,3 +140,33 @@ exports.removeProductFromWishlist = async (req, res) => {
         res.status(500).json({ error: 'Failed to remove product variant from wishlist.' });
     }
 };
+
+exports.getWishlistStatus = async (req, res) => {
+    const userId = req.user.user_id; 
+    const { variantId } = req.params;
+
+    if (!userId) {
+        return res.status(401).json({ error: 'User is not authenticated.' });
+    }
+
+    if (!variantId) {
+        return res.status(400).json({ error: 'Variant ID is required.' });
+    }
+
+    try {
+        const query = `
+            SELECT COUNT(*) AS is_in_wishlist
+            FROM Wishlist w
+            JOIN WishlistItems wi ON w.wishlist_id = wi.wishlist_id
+            WHERE w.user_id = ? AND wi.variant_id = ?
+        `;
+
+        const [result] = await dbPool.query(query, [userId, variantId]);
+
+        const isInWishlist = result[0]?.is_in_wishlist > 0;
+        res.status(200).json({ variantId, isInWishlist });
+    } catch (error) {
+        console.error('Error fetching wishlist status:', error.message);
+        res.status(500).json({ error: 'Failed to retrieve wishlist status.' });
+    }
+};
