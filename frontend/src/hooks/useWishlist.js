@@ -113,3 +113,27 @@ export const toggleWishlist = async (variantId, isWishlist, setWishlistState) =>
         );
     }
 };
+
+export const getWishlistStatus = async (variantId) => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('User is not authenticated.');
+        }
+
+        const response = await axios.get(
+            `http://localhost:5001/api/wishlist/${variantId}/status`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        return response.data.isInWishlist;
+    } catch (error) {
+        console.error('Error fetching wishlist status:', error);
+        throw error;
+    }
+};
+
