@@ -1,40 +1,19 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+// import { useState, useEffect } from "react";
+import { useWishlistItems } from "../../hooks/useWishlist";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../ProductsPage/ProductCard";
 import "./WishlistPage.css";
 
-const ProductsPage = () => {
-    const [products, setProducts] = useState([]);
-    const location = useLocation();
-
-    // Fetch products data based on filters and sort order
-    useEffect(() => {
-        const fetchProducts = async () => {
-            const query = new URLSearchParams(location.search);
-
-            try {
-                let response = await axios.get(
-                    `http://localhost:5001/api/products?${query.toString()}`
-                );
-                setProducts(response.data);
-                const productsData = response.data.map((product) => ({
-                    ...product,
-                    price: Number(product.price),
-                }));
-                setProducts(productsData);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
-        };
-        fetchProducts();
-    }, [location.search]);
+const WishlistPage = () => {
+    // const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+    const { products } = useWishlistItems(navigate);
 
     const handleAddToCart = async (variantId) => {
         const token = localStorage.getItem("token");
         if (token) {
             try {
-                // Send a POST request to the backend with the token and variant details
                 const response = await axios.post(
                     "http://localhost:5001/api/cart/add-to-cart",
                     { variantId }, // Payload
@@ -118,7 +97,7 @@ const ProductsPage = () => {
     };
 
     return (
-        <div className="products-page">
+        <div className="wishlist-page">
             <h1 className="page-title">Your Wishlist</h1>
 
             {/* Product Grid */}
@@ -132,11 +111,11 @@ const ProductsPage = () => {
                         />
                     ))
                 ) : (
-                    <p className="no-products">No products available.</p>
+                    <p className="empty-wishlist">Your wishlist is empty.</p>
                 )}
             </div>
         </div>
     );
 };
 
-export default ProductsPage;
+export default WishlistPage;

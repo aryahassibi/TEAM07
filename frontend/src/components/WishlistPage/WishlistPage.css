@@ -1,5 +1,5 @@
 /* General Page Styling */
-.products-page {
+.wishlist-page {
     padding: 20px;
     max-width: 1000px;
     margin: auto;
@@ -8,19 +8,19 @@
     margin-bottom: 100px;
 }
 
-.products-page .page-title {
+.wishlist-page .page-title {
     margin-top: 40px;
     margin-bottom: 20px;
 }
 
 /* Products Grid */
-.products-page .products-grid {
+.wishlist-page .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 25px;
 }
 
-.products-page .no-products {
+.wishlist-page .empty-wishlist {
     text-align: center;
     font-size: 16px;
     color: #999;
