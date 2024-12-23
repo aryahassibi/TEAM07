@@ -1,11 +1,11 @@
-const dbPool = require('../config/promise/promise_db.js');
+const dbPool = require("../config/promise/promise_db.js");
 
 // Get all product variants in the wishlist of a user
 exports.getWishlistVariants = async (req, res) => {
-    const userId = req.user.user_id; 
+    const userId = req.user.user_id;
 
     if (!userId) {
-        return res.status(401).json({ error: 'User is not authenticated.' });
+        return res.status(401).json({ error: "User is not authenticated." });
     }
 
     const query = `
@@ -50,21 +50,21 @@ exports.getWishlistVariants = async (req, res) => {
         const [results] = await dbPool.query(query, [userId]);
         res.json(results);
     } catch (error) {
-        console.error('Error retrieving wishlist variants:', error.message);
-        res.status(500).json({ error: 'Failed to retrieve wishlist.' });
+        console.error("Error retrieving wishlist variants:", error.message);
+        res.status(500).json({ error: "Failed to retrieve wishlist." });
     }
 };
 
 exports.addProductToWishlist = async (req, res) => {
-    const userId = req.user.user_id; 
+    const userId = req.user.user_id;
     const { variantId } = req.body;
 
     if (!userId) {
-        return res.status(401).json({ error: 'User is not authenticated.' });
+        return res.status(401).json({ error: "User is not authenticated." });
     }
 
     if (!variantId) {
-        return res.status(400).json({ error: 'Variant ID is required.' });
+        return res.status(400).json({ error: "Variant ID is required." });
     }
 
     try {
@@ -92,23 +92,28 @@ exports.addProductToWishlist = async (req, res) => {
             [wishlistId, variantId]
         );
 
-        res.status(200).json({ message: 'Product variant added to wishlist.' });
+        res.status(200).json({ message: "Product variant added to wishlist." });
     } catch (error) {
-        console.error('Error adding product variant to wishlist:', error.message);
-        res.status(500).json({ error: 'Failed to add product variant to wishlist.' });
+        console.error(
+            "Error adding product variant to wishlist:",
+            error.message
+        );
+        res.status(500).json({
+            error: "Failed to add product variant to wishlist.",
+        });
     }
 };
 
 exports.removeProductFromWishlist = async (req, res) => {
-    const userId = req.user.user_id; 
+    const userId = req.user.user_id;
     const { variantId } = req.body;
 
     if (!userId) {
-        return res.status(401).json({ error: 'User is not authenticated.' });
+        return res.status(401).json({ error: "User is not authenticated." });
     }
 
     if (!variantId) {
-        return res.status(400).json({ error: 'Variant ID is required.' });
+        return res.status(400).json({ error: "Variant ID is required." });
     }
 
     try {
@@ -119,7 +124,7 @@ exports.removeProductFromWishlist = async (req, res) => {
         );
 
         if (!wishlist.length) {
-            return res.status(404).json({ error: 'Wishlist not found.' });
+            return res.status(404).json({ error: "Wishlist not found." });
         }
 
         const wishlistId = wishlist[0].wishlist_id;
@@ -131,26 +136,35 @@ exports.removeProductFromWishlist = async (req, res) => {
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Product variant not found in wishlist.' });
+            return res
+                .status(404)
+                .json({ error: "Product variant not found in wishlist." });
         }
 
-        res.status(200).json({ message: 'Product variant removed from wishlist.' });
+        res.status(200).json({
+            message: "Product variant removed from wishlist.",
+        });
     } catch (error) {
-        console.error('Error removing product variant from wishlist:', error.message);
-        res.status(500).json({ error: 'Failed to remove product variant from wishlist.' });
+        console.error(
+            "Error removing product variant from wishlist:",
+            error.message
+        );
+        res.status(500).json({
+            error: "Failed to remove product variant from wishlist.",
+        });
     }
 };
 
 exports.getWishlistStatus = async (req, res) => {
-    const userId = req.user.user_id; 
+    const userId = req.user.user_id;
     const { variantId } = req.params;
 
     if (!userId) {
-        return res.status(401).json({ error: 'User is not authenticated.' });
+        return res.status(401).json({ error: "User is not authenticated." });
     }
 
     if (!variantId) {
-        return res.status(400).json({ error: 'Variant ID is required.' });
+        return res.status(400).json({ error: "Variant ID is required." });
     }
 
     try {
@@ -166,7 +180,7 @@ exports.getWishlistStatus = async (req, res) => {
         const isInWishlist = result[0]?.is_in_wishlist > 0;
         res.status(200).json({ variantId, isInWishlist });
     } catch (error) {
-        console.error('Error fetching wishlist status:', error.message);
-        res.status(500).json({ error: 'Failed to retrieve wishlist status.' });
+        console.error("Error fetching wishlist status:", error.message);
+        res.status(500).json({ error: "Failed to retrieve wishlist status." });
     }
 };
