@@ -98,8 +98,7 @@ const WishlistPage = () => {
 
     return (
         <div className="wishlist-page">
-            <h1 className="page-title">Your Wishlist</h1>
-
+            <h1 className="page-title">Products I love</h1>
             {/* Product Grid */}
             <div className="products-grid">
                 {products.length ? (
