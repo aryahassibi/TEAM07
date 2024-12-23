@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { toggleWishlist } from "../../hooks/useWishlist";
 import "./ProductCard.css";
 
 import cartIcon from "../../assets/images/icons/cart-dark.svg";
@@ -76,7 +77,7 @@ const ProductCard = ({ product, onAddToCart }) => {
 
     const handleWishlistClick = (e) => {
         e.preventDefault(); // Prevent navigation
-        setIsWishlist((prev) => !prev); // Toggle wishlist state
+        toggleWishlist(variant_id, isWishlist, setIsWishlist); 
     };
 
     const handleImageError = (event) => {

@@ -39,3 +39,77 @@ export const useWishlistItems = (navigate) => {
 
     return { products, error };
 };
+
+
+const addToWishlist = async (variantId) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('User is not authenticated.');
+        }
+
+        const response = await axios.post(
+            'http://localhost:5001/api/wishlist/add',
+            { variantId },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        return response.data.message;
+    } catch (error) {
+        console.error('Error adding product to wishlist:', error);
+        throw error;
+    }
+};
+
+const removeFromWishlist = async (variantId) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('User is not authenticated.');
+        }
+
+        const response = await axios.delete(
+            'http://localhost:5001/api/wishlist/remove',
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: { variantId },
+            }
+        );
+
+        return response.data.message;
+    } catch (error) {
+        console.error('Error removing product from wishlist:', error);
+        throw error;
+    }
+};
+
+export const toggleWishlist = async (variantId, isWishlist, setWishlistState) => {
+    try {
+        if (isWishlist) {
+            await removeFromWishlist(variantId); // Remove from wishlist
+            alert("Removed from wishlist");
+        } else {
+            await addToWishlist(variantId); // Add to wishlist
+            alert("Added to wishlist");
+        }
+        setWishlistState((prev) => !prev); // Toggle wishlist state
+    } catch (error) {
+        console.error(
+            `Error ${isWishlist ? "removing from" : "adding to"} wishlist:`,
+            error
+        );
+        alert(
+            `Failed to ${
+                isWishlist ? "remove from" : "add to"
+            } wishlist. Please try again.`
+        );
+    }
+};

@@ -5,6 +5,7 @@ import ProductImagesCarousel from "./ProductImagesCarousel";
 import ProductInfoTable from "./ProductInfoTable";
 import ReviewsSection from "./ReviewsSection";
 import ProductInfoPanel from "./ProductInfoPanel";
+import { toggleWishlist } from '../../hooks/useWishlist'; // Import toggleWishlist
 import axios from "axios";
 
 import "./ProductDetail.css";
@@ -127,8 +128,7 @@ const ProductDetail = () => {
     
     // Wishlist Button Handler
     const handleWishlistClick = () => {
-        setWishlistFilled(!wishlistFilled);
-        // Add logic for adding/removing from wishlist (e.g., context, API call)
+        toggleWishlist(variant_id, wishlistFilled, setWishlistFilled); 
     };
 
     // Write Review Navigation
