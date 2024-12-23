@@ -22,7 +22,11 @@ export const useWishlistItems = (navigate) => {
                     setProducts(
                         response.data.map((product) => ({
                             ...product,
-                            price: Number(product.effective_price),
+                            price: Number(product.price),
+                            discountedPrice: Number(product.effective_price),
+                            isDiscounted: product.price > product.effective_price,
+                            discountType: product.discount_type,
+                            discountValue: product.discount_value,
                         }))
                     );
                 })
