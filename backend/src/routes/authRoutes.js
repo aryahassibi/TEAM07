@@ -2,6 +2,7 @@ const express = require('express');
 const UsersController = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
 const mysql = require("mysql2");
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -128,40 +129,88 @@ router.post('/register', async (req, res) => {
 
 // Login Endpoint
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
+  console.error(req.body);
 
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email and password are required" });
-    }
-    
-    
-    const query = "SELECT user_id, password_hash FROM Users WHERE email = ?";
-    db.query(query, [email], async (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
 
-        if (results.length === 0) {
-            return res.status(401).json({ error: "Invalid email or password" });
-        }
+  if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+  }
 
-        const user = results[0];
-       
-        const passwordString = String(password);
-        
-        const match = await bcrypt.compare(passwordString, user.password_hash);
-        if (!match) {
-            return res.status(401).json({ error: "Invalid email or password" });
-        }
 
-        
-        const token = jwt.sign({ user_id: user.user_id }, JWT_SECRET, {
-            expiresIn: "12h"
-        });
+  // Check for a match in Managers table
+  const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
+  //const managerQuery = "SELECT manager_id, first_name, last_name, email, password_hash, role FROM Managers";
 
-        res.json({ token });
-    });
+  //console.error(managerQuery);
+
+  db.query(managerQuery, [email], async (err, results) => {
+
+      console.error("this is the result: ",results);
+
+      if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Internal server error" });
+      }
+
+      
+      if (results.length > 0) {
+          const manager = results[0];
+          console.error("now we are inside: ",manager);
+
+
+
+          // Hash the provided password using SHA256 to match the database hash
+          const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+          console.error(hashedPassword);
+
+          if (hashedPassword !== manager.password_hash) {
+              // Password does not match
+              console.error("Password mismatch for manager:", email);
+              return res.status(401).json({ error: "Invalid email or password" });
+          }
+
+          // Generate JWT token
+          const token = jwt.sign(
+              { manager_id: manager.manager_id, role: manager.role },
+              JWT_SECRET,
+              { expiresIn: "12h" }
+          );
+
+          console.log("Manager login successful:", email);
+          console.log("Manager token and role is successful:",  token, manager.role );
+          return res.json({ token, role: manager.role }); // Include role in response
+      }
+
+
+      // If no match in Managers, check Users table
+      const userQuery = "SELECT user_id, password_hash FROM Users WHERE email = ?";
+      db.query(userQuery, [email], async (userErr, userResults) => {
+          if (userErr) {
+              console.error(userErr);
+              return res.status(500).json({ error: "Internal server error" });
+          }
+
+          if (userResults.length === 0) {
+              return res.status(401).json({ error: "Invalid email or password" });
+          }
+
+          const user = userResults[0];
+          const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
+
+          if (!isPasswordMatch) {
+              return res.status(401).json({ error: "Invalid email or password" });
+          }
+
+          const token = jwt.sign(
+              { user_id: user.user_id },
+              JWT_SECRET,
+              { expiresIn: "12h" }
+          );
+
+          res.json({ token, role: "user" }); // Non-admin users
+      });
+  });
 });
 
 
@@ -225,6 +274,22 @@ router.put('/:id/password', async (req, res) => {
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
+});
+
+router.get('/:id/is-admin', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const isAdminResult = await usersController.isAdmin(id);
+
+      if (isAdminResult.isAdmin) {
+          res.json({ isAdmin: true, role: isAdminResult.role });
+      } else {
+          res.json({ isAdmin: false });
+      }
+  } catch (err) {
+      res.status(400).json({ error: err.message });
+  }
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@ const mysql = require("mysql2");
 
 // Database connection
 const db = require('../config/db');
+const checkoutPool = require("../config/promise/promise_db");
 
 // List all products variants with filtering, sorting, images, and discounts
 exports.listProducts = (req, res) => {
@@ -43,6 +44,7 @@ exports.listProducts = (req, res) => {
             p.roast_level, 
             p.bean_type, 
             p.grind_type,
+            p.description,
             p.caffeine_content, 
             p.origin, 
             pv.variant_id, 
@@ -139,18 +141,161 @@ exports.getProductById = (req, res) => {
     });
 };
 
-// Create a new product
-exports.createProduct = (req, res) => {
-    const productData = req.body;
+// List all categories
+exports.listCategories = (req, res) => {
+    const query = "SELECT category_id, name, description FROM Categories";
 
-    const query = 'INSERT INTO Products SET ?';
-    db.query(query, productData, (error, results) => {
+    db.query(query, (error, results) => {
         if (error) {
-            console.error('Error creating product:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+            console.error("Error fetching categories:", error.message);
+            return res.status(500).json({ error: "Failed to fetch categories" });
         }
-        res.status(201).json({ message: 'Product created', productId: results.insertId });
+        res.status(200).json(results);
     });
+};
+
+
+// Add a new category
+exports.addCategory = (req, res) => {
+    const { name, description } = req.body;
+
+    if (!name) {
+        return res.status(400).json({ error: "Category name is required" });
+    }
+
+    const query = "INSERT INTO Categories (name, description) VALUES (?, ?)";
+    db.query(query, [name, description || null], (error, result) => {
+        if (error) {
+            console.error("Error adding category:", error.message);
+            return res.status(500).json({ error: "Failed to add category" });
+        }
+        res.status(201).json({ message: "Category added successfully", category_id: result.insertId });
+    });
+};
+
+
+// Delete a category
+exports.deleteCategory = (req, res) => {
+    const categoryId = req.params.id;
+
+    const query = "DELETE FROM Categories WHERE category_id = ?";
+    db.query(query, [categoryId], (error, result) => {
+        if (error) {
+            console.error("Error deleting category:", error.message);
+            return res.status(500).json({ error: "Failed to delete category" });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Category not found" });
+        }
+        res.json({ message: "Category deleted successfully" });
+    });
+};
+
+// Update stock for a product
+exports.updateStock = (req, res) => {
+    const variantId = req.params.variant_id; // Use variant_id instead of product_id
+    const { stock } = req.body;
+
+    if (stock < 0) {
+        return res.status(400).json({ error: "Stock cannot be negative." });
+    }
+
+    const query = "UPDATE Product_Variant SET stock = ? WHERE variant_id = ?";
+    db.query(query, [stock, variantId], (error, results) => {
+        if (error) {
+            console.error("Error updating stock:", error.message);
+            return res.status(500).json({ error: "Failed to update stock." });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Variant not found." });
+        }
+        res.json({ message: "Stock updated successfully." });
+    });
+};
+
+
+// Create a new product
+exports.createProduct = async (req, res) => {
+    console.log("POST /api/products/create - Request received");
+    console.log("Request Body:", req.body);
+
+    const { product, variants, images } = req.body;
+
+    if (!product) {
+        console.error("Product data is missing");
+        return res.status(400).json({ error: "Product details are missing" });
+    }
+
+    const categoryId = product.category_id && Number.isInteger(product.category_id) ? product.category_id : null;
+
+    console.log("Category ID:", categoryId);
+
+    const productQuery = `
+        INSERT INTO Products (
+            name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, 
+            caffeine_content, category_id, description, warranty_status, distributor_info, average_rating
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const connection = await checkoutPool.getConnection(); // Use promise-based connection
+
+    try {
+        await connection.beginTransaction(); // Start transaction
+
+        // Insert Product
+        const [productResult] = await connection.query(productQuery, [
+            product.name,
+            product.origin,
+            product.roast_level,
+            product.bean_type,
+            product.grind_type,
+            product.flavor_profile,
+            product.processing_method,
+            product.caffeine_content,
+            categoryId,
+            product.description,
+            product.warranty_status ? 1 : 0, // Ensure boolean is stored as integer
+            product.distributor_info,
+            0.00 // Default average_rating
+        ]);
+
+        console.log("Product inserted successfully:", productResult);
+
+        const productId = productResult.insertId;
+
+        // Insert Variants
+        if (variants && variants.length > 0) {
+            for (const variant of variants) {
+                console.log("Inserting Variant:", variant);
+                await connection.query(`
+                    INSERT INTO Product_Variant (product_id, weight_grams, price, stock, sku)
+                    VALUES (?, ?, ?, ?, ?)
+                `, [productId, variant.weight_grams, variant.price, variant.stock, variant.sku]);
+            }
+        }
+
+        // Insert Images
+        if (images && images.length > 0) {
+            for (const image of images) {
+                console.log("Inserting Image:", image);
+                await connection.query(`
+                    INSERT INTO Product_Images (product_id, image_url, alt_text)
+                    VALUES (?, ?, ?)
+                `, [productId, image.image_url, image.alt_text]);
+            }
+        }
+
+        await connection.commit(); // Commit transaction
+        console.log("Transaction committed successfully");
+        res.status(201).json({ message: "Product added successfully", productId });
+    } catch (error) {
+        await connection.rollback(); // Rollback transaction on error
+        console.error("Error during product creation:", error.message);
+        res.status(500).json({ error: "Internal server error", details: error.message });
+    } finally {
+        connection.release(); // Release connection
+    }
 };
 
 // Update a product by ID
@@ -187,6 +332,24 @@ exports.deleteProduct = (req, res) => {
         res.json({ message: 'Product deleted' });
     });
 };
+
+// Delete a specific variant
+exports.deleteVariant = (req, res) => {
+    const variantId = req.params.variant_id;
+
+    const query = "DELETE FROM Product_Variant WHERE variant_id = ?";
+    db.query(query, [variantId], (error, results) => {
+        if (error) {
+            console.error("Error deleting variant:", error.message);
+            return res.status(500).json({ error: "Failed to delete variant." });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Variant not found." });
+        }
+        res.json({ message: "Variant deleted successfully." });
+    });
+};
+
 
 exports.allVariantsOfProductId = (req, res) => {
     const { product_id } = req.params;
