@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import compressoLogo from '../assets/images/icons/logo-dark.svg';
@@ -9,7 +9,13 @@ import searchIcon from '../assets/images/icons/icons8-search.svg';
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
 
   // Handle search input changes
   const handleSearchChange = (event) => {
@@ -22,6 +28,19 @@ const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/search?search=${encodeURIComponent(searchQuery)}`);
     }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
+  // Check login status on hover
+  const handleUserIconHover = () => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
   };
 
   return (
@@ -102,7 +121,23 @@ const Navbar = () => {
             <img src={searchIcon} alt="Search" className="search-icon" />
           </button>
         </form>
-        <Link to="/login"><img src={userIcon} alt="User Icon" className="user-icon" /></Link>
+        <div 
+          className="user-icon-container" 
+          onMouseEnter={handleUserIconHover}
+        >
+          <img src={userIcon} alt="User Icon" className="user-icon" />
+          <div className="user-dropdown">
+            {isLoggedIn ? (
+              <>
+                <Link to="/my-orders">My Orders</Link>
+                <Link to="/wishlist">Wishlist</Link>
+                <button onClick={handleLogout}>Logout</button>
+              </>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </div>
+        </div>
         <Link to="/cart"><img src={shopIcon} alt="Shop Icon" className="shop-icon" /></Link>
       </div>
     </nav>
