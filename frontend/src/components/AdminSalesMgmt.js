@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import "./AdminSalesMgmt.css"; // Import the CSS for styling
 
 const AdminSalesMgmt = () => {
     const [invoices, setInvoices] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchInvoices = async () => {
@@ -27,12 +26,7 @@ const AdminSalesMgmt = () => {
 
     return (
         <div className="admin-container">
-            <button
-                className="go-back-button"
-                onClick={() => navigate("/admin/main_page")}
-            >
-                Go Back
-            </button>
+            
             <h1 className="admin-title">Sales Management</h1>
             <p className="admin-description">
                 Manage sales operations, invoices, and discounts.

@@ -23,12 +23,7 @@ const AdminProductMgmt = () => {
 
     return (
         <div className="admin-container">
-            <button
-                className="go-back-button"
-                onClick={() => navigate("/admin/main_page")}
-            >
-                Go Back
-            </button>
+            
             <h1 className="admin-title">Product Management</h1>
             <p className="admin-description">
                 Manage products, categories, and delivery operations.
