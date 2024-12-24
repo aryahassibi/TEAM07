@@ -8,8 +8,8 @@
 }
 
 
-.go-back-button {
-    background-color: #9a68db;
+.go-back-button-review {
+    background-color: #e36c16;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -20,12 +20,12 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth transitions */
 }
 
-.go-back-button:hover {
-    background-color: #8d23e3;
+.go-back-button-review:hover {
+    background-color: #d8b67c;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow for a deeper look */
 }
 
-.go-back-button:active {
+.go-back-button-review:active {
     transform: scale(0.95); /* Add a press-down effect */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Reduce the shadow */
 }

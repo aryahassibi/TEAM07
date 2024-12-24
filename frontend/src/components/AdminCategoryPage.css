@@ -58,3 +58,26 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+
+.go-back-button-category {
+    background-color: #e36c16;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth transitions */
+}
+
+.go-back-button-category:hover {
+    background-color: #d8b67c;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow for a deeper look */
+}
+
+.go-back-button-category:active {
+    transform: scale(0.95); /* Add a press-down effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Reduce the shadow */
+}
