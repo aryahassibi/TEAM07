@@ -26,16 +26,16 @@ CREATE TABLE IF NOT EXISTS Managers (
 
 INSERT INTO Managers (manager_id, first_name, last_name, email, password_hash, role)
 VALUES
-(1, 'Arya', 'Hassibi', 'arya@manager.com', SHA2('password', 256), 'sales_manager'),
-(2, 'Beste', 'Bayhan', 'beste@manager.com', SHA2('password', 256), 'product_manager'),
-(3, 'Mustafa', 'Topcu', 'mustafa@manager.com', SHA2('password', 256), 'sales_manager'),
-(4, 'Orhun', 'Ege Ozpay', 'orhun@manager.com', SHA2('password', 256), 'product_manager'),
-(5, 'Eid', 'Alhamali', 'eid@manager.com', SHA2('password', 256), 'sales_manager'),
-(6, 'Ecem', 'Akın', 'ecem@manager.com', SHA2('password', 256), 'product_manager'),
-(7, 'Zeynep', 'Işık', 'zeynep@manager.com', SHA2('password', 256), 'product_manager'),
-(8, 'Cemal', 'Yılmaz', 'cemal@manager.com', SHA2('password', 256), 'product_manager'),
-(9, 'Sales', 'Manager', 'sales@manager.com', SHA2('password', 256), 'sales_manager'),
-(10, 'Product', 'Manager', 'product@manager.com', SHA2('password', 256), 'product_manager');
+(1, 'Arya', 'Hassibi', 'arya@manager.com', SHA2('admin12345', 256), 'sales_manager'),
+(2, 'Beste', 'Bayhan', 'beste@manager.com', SHA2('admin12345', 256), 'product_manager'),
+(3, 'Mustafa', 'Topcu', 'mustafa@manager.com', SHA2('admin12345', 256), 'sales_manager'),
+(4, 'Orhun', 'Ege Ozpay', 'orhun@manager.com', SHA2('admin12345', 256), 'product_manager'),
+(5, 'Eid', 'Alhamali', 'eid@manager.com', SHA2('admin12345', 256), 'sales_manager'),
+(6, 'Ecem', 'Akın', 'ecem@manager.com', SHA2('admin12345', 256), 'product_manager'),
+(7, 'Zeynep', 'Işık', 'zeynep@manager.com', SHA2('admin12345', 256), 'product_manager'),
+(8, 'Cemal', 'Yılmaz', 'cemal@manager.com', SHA2('admin12345', 256), 'product_manager'),
+(9, 'Sales', 'Manager', 'sales@manager.com', SHA2('admin12345', 256), 'sales_manager'),
+(10, 'Product', 'Manager', 'product@manager.com', SHA2('admin12345', 256), 'product_manager');
 
 
 CREATE TABLE IF NOT EXISTS Categories (
