@@ -139,10 +139,11 @@ router.post("/login", async (req, res) => {
 
 
   // Check for a match in Managers table
-  const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
-  //const managerQuery = "SELECT manager_id, first_name, last_name, email, password_hash, role FROM Managers";
+  //const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
+  const managerQuery = "SELECT manager_id, first_name, last_name, email, password_hash, role FROM Managers";
 
   //console.error(managerQuery);
+  console.log(managerQuery);
 
   db.query(managerQuery, [email], async (err, results) => {
 

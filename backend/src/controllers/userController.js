@@ -37,6 +37,7 @@ const UsersController = class {
     login(email, password) {
         return new Promise(async (resolve, reject) => {
             try {
+                console.log("we are here");
                 const user = await this.getUserByEmail(email);
 
                 // Validate password
