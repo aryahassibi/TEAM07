@@ -110,12 +110,6 @@ exports.generateInvoicePdf = (orderId, cart, address, totalPrice) => {
 
 
 
-
-
-
-
-
-
 exports.sendInvoiceEmail = async (userId, pdfPath) => {
   try {
     const userEmail = await getUserEmail(userId); 
@@ -148,11 +142,27 @@ exports.sendInvoiceEmail = async (userId, pdfPath) => {
   }
 };
 
-
 exports.sendDiscountNotification = async (variantId, discountValue) => {
   let connection;
   try {
     connection = await checkoutPool.getConnection();
+
+    // Get the product name based on the variantId
+    const [productResult] = await connection.execute(
+      `SELECT p.name AS product_name, pv.weight_grams
+       FROM Products p
+       JOIN Product_Variant pv ON p.product_id = pv.product_id
+       WHERE pv.variant_id = ?`,
+      [variantId]
+    );
+
+    if (productResult.length === 0) {
+      console.log('No product found for variant ID: ${variantId}');
+      return;
+    }
+
+    const { product_name: productName, weight_grams: weightGrams } = productResult[0];
+    const displayWeight = weightGrams ? `${weightGrams}g` : '';
 
     // Get emails of users who have this variant in their wishlist
     const [users] = await connection.execute(
@@ -165,7 +175,7 @@ exports.sendDiscountNotification = async (variantId, discountValue) => {
     );
 
     if (users.length === 0) {
-      console.log('No users have this product in their wishlist.');
+      console.log(`No users have this product (variant ID: ${variantId}) in their wishlist.`);
       return;
     }
 
@@ -183,8 +193,16 @@ exports.sendDiscountNotification = async (variantId, discountValue) => {
       const mailOptions = {
         from: 'noreply.compresso@gmail.com',
         to: user.email,
-        subject: 'Exciting Discount on Your Wishlist Item!',
-        text: `Hi ${user.first_name},\n\nGood news! An item in your wishlist is now discounted by ${discountValue}%. Don't miss this opportunity to grab it at a reduced price.\n\nVisit our website now to shop!\n\nBest regards,\nYour E-commerce Team`,
+        subject: `☕ Enjoy ${discountValue}% Off ${productName} (${displayWeight}) This Week! 🎉`,
+        html: `
+          <h1 style="text-align: center;">Your Favorite Brew  ${productName} (${displayWeight}), Now at a Special Price! 🌟</h1>
+          <p>Hi ${user.first_name},</p>
+          <p>We’re excited to share some great news—our beloved <strong>${productName}</strong> coffee blend is now <strong>${discountValue}% off</strong> for a limited time! 🛍️</p>
+          <p>Savor the rich, nutty flavors with every sip and make your coffee moments even more delightful. 😍</p>
+          <p>⏳ <strong>Don’t miss out on this exclusive deal</strong>—stop by and grab your discounted bag of <strong>${productName} (${displayWeight})</strong> before it’s gone!</p>
+          <p>Warm brews,</p>
+          <p><strong>Compresso</strong><br>Your Coffee, Your Way</p>
+        `,
       };
 
       await transporter.sendMail(mailOptions);
@@ -199,3 +217,4 @@ exports.sendDiscountNotification = async (variantId, discountValue) => {
     }
   }
 };
+

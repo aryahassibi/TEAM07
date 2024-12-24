@@ -469,7 +469,7 @@ exports.updateProductVariants = async (req, res) => {
             await connection.execute(updateDiscountQuery, [discount, variant_id]);
             changedDiscounts.push(variant_id);
           }
-        } else {
+        } else if (discount > 0){
           // Insert a new discount if none exists
           const insertDiscountQuery = `
             INSERT INTO Discounts (variant_id, discount_type, value, start_date, end_date, active)
