@@ -130,43 +130,34 @@ router.post('/register', async (req, res) => {
 // Login Endpoint
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.error(req.body);
-
+  console.error("Received login request:", req.body);
 
   if (!email || !password) {
+      console.error("Missing email or password");
       return res.status(400).json({ error: "Email and password are required" });
   }
 
-
   // Check for a match in Managers table
-  //const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
-  const managerQuery = "SELECT manager_id, first_name, last_name, email, password_hash, role FROM Managers";
-
-  //console.error(managerQuery);
-  console.log(managerQuery);
+  const managerQuery = "SELECT manager_id, first_name, last_name, password_hash, role FROM Managers WHERE email = ?";
+  console.log("Executing Manager Query:", managerQuery);
 
   db.query(managerQuery, [email], async (err, results) => {
-
-      console.error("this is the result: ",results);
+      console.error("Manager query results:", results);
 
       if (err) {
-          console.error("Database error:", err);
+          console.error("Database error in Managers query:", err);
           return res.status(500).json({ error: "Internal server error" });
       }
 
-      
       if (results.length > 0) {
           const manager = results[0];
-          console.error("now we are inside: ",manager);
-
-
+          console.error("Manager record found:", manager);
 
           // Hash the provided password using SHA256 to match the database hash
           const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
-          console.error(hashedPassword);
+          console.error("Provided password hashed:", hashedPassword);
 
           if (hashedPassword !== manager.password_hash) {
-              // Password does not match
               console.error("Password mismatch for manager:", email);
               return res.status(401).json({ error: "Invalid email or password" });
           }
@@ -179,20 +170,24 @@ router.post("/login", async (req, res) => {
           );
 
           console.log("Manager login successful:", email);
-          console.log("Manager token and role is successful:",  token, manager.role );
+          console.log("Generated token and role:", token, manager.role);
           return res.json({ token, role: manager.role }); // Include role in response
       }
 
-
       // If no match in Managers, check Users table
       const userQuery = "SELECT user_id, password_hash FROM Users WHERE email = ?";
+      console.log("Executing User Query:", userQuery);
+
       db.query(userQuery, [email], async (userErr, userResults) => {
+          console.error("User query results:", userResults);
+
           if (userErr) {
-              console.error(userErr);
+              console.error("Database error in Users query:", userErr);
               return res.status(500).json({ error: "Internal server error" });
           }
 
           if (userResults.length === 0) {
+              console.error("No user found with email:", email);
               return res.status(401).json({ error: "Invalid email or password" });
           }
 
@@ -200,19 +195,23 @@ router.post("/login", async (req, res) => {
           const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
 
           if (!isPasswordMatch) {
+              console.error("Password mismatch for user:", email);
               return res.status(401).json({ error: "Invalid email or password" });
           }
 
+          // Generate JWT token for users
           const token = jwt.sign(
               { user_id: user.user_id },
               JWT_SECRET,
               { expiresIn: "12h" }
           );
 
-          res.json({ token, role: "user" }); // Non-admin users
+          console.log("User login successful:", email);
+          return res.json({ token, role: "user" }); // Non-admin users
       });
   });
 });
+
 
 
 // Get all users

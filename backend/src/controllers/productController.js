@@ -14,12 +14,11 @@ exports.listProducts = (req, res) => {
         caffeine_content,
         origin,
         average_rating,
-        sort_by = 'price', // Default sort_by
-        sort_order = 'asc', // Default sort_order
+        sort_by = 'price', // Default sorting
+        sort_order = 'asc' // Default order
     } = req.query;
 
-    // Validate sorting parameters
-    const validSortBy = ['price']; // Allowed fields to sort by
+    const validSortBy = ['price', 'average_rating']; // Allowed sort fields
     const validSortOrder = ['asc', 'desc'];
 
     if (!validSortBy.includes(sort_by)) {
@@ -30,9 +29,9 @@ exports.listProducts = (req, res) => {
         return res.status(400).json({ error: 'Invalid sort_order parameter.' });
     }
 
-    // Map sort_by to actual database column
     const sortByColumn = {
         price: 'pv.price',
+        average_rating: 'p.average_rating'
     };
 
     let query = `
@@ -43,7 +42,7 @@ exports.listProducts = (req, res) => {
             p.category_id,
             p.roast_level, 
             p.bean_type, 
-            p.grind_type,
+            p.grind_type, 
             p.description,
             p.caffeine_content, 
             p.origin, 
@@ -90,7 +89,6 @@ exports.listProducts = (req, res) => {
         query += ` WHERE ` + conditions.join(' AND ');
     }
 
-    // Add ORDER BY clause
     query += ` ORDER BY ${sortByColumn[sort_by]} ${sort_order.toUpperCase()}`;
 
     db.query(query, params, (error, results) => {
@@ -98,8 +96,6 @@ exports.listProducts = (req, res) => {
             console.error('Error retrieving products:', error.message);
             return res.status(500).json({ error: 'Failed to retrieve products.' });
         }
-
-        // Instead of returning 404 for no results, return an empty array
         res.json(results);
     });
 };
@@ -112,6 +108,7 @@ exports.getProductById = (req, res) => {
 
     const query = `
         SELECT 
+            p.product_id,
             p.name, 
             p.origin, 
             p.roast_level, 
@@ -121,13 +118,15 @@ exports.getProductById = (req, res) => {
             p.processing_method, 
             p.caffeine_content, 
             p.description, 
+            p.warranty_status,
+            p.distributor_info,
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
-            pv.sku 
+            pv.sku
         FROM Products p 
         JOIN Product_Variant pv ON p.product_id = pv.product_id 
-        WHERE pv.variant_id = ?`;
+        WHERE p.product_id = ?`;
 
     db.query(query, [productId], (error, results) => {
         if (error) {
@@ -215,6 +214,7 @@ exports.updateStock = (req, res) => {
 
 
 // Create a new product
+// Create a new product
 exports.createProduct = async (req, res) => {
     console.log("POST /api/products/create - Request received");
     console.log("Request Body:", req.body);
@@ -264,25 +264,29 @@ exports.createProduct = async (req, res) => {
 
         const productId = productResult.insertId;
 
-        // Insert Variants
+        // Insert Variants and Images
         if (variants && variants.length > 0) {
             for (const variant of variants) {
                 console.log("Inserting Variant:", variant);
-                await connection.query(`
+
+                // Insert the variant and get its ID
+                const [variantResult] = await connection.query(`
                     INSERT INTO Product_Variant (product_id, weight_grams, price, stock, sku)
                     VALUES (?, ?, ?, ?, ?)
                 `, [productId, variant.weight_grams, variant.price, variant.stock, variant.sku]);
-            }
-        }
 
-        // Insert Images
-        if (images && images.length > 0) {
-            for (const image of images) {
-                console.log("Inserting Image:", image);
-                await connection.query(`
-                    INSERT INTO Product_Images (product_id, image_url, alt_text)
-                    VALUES (?, ?, ?)
-                `, [productId, image.image_url, image.alt_text]);
+                const variantId = variantResult.insertId;
+
+                // Insert Images for the Variant
+                if (images && images.length > 0) {
+                    for (const image of images) {
+                        console.log("Inserting Image for Variant:", image, "Variant ID:", variantId);
+                        await connection.query(`
+                            INSERT INTO Product_Images (variant_id, image_url, alt_text)
+                            VALUES (?, ?, ?)
+                        `, [variantId, image.image_url, image.alt_text]);
+                    }
+                }
             }
         }
 
@@ -298,6 +302,7 @@ exports.createProduct = async (req, res) => {
     }
 };
 
+
 // Update a product by ID
 exports.updateProduct = (req, res) => {
     const productId = req.params.id;
@@ -312,10 +317,11 @@ exports.updateProduct = (req, res) => {
         if (!results.affectedRows) {
             return res.status(404).json({ error: 'Product not found' });
         }
-        res.json({ message: 'Product updated' });
+        res.json({ message: 'Product updated successfully.' });
     });
 };
 
+// Delete a product by ID
 // Delete a product by ID
 exports.deleteProduct = (req, res) => {
     const productId = req.params.id;
@@ -329,7 +335,7 @@ exports.deleteProduct = (req, res) => {
         if (!results.affectedRows) {
             return res.status(404).json({ error: 'Product not found' });
         }
-        res.json({ message: 'Product deleted' });
+        res.json({ message: 'Product deleted successfully.' });
     });
 };
 

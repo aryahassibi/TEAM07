@@ -46,14 +46,9 @@ const AdminLoginPage = () => {
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("role", role);
 
-      alert("toke: ",token);
-      alert(" role: ",role);
-
       if (role === "product_manager") {
-        alert("here");
         navigate("/admin/product_management");
       } else if (role === "sales_manager") {
-        alert("there");
         navigate("/admin/sales_management");
       } else {
         setLoginError("You are not authorized to access the admin panel.");
