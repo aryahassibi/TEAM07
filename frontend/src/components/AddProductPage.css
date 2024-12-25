@@ -24,7 +24,7 @@ button {
     font-size: 16px;
     border: none;
     border-radius: 5px;
-    background-color: #4caf50;
+    background-color: #9bd19d;
     color: white;
     cursor: pointer;
 }
@@ -66,6 +66,83 @@ button:hover {
 }
 
 .add-product-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #5c412f; /* Darker green on hover */
     transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Variants Section */
+.variant-card, .image-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.variant-card h3, .image-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.variant-input-group, .image-input-group {
+    margin-bottom: 15px;
+}
+
+.variant-input-group label, .image-input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.variant-input-group input, .image-input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Add Buttons */
+.add-variant-button, .add-image-button {
+    background-color: #a86c63;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-variant-button:hover, .add-image-button:hover {
+    background-color: #37271d;
+    transform: translateY(-2px);
+}
+
+.add-variant-button:active, .add-image-button:active {
+    background-color: #004494;
+}
+
+/* Overall Layout */
+.add-product-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.add-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
 }

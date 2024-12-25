@@ -225,67 +225,82 @@ const AddProductPage = () => {
 
                 <h2>Variants</h2>
                 {variants.map((variant, index) => (
-                    <div key={index} className="variant-group">
-                        <label>Weight (grams):</label>
-                        <input
-                            type="number"
-                            name="weight_grams"
-                            value={variant.weight_grams}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            required
-                        />
-                        <label>Price:</label>
-                        <input
-                            type="number"
-                            name="price"
-                            value={variant.price}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            required
-                        />
-                        <label>Stock:</label>
-                        <input
-                            type="number"
-                            name="stock"
-                            value={variant.stock}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            required
-                        />
-                        <label>SKU:</label>
-                        <input
-                            type="text"
-                            name="sku"
-                            value={variant.sku}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            required
-                        />
+                    <div key={index} className="variant-card">
+                        <h3>Variant {index + 1}</h3>
+                        <div className="variant-input-group">
+                            <label>Weight (grams):</label>
+                            <input
+                                type="number"
+                                name="weight_grams"
+                                value={variant.weight_grams}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                required
+                            />
+                        </div>
+                        <div className="variant-input-group">
+                            <label>Price:</label>
+                            <input
+                                type="number"
+                                name="price"
+                                value={variant.price}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                required
+                            />
+                        </div>
+                        <div className="variant-input-group">
+                            <label>Stock:</label>
+                            <input
+                                type="number"
+                                name="stock"
+                                value={variant.stock}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                required
+                            />
+                        </div>
+                        <div className="variant-input-group">
+                            <label>SKU:</label>
+                            <input
+                                type="text"
+                                name="sku"
+                                value={variant.sku}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                required
+                            />
+                        </div>
                     </div>
                 ))}
-                <button type="button" onClick={addVariant}>
+                <button type="button" className="add-variant-button" onClick={addVariant}>
                     Add Another Variant
                 </button>
 
                 <h2>Images</h2>
                 {images.map((image, index) => (
-                    <div key={index} className="image-group">
-                        <label>Image URL:</label>
-                        <input
-                            type="url"
-                            name="image_url"
-                            value={image.image_url}
-                            onChange={(e) => handleImageChange(index, e)}
-                        />
-                        <label>Alt Text:</label>
-                        <input
-                            type="text"
-                            name="alt_text"
-                            value={image.alt_text}
-                            onChange={(e) => handleImageChange(index, e)}
-                        />
+                    <div key={index} className="image-card">
+                        <h3>Image {index + 1}</h3>
+                        <div className="image-input-group">
+                            <label>Image URL:</label>
+                            <input
+                                type="url"
+                                name="image_url"
+                                value={image.image_url}
+                                onChange={(e) => handleImageChange(index, e)}
+                            />
+                        </div>
+                        <div className="image-input-group">
+                            <label>Alt Text:</label>
+                            <input
+                                type="text"
+                                name="alt_text"
+                                value={image.alt_text}
+                                onChange={(e) => handleImageChange(index, e)}
+                            />
+                        </div>
                     </div>
                 ))}
-                <button type="button" onClick={addImage}>
+                <button type="button" className="add-image-button" onClick={addImage}>
                     Add Another Image
                 </button>
+
 
                 <button type="submit">Submit</button>
             </form>
