@@ -15,6 +15,13 @@
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.view-products-card:hover {
+    transform: translateY(-2px); /* Move up on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow */
 }
 
 /* Variant Actions */
@@ -92,6 +99,7 @@
 
 .view-products-go-back-button:hover,
 .view-products-add-product-button:hover {
-    background-color: #d8b67c;
+    background-color: #7b5a3e;
     transform: scale(1.05);
 }
+

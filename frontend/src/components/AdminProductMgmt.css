@@ -1,99 +1,118 @@
 .admin-container {
+    font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Aligns content to the top */
     align-items: center;
-    min-height: 90vh; /* Reduces height so content starts higher */
-    background-color: #f9f9f9;
-    padding: 10rem; /* Reduces padding for better vertical alignment */
-}
-
-.go-back-button {
-    background-color: #6c63ff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    margin-top: 10px; /* Add some margin to prevent overlap */
+    min-height: 100vh;
+    background-color: #ffffff; /* Keep background white */
+    padding: 3rem 2rem;
 }
 
 .admin-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    font-weight: bold;
     text-align: center;
+    color: #333333;
     margin-bottom: 1rem;
-    color: #333;
+    letter-spacing: 1px;
 }
 
 .admin-description {
+    font-size: 1.1rem;
+    color: #555555;
     text-align: center;
-    margin-bottom: 1.5rem; /* Slightly reduce margin */
-    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
-.product-actions,
-.sales-actions {
+.product-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
     justify-content: center;
-    margin-bottom: 1.5rem; /* Slightly reduce margin */
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .action-button {
-    background-color: #4caf50;
+    background-color: #007bff; /* Primary blue button */
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .action-button:hover {
-    background-color: #45a049;
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Lift button on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
 }
 
 .table-container {
-    display: flex;
-    justify-content: center;
     width: 100%;
-    margin-top: 1.5rem; /* Add some space between actions and table */
+    max-width: 1000px;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
 .table {
     width: 100%;
-    max-width: 800px;
     border-collapse: collapse;
-    margin-top: 1rem; /* Slight margin adjustment for spacing */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .table th,
 .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;
     text-align: center;
+    border-bottom: 1px solid #dddddd;
 }
 
 .table th {
-    background-color: #f2f2f2;
-    color: black;
+    background-color: #f1f1f1; /* Light gray header */
+    color: #333333;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    font-weight: bold;
 }
 
-.action-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 5px;
+.table td {
+    background-color: #ffffff; /* White row background */
+    color: #555555;
+}
+
+.table tr:hover {
+    background-color: #f5f5f5; /* Slight highlight on hover */
     transition: background-color 0.3s ease;
 }
 
-.action-button:hover {
-    background-color: #45a049;
+.no-deliveries {
+    font-size: 1.1rem;
+    color: #555555;
+    margin-top: 1.5rem;
+    text-align: center;
 }
+
+/* Smooth page transitions */
+.admin-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

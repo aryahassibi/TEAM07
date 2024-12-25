@@ -1,3 +1,4 @@
+
 .admin-category-container {
     max-width: 800px;
     margin: 0 auto;
@@ -59,6 +60,15 @@
     cursor: pointer;
 }
 
+.category-list button:hover {
+    background-color: #ad372a;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 
 .go-back-button-category {
     background-color: #e36c16;
@@ -73,7 +83,7 @@
 }
 
 .go-back-button-category:hover {
-    background-color: #d8b67c;
+    background-color: #7b5a3e;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow for a deeper look */
 }
 

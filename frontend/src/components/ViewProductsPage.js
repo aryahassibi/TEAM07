@@ -136,4 +136,5 @@ const ViewProductsPage = () => {
     );
 };
 
+
 export default ViewProductsPage;

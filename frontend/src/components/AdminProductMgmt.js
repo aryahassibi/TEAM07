@@ -23,10 +23,9 @@ const AdminProductMgmt = () => {
 
     return (
         <div className="admin-container">
-            
             <h1 className="admin-title">Product Management</h1>
             <p className="admin-description">
-                Manage products, categories, and delivery operations.
+                Manage products, categories, and delivery operations with ease.
             </p>
             <div className="product-actions">
                 <button
@@ -47,9 +46,8 @@ const AdminProductMgmt = () => {
                 >
                     View Categories
                 </button>
-
             </div>
-            <h2>Delivery List</h2>
+            <h2 className="admin-title">Delivery List</h2>
             <div className="table-container">
                 {deliveries.length > 0 ? (
                     <table className="table">
@@ -71,7 +69,7 @@ const AdminProductMgmt = () => {
                                     <td>{delivery.customerId}</td>
                                     <td>{delivery.productId}</td>
                                     <td>{delivery.quantity}</td>
-                                    <td>${delivery.totalPrice}</td>
+                                    <td>${delivery.totalPrice.toFixed(2)}</td>
                                     <td>{delivery.address}</td>
                                     <td>{delivery.status}</td>
                                 </tr>
@@ -79,7 +77,7 @@ const AdminProductMgmt = () => {
                         </tbody>
                     </table>
                 ) : (
-                    <p>No deliveries available.</p>
+                    <p className="no-deliveries">No deliveries available.</p>
                 )}
             </div>
         </div>
