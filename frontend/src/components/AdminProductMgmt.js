@@ -6,17 +6,15 @@ import "./OrdersPage.css"; // Reuse the OrdersPage CSS for styling
 const AdminProductMgmt = () => {
     const [orders, setOrders] = useState([]);
     const [expandedOrderId, setExpandedOrderId] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOrders = async () => {
-            setLoading(true);
             const token = localStorage.getItem("token");
 
             if (!token) {
-                navigate("/login");
+                navigate("/admin/login");
                 return;
             }
 
@@ -28,9 +26,7 @@ const AdminProductMgmt = () => {
             } catch (error) {
                 console.error("Failed to fetch orders:", error);
                 setErrors("Failed to fetch orders. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
 
         fetchOrders();
@@ -40,13 +36,7 @@ const AdminProductMgmt = () => {
         setExpandedOrderId((prev) => (prev === orderId ? null : orderId));
     };
 
-    if (loading) {
-        return (
-            <div className="admin-container">
-                <p>Loading orders...</p>
-            </div>
-        );
-    }
+    
 
     if (errors) {
         return (
@@ -138,7 +128,7 @@ const AdminProductMgmt = () => {
                     })}
                 </div>
             ) : (
-                <p>No orders available.</p>
+                <p>No deliveries available.</p>
             )}
         </div>
     );
