@@ -18,7 +18,7 @@ exports.listProducts = (req, res) => {
         sort_order = 'asc' // Default order
     } = req.query;
 
-    const validSortBy = ['price', 'average_rating']; // Allowed sort fields
+    const validSortBy = ['price', 'average_rating', 'stock']; // Allowed fields to sort by
     const validSortOrder = ['asc', 'desc'];
 
     if (!validSortBy.includes(sort_by)) {
@@ -31,7 +31,8 @@ exports.listProducts = (req, res) => {
 
     const sortByColumn = {
         price: 'pv.price',
-        average_rating: 'p.average_rating'
+        average_rating: 'p.average_rating',
+        stock: 'pv.stock'
     };
 
     let query = `
