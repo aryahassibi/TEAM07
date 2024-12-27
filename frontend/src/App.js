@@ -20,6 +20,14 @@ import OrderSuccess from './components/OrderSuccess';
 import SidebarLayout from './components/SidebarLayout'; 
 import OrderPage from "./components/OrdersPage";
 import WishlistPage from './components/WishlistPage/WishlistPage';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import AdminProductMgmt from './components/AdminProductMgmt';
+import AdminSalesMgmt from './components/AdminSalesMgmt';
+import AdminCategoryPage from './components/AdminCategoryPage';
+import AddProductPage from './components/AddProductPage';
+import ViewProductsPage from './components/ViewProductsPage';
+import AdminDeliveryPage from './components/AdminDeliveryPage';
+
 import './index.css'; 
 
 function App() {
@@ -38,15 +46,26 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<Register/>} />
             <Route path="/reviews/write/:product_id" element={<WriteReview />} />
-            <Route path="/admin/review_management" element={<ReviewAdminPage />} />
-            <Route path="/admin/main_page" element={<MainAdminPage />} />
-            <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-failed" element={<OrderFailed/>} />
             <Route path="/order-success" element={<OrderSuccess/>} />
             <Route path="/my-orders" element={<SidebarLayout><OrderPage /></SidebarLayout>} />
             <Route path="/wishlist" element={<WishlistPage />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin" element={<ProtectedAdminRoute />}>
+              <Route path="review_management" element={<ReviewAdminPage />} />
+              <Route path="main_page" element={<MainAdminPage />} />
+              <Route path="product_management" element={<AdminProductMgmt />} />
+              <Route path="sales_management" element={<AdminSalesMgmt />} />
+              <Route path="view_products" element={<ViewProductsPage />} />
+              <Route path="add_product" element={<AddProductPage />} />
+              <Route path="categories" element={<AdminCategoryPage />} />
+              <Route path="delivery_list" element={<AdminDeliveryPage />} />
+
+            </Route>
           </Routes>
         </div>
       </Router>
