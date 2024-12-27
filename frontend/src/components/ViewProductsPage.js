@@ -71,7 +71,7 @@ const ViewProductsPage = () => {
         <div className="view-products-container">
             <div className="view-products-top-buttons">
                 <button className="view-products-go-back-button" onClick={() => navigate("/admin/product_management")}>
-                    Turn Back
+                    Go Back
                 </button>
                 <button className="view-products-add-product-button" onClick={() => navigate("/admin/add_product")}>
                     Add Product

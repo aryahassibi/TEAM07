@@ -26,6 +26,7 @@ import AdminSalesMgmt from './components/AdminSalesMgmt';
 import AdminCategoryPage from './components/AdminCategoryPage';
 import AddProductPage from './components/AddProductPage';
 import ViewProductsPage from './components/ViewProductsPage';
+import AdminDeliveryPage from './components/AdminDeliveryPage';
 
 import './index.css'; 
 
@@ -61,6 +62,8 @@ function App() {
               <Route path="view_products" element={<ViewProductsPage />} />
               <Route path="add_product" element={<AddProductPage />} />
               <Route path="categories" element={<AdminCategoryPage />} />
+              <Route path="delivery_list" element={<AdminDeliveryPage />} />
+
             </Route>
           </Routes>
         </div>

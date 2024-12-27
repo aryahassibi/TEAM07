@@ -118,6 +118,26 @@ exports.getInvoice = async (req, res) => {
   }
 };
 
+exports.updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  try {
+      const connection = await checkoutPool.getConnection();
+      await connection.query(
+          `UPDATE Orders SET status = ? WHERE order_id = ?`,
+          [status, orderId]
+      );
+      await connection.release();
+
+      res.status(200).json({ message: "Order status updated successfully." });
+  } catch (error) {
+      console.error("Error updating order status:", error);
+      res.status(500).json({ message: "Failed to update order status. Please try again." });
+  }
+};
+
+
 exports.cancelOrder = async (req, res) => {
   const { orderId } = req.params; 
   const userId = req.user.user_id; 

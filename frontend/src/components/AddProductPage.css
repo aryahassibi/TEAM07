@@ -19,19 +19,7 @@
     gap: 10px;
 }
 
-button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: #9bd19d;
-    color: white;
-    cursor: pointer;
-}
 
-button:hover {
-    background-color: #45a049;
-}
 
 .go-back-button {
     background-color: #6c63ff;
