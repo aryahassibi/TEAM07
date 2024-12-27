@@ -18,6 +18,7 @@ exports.listProducts = (req, res) => {
         sort_order = 'asc' // Default order
     } = req.query;
 
+
     const validSortBy = ['price', 'average_rating', 'stock']; // Allowed fields to sort by
     const validSortOrder = ['asc', 'desc'];
 
@@ -30,6 +31,7 @@ exports.listProducts = (req, res) => {
     }
 
     const sortByColumn = {
+
         price: 'pv.price',
         average_rating: 'p.average_rating',
         stock: 'pv.stock'
@@ -51,11 +53,28 @@ exports.listProducts = (req, res) => {
             pv.weight_grams, 
             pv.price, 
             pv.stock, 
-            pv.sku
+            pv.sku,
+            CASE
+                WHEN d.discount_id IS NULL OR d.active = 0
+                    OR (d.start_date IS NOT NULL AND d.start_date > CURDATE())
+                    OR (d.end_date IS NOT NULL AND d.end_date < CURDATE())
+                THEN 
+                    pv.price
+                WHEN d.discount_type = 'percentage'
+                    THEN (pv.price * GREATEST(0, 1 - (d.value / 100)))
+                WHEN d.discount_type = 'fixed'
+                    THEN GREATEST(0, pv.price - d.value)
+                ELSE
+                    pv.price
+            END AS effective_price
         FROM 
             Products p
         JOIN 
             Product_Variant pv ON p.product_id = pv.product_id
+        LEFT JOIN Discounts d ON d.variant_id = pv.variant_id
+            AND d.active = 1
+            AND (d.start_date IS NULL OR d.start_date <= CURDATE())
+            AND (d.end_date IS NULL OR d.end_date >= CURDATE())
     `;
 
     let conditions = [];
@@ -421,7 +440,6 @@ exports.getProductDetails = (req, res) => {
 };
 
 
-// Retrieve product details by variant ID
 // Retrieve product details by variant ID
 exports.getProductDetailsByVariant = (req, res) => {
     const variantId = req.params.variant_id;
