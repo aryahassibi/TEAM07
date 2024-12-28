@@ -3,10 +3,10 @@ import "./BestSellingProducts.css";
 
 const BestSellingProducts = () => {
   const products = [
-    { id: 1, name: "Compresso Colombia", rating: 5.0, reviewcount: 216, price: 300, image: "./product1.png" },
-    { id: 2, name: "Compresso Ethiopia", rating: 5.0, reviewcount: 216, price: 200, image: "./product2.png" },
-    { id: 3, name: "Compresso Italy", rating: 5, reviewcount: 216, price: 250, image: "./product3.png" },
-    { id: 4, name: "Compresso Colombia", rating: 5.0, reviewcount: 216, price: 400, image: "./product1.png" },
+    { id: 1, name: "Compresso Colombia", rating: 5.0, reviewcount: 216, price: 300, image: "./product1r.png" },
+    { id: 2, name: "Compresso Ethiopia", rating: 5.0, reviewcount: 216, price: 200, image: "./product3r.png" },
+    { id: 3, name: "Compresso Italy", rating: 5.0, reviewcount: 216, price: 250, image: "./product2r.png" },
+    { id: 4, name: "Compresso Colombia", rating: 5.0, reviewcount: 216, price: 400, image: "./product1r.png" },
   ];
 
   return (
@@ -25,8 +25,15 @@ const BestSellingProducts = () => {
               <p className="bestselling-name">
                 <a href="#" onClick={(event) => event.preventDefault()}>{product.name}</a>
               </p>
-              <p className="bestselling-rating">⭐{product.rating.toFixed(1)} ({product.reviewcount})</p>
-              <p className="bestselling-price">${product.price}</p>
+              <p className="bestselling-rating">
+                <img 
+                  src="/star.png" 
+                  alt="Star" 
+                  style={{ width: "16px", height: "16px", marginRight: "3px", marginBottom: "2px", verticalAlign: "middle"}} 
+                />
+                {product.rating.toFixed(1)} ({product.reviewcount})
+              </p>
+              <p className="bestselling-price">₺{product.price}</p>
             </div>
             <button className="bestselling-add-button">+</button>
           </div>
