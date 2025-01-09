@@ -7,6 +7,7 @@ const searchRoutes = require('./routes/searchRoutes');
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes'); // Import review routes
+const featuredProductsRoutes = require('./routes/featuredProductsRoutes');
 
 const port = process.env.PORT;
 const bcrypt = require('bcrypt');
@@ -27,6 +28,8 @@ app.use('/auth',authRoutes)
 // integrate prodcuts routes
 app.use("/api", productRoutes);
 app.use('/api/reviews', reviewRoutes); // Add review routes integration
+
+app.use('/api', featuredProductsRoutes);
 
 // Database connection
 const db = require('./config/db');
