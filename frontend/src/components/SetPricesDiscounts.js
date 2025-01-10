@@ -63,6 +63,9 @@ const SetPricesDiscounts = () => {
 
     if (field === "discount") {
       const discount = parseFloat(value) || 0;
+      if (discount < 0 || discount > 100) {
+        return;
+      }
       variant.discount = discount;
       variant.discountedPrice = parseFloat(
         (variant.initialBasePrice * (1 - discount / 100)).toFixed(2)

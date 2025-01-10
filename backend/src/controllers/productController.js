@@ -441,6 +441,10 @@ exports.updateProductVariants = async (req, res) => {
   
       for (const variant of variants) {
         const { variant_id, price, discount } = variant;
+
+        if (discount < 0 || discount > 100) {
+            return res.status(400).json({ error: "Discount must be between 0 and 100." });
+        }
   
         // Update price in Product_Variant table
         const updatePriceQuery = `
