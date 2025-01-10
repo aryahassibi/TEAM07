@@ -1,11 +1,22 @@
 /* User Navbar Styles */
 
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
 /* Navbar Container */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.6);
   padding: 1rem 2rem;
   position: fixed;
   top: 0;
