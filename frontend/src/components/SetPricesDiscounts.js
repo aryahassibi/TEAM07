@@ -34,6 +34,7 @@ const SetPricesDiscounts = () => {
                 discountedPrice: parseFloat((basePrice * (1 - discountValue / 100)).toFixed(2)),
                 basePrice: basePrice,
                 initialBasePrice: basePrice,
+                currentDiscount: discountValue, // Store the current discount separately
               };
             } catch (error) {
               console.error("Error fetching discount for variant:", variant.variant_id, error);
@@ -43,6 +44,7 @@ const SetPricesDiscounts = () => {
                 discountedPrice: parseFloat(variant.price),
                 basePrice: parseFloat(variant.price),
                 initialBasePrice: parseFloat(variant.price),
+                currentDiscount: 0, // Default current discount to 0 on error
               };
             }
           })
@@ -64,6 +66,7 @@ const SetPricesDiscounts = () => {
     if (field === "discount") {
       const discount = parseFloat(value) || 0;
       if (discount < 0 || discount > 100) {
+        console.warn("Invalid discount value:", discount);
         return;
       }
       variant.discount = discount;
@@ -89,7 +92,7 @@ const SetPricesDiscounts = () => {
         price: variant.basePrice,
         discount: variant.discount || 0,
       }));
-  
+
       const response = await axios.put(
         "http://localhost:5001/api/product-variants/update",
         { variants: updatedVariants },
@@ -97,10 +100,13 @@ const SetPricesDiscounts = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-  
+
       const changedDiscounts = response.data.changedDiscounts || [];
-  
-      // Notify users only for changed discounts
+
+      if (changedDiscounts.length === 0) {
+        alert("No discount changes.");
+        return; // Stop further execution if no changes
+      }
       const notificationPromises = changedDiscounts.map(async (variantId) => {
         const variant = updatedVariants.find((v) => v.variant_id === variantId);
         try {
@@ -118,15 +124,19 @@ const SetPricesDiscounts = () => {
           console.error(`Failed to notify users for variant ID ${variantId}:`, error);
         }
       });
-  
+
       await Promise.all(notificationPromises);
-  
-      alert("Prices, discounts, and notifications updated successfully!");
+
+      if (changedDiscounts.length !== 0) {
+        alert("Prices, discounts, and notifications updated successfully!");
+
+        return; // Stop further execution if no changes
+      }
     } catch (error) {
       console.error("Error updating prices and discounts:", error);
       alert("Failed to update prices and discounts.");
     }
-  };  
+  };
 
   return (
     <div className="set-prices-container">
@@ -148,8 +158,9 @@ const SetPricesDiscounts = () => {
                 <th>Variant ID</th>
                 <th>Product Name</th>
                 <th>Weight (g)</th>
+                <th>Current Discount (%)</th>
                 <th>Original Price</th>
-                <th>Discount (%)</th>
+                <th>Update Discount (%)</th>
                 <th>Discounted Price</th>
               </tr>
             </thead>
@@ -159,18 +170,23 @@ const SetPricesDiscounts = () => {
                   <td>{variant.variant_id}</td>
                   <td>{variant.name}</td>
                   <td>{variant.weight_grams}</td>
+                  <td>{variant.currentDiscount}</td>
                   <td>
                     <input
                       type="number"
                       value={variant.basePrice}
-                      onChange={(e) => handleInputChange(index, "basePrice", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, "basePrice", e.target.value)
+                      }
                     />
                   </td>
                   <td>
                     <input
                       type="number"
                       value={variant.discount}
-                      onChange={(e) => handleInputChange(index, "discount", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, "discount", e.target.value)
+                      }
                     />
                   </td>
                   <td style={{ color: "red", fontWeight: "bold" }}>

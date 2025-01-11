@@ -438,12 +438,13 @@ exports.updateProductVariants = async (req, res) => {
       await connection.beginTransaction();
   
       const changedDiscounts = [];
+      const debugChanges = []; // Array to track debug info
   
       for (const variant of variants) {
         const { variant_id, price, discount } = variant;
-
+  
         if (discount < 0 || discount > 100) {
-            return res.status(400).json({ error: "Discount must be between 0 and 100." });
+          return res.status(400).json({ error: "Discount must be between 0 and 100." });
         }
   
         // Update price in Product_Variant table
@@ -461,34 +462,62 @@ exports.updateProductVariants = async (req, res) => {
         const [existingDiscount] = await connection.execute(checkDiscountQuery, [variant_id]);
   
         if (existingDiscount.length > 0) {
-          const existingValue = parseFloat(existingDiscount[0].value);
+          const existingValue = parseFloat(existingDiscount[0].value); // Parse value as number
+          const newDiscount = parseFloat(discount); // Ensure discount is also treated as a number
   
-          // If discount has changed, update it and add to changedDiscounts
-          if (existingValue !== discount) {
+          // Only update if the discount value has changed
+          if (existingValue !== newDiscount) {
             const updateDiscountQuery = `
               UPDATE Discounts
               SET value = ?, discount_type = 'percentage', updated_at = CURRENT_TIMESTAMP
               WHERE variant_id = ? AND active = TRUE;
             `;
-            await connection.execute(updateDiscountQuery, [discount, variant_id]);
-            changedDiscounts.push(variant_id);
+            await connection.execute(updateDiscountQuery, [newDiscount, variant_id]);
+            changedDiscounts.push(variant_id); // Add to changedDiscounts if value changed
+            debugChanges.push({
+              variant_id,
+              old_discount: existingValue,
+              new_discount: newDiscount,
+            }); // Log debug info
           }
-        } else if (discount > 0){
-          // Insert a new discount if none exists
+        } else if (discount > 0) {
+          // Insert a new discount only if none exists and discount > 0
           const insertDiscountQuery = `
             INSERT INTO Discounts (variant_id, discount_type, value, start_date, end_date, active)
             VALUES (?, 'percentage', ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), TRUE);
           `;
           await connection.execute(insertDiscountQuery, [variant_id, discount]);
           changedDiscounts.push(variant_id); // Treat new discounts as "changed"
+          debugChanges.push({
+            variant_id,
+            old_discount: null,
+            new_discount: parseFloat(discount), // Log as number
+          }); // Log debug info for new discounts
         }
       }
   
       await connection.commit();
-      res.status(200).json({ message: "Variants updated successfully.", changedDiscounts });
+  
+      // Log debug info for all changed discounts
+      if (debugChanges.length > 0) {
+        console.log("Changed Discounts:", JSON.stringify(debugChanges, null, 2));
+      }
+  
+      if (changedDiscounts.length === 0) {
+        console.log("No discount changes.");
+        return res.status(200).json({ message: "No discount changes." });
+      }
+  
+      res.status(200).json({
+        message: "Variants updated successfully.",
+        changedDiscounts,
+      });
     } catch (error) {
       console.error("Error updating product variants:", error);
       res.status(500).json({ error: "Failed to update product variants." });
     }
-};
+  };
   
+  
+  
+//updated
