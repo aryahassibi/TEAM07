@@ -181,7 +181,7 @@
 
 /* Admin Navbar Styles */
 
-.navbar-container .admin-navbar {
+.admin-navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -196,24 +196,24 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-container .admin-navbar .navbar-left {
+.admin-navbar .navbar-left {
   display: flex;
   align-items: center;
 }
 
-.navbar-container .admin-navbar .navbar-logo {
+.admin-navbar .navbar-logo {
   max-width: 200px;
   width: 10vw;
   min-width: 100px;
   margin-right: 10px;
 }
 
-.navbar-container .admin-navbar .admin-navbar-title {
+.admin-navbar .admin-navbar-title {
   font-size: 1.1rem;
   font-weight: bold;
 }
 
-.navbar-container .admin-navbar .admin-logout-button {
+.admin-navbar .admin-logout-button {
   background-color: #ff4d4f; /* Red button for logout */
   color: #fff;
   border: none;
@@ -224,7 +224,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.navbar-container .admin-navbar .back-to-user-button {
+.admin-navbar .back-to-user-button {
   background-color: transparent; /* Transparent background */
   color: #fff; /* White text */
   border: 2px solid #fff; /* White border */
@@ -235,7 +235,7 @@
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-.navbar-container .admin-navbar .admin-logout-button:hover {
+.admin-navbar .admin-logout-button:hover {
   background-color: #e04344;
   transform: scale(1.05);
 }
@@ -268,17 +268,17 @@
     margin-top: 10px;
   }
 
-  .navbar-container .admin-navbar {
+  .admin-navbar {
     flex-wrap: wrap;
     justify-content: center;
     padding: 1rem;
   }
 
-  .navbar-container .admin-navbar .navbar-left {
+  .admin-navbar .navbar-left {
     margin-bottom: 1rem;
   }
 
-  .navbar-container .admin-navbar .admin-logout-button {
+  .admin-navbar .admin-logout-button {
     margin-top: 10px;
   }
 }
