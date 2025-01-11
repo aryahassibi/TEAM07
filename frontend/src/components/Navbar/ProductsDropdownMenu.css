@@ -29,12 +29,12 @@
 }
 
 /* Columns layout */
-.dropdown-column {
+.products-dropdown-card .dropdown-column {
   display: flex;
   flex-direction: column;
 }
 
-.dropdown-column h4 {
+.products-dropdown-card .dropdown-column h4 {
   margin-bottom: 1rem;
   font-size: 1rem;
   text-transform: uppercase;
@@ -42,13 +42,13 @@
   letter-spacing: 1px;
 }
 
-.dropdown-column ul {
+.products-dropdown-card .dropdown-column ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.dropdown-column ul li a {
+.products-dropdown-card .dropdown-column ul li a {
   text-decoration: none;
   color: #666;
   padding: 0.25rem 0;
@@ -56,6 +56,6 @@
   transition: color 0.2s ease-in-out;
 }
 
-.dropdown-column ul li a:hover {
+.products-dropdown-card .dropdown-column ul li a:hover {
   color: #000;
 }
