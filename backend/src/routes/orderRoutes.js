@@ -20,5 +20,6 @@ router.post('/refund/:id/approve',orderController.approveRefund );
 
 router.post('/refund/:id/reject',orderController.rejectRefund );
 
+router.put('/updatestatus/:orderId', authMiddleware ,orderController.updateOrderStatus);
 
 module.exports = router;

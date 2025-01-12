@@ -65,6 +65,9 @@ const SidebarLayout = ({ children }) => {
               <Link to="/my-orders" className="sl-nav-link">My Orders</Link>
             </li>
             <li className="sl-nav-item">
+              <Link to="/edit-profile" className="sl-nav-link">Edit Profile</Link>
+            </li>
+            <li className="sl-nav-item">
               <Link  className="sl-nav-link" onClick={handleLogout}>Log out</Link>
             </li>
             

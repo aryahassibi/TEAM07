@@ -50,6 +50,9 @@ exports.getAllOrders = (req, res) => {
 
     const ordersMap = {};
 
+
+
+
     results.forEach(row => {
       if (!ordersMap[row.order_id]) {
         ordersMap[row.order_id] = {
@@ -79,6 +82,8 @@ exports.getAllOrders = (req, res) => {
         variant_id: row.variantId
       });
     });
+    
+
 
     // Convert the map to an array of orders
     const orders = Object.values(ordersMap);
@@ -88,7 +93,24 @@ exports.getAllOrders = (req, res) => {
 };
 
 
+exports.updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
 
+  try {
+      const connection = await dbPool.getConnection();
+      await connection.query(
+          `UPDATE Orders SET status = ? WHERE order_id = ?`,
+          [status, orderId]
+      );
+      await connection.release();
+
+      res.status(200).json({ message: "Order status updated successfully." });
+  } catch (error) {
+      console.error("Error updating order status:", error);
+      res.status(500).json({ message: "Failed to update order status. Please try again." });
+  }
+};
 
 
  

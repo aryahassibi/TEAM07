@@ -36,9 +36,9 @@ const checkout=  async (req, res) => {
 
         // Insert into Orders table
         const [orderResult] = await connection.execute(
-            `INSERT INTO Orders (user_id, total_price, status, delivery_option_id,created_at)
-             VALUES (?, ?, 'delivered', ?,?)`,
-            [user_id, +parseFloat(totalPrice).toFixed(2), 1 ,'2025-01-04 00:00:00'] 
+            `INSERT INTO Orders (user_id, total_price, status, delivery_option_id)
+             VALUES (?, ?, 'processing', ?)`,
+            [user_id, +parseFloat(totalPrice).toFixed(2), 1 ] 
         );
         
         const order_id = orderResult.insertId;

@@ -29,6 +29,7 @@ import ViewProductsPage from './components/ViewProductsPage';
 import AdminDeliveryPage from './components/AdminDeliveryPage';
 import RefundList from "./components/RefundList";
 import InvoiceOrders from './components/InvoiceOrders';
+import ProfilePage from './components/ProfilePage';
 import './index.css'; 
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/refund-list" element={<RefundList/>} />
             <Route path="/invoice_list" element={<InvoiceOrders/>} />
-
+            <Route path="/profile_page" element={<ProfilePage/>} />
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin" element={<ProtectedAdminRoute />}>
@@ -67,7 +68,7 @@ function App() {
               <Route path="add_product" element={<AddProductPage />} />
               <Route path="categories" element={<AdminCategoryPage />} />
               <Route path="delivery_list" element={<AdminDeliveryPage />} />
-
+         
             </Route>
           </Routes>
         </div>
