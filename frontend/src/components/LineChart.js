@@ -32,7 +32,9 @@ const LineChart = () => {
           console.error('Error fetching order metrics:', err);
         });
     };
-
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    setEndDate(formattedDate);
     fetchOrderMetrics();
   }, []);
 

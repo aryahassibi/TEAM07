@@ -28,9 +28,7 @@ import AddProductPage from './components/AddProductPage';
 import ViewProductsPage from './components/ViewProductsPage';
 import AdminDeliveryPage from './components/AdminDeliveryPage';
 import RefundList from "./components/RefundList";
-import LineChart from "./components/LineChart";
-import RefundChart from './components/RefundChart';
-
+import InvoiceOrders from './components/InvoiceOrders';
 import './index.css'; 
 
 function App() {
@@ -56,8 +54,7 @@ function App() {
             <Route path="/my-orders" element={<SidebarLayout><OrderPage /></SidebarLayout>} />
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/refund-list" element={<RefundList/>} />
-            <Route path="/line-chart" element={<LineChart/>} />
-            <Route path="/refund-chart" element={<RefundChart/>} />
+            <Route path="/invoice_list" element={<InvoiceOrders/>} />
 
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLoginPage />} />

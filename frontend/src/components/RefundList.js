@@ -6,6 +6,7 @@ import refundRejected from "../assets/images/icons/refundRejected.png";
 import { useNavigate } from 'react-router-dom';
 import RefundChart from './RefundChart';
 import RefundReject from './RefundReject';
+import Toast from './Toast';
 
 const RefundList = () => {
   const [refunds, setRefunds] = useState([]);
@@ -16,6 +17,17 @@ const RefundList = () => {
   const [selectedRefund, setSelectedRefund] = useState(null);
   const [filter, setFilter] = useState('All'); // New state for filter
   const navigate = useNavigate();
+
+  const [toast, setToast] = useState({ visible: false, message: '', type: '' });
+
+  const showToast = (message, type) => {
+    setToast({ visible: true, message, type });
+  };
+
+  const handleCloseToast = () => {
+    setToast({ visible: false, message: '', type: '' });
+  };
+
 
   useEffect(() => {
     const fetchRefunds = async () => {
@@ -53,7 +65,9 @@ const RefundList = () => {
           headers: {  'Authorization': `Bearer ${token}`  }
       })
       .then(response => {
-          alert('Refund approved successfully!');
+          
+          showToast('Refund approved successfully!', 'success');
+
           setRefunds((prevRefunds) =>
             prevRefunds.map((refund) =>
               refund.refund_request_id === refundId
@@ -65,10 +79,12 @@ const RefundList = () => {
       })
       .catch(error => {
           if (error.response) {
-              alert(`Error: ${error.response.data.error}`);
+              
+              showToast(`Error: ${error.response.data.error}`, 'error');
               console.error(error.response);
           } else if (error.request) {
-              alert('No response from server. Please try again later.');
+          
+              showToast('No response from server. Please try again later.', 'error');
               console.error(error.request);
           } else {
               alert('Error setting up the request.');
@@ -283,6 +299,12 @@ const RefundList = () => {
           onConfirm={confirmRejectRefund}
         />
       </div>
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        visible={toast.visible}
+        onClose={handleCloseToast}
+      />
     </div>
   );
 };

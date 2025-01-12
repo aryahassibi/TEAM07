@@ -1,11 +1,12 @@
 import './Partnership.css';
+import { useNavigate } from "react-router-dom";
 
 const Partnership = () => {
-  
+  const navigate = useNavigate();
   const logos = [
     { src: '/lavazza.png', alt: 'Lavazza' },
     { src: '/dominos.png', alt: "Domino's" },
-    { src: '/subway.png', alt: 'Starbucks' },
+    { src: '/subway.png', alt: 'Subway' },
     { src: '/burger.png', alt: 'Burger King' },
     { src: '/dunkins.png', alt: 'Nike' },
     { src: '/subway.png', alt: 'Adidas' },
@@ -30,7 +31,7 @@ const Partnership = () => {
           <p className="partnership-description">
           Compressor is a trusted name in premium coffee, dedicated to delivering exceptional coffee beans sourced from the finest regions around the world. We take pride in collaborating with well-known brands to bring unparalleled quality and flavor to coffee enthusiasts everywhere.
           </p>
-          <button className="partnership-button">READ MORE</button>
+          <button className="partnership-button" onClick={() => navigate("/about")}>READ MORE</button>
         </div>
         <div className="partnership-logos">
           {logoRows.map((row, rowIndex) => (
