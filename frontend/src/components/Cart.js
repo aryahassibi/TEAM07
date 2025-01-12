@@ -220,7 +220,7 @@ const Cart = () => {
           <div className="cartPage-items">
             {cartItems.map((item) => (
               <div className="cartPage-item" key={item.variantId}>
-                <img src={`http://localhost:5001${item.image}`} alt={item.product_name} className="cartPage-itemImage" />
+                <img src={`http://localhost:5001${item.image}`} alt={item.product_name} className="cartPage-itemImage" onError={(e) => e.target.src = 'http://localhost:5001/assets/images/products/default_mockup.png'} />
                 <div className="cartPage-itemDetails">
                   <h3 className="cartPage-itemName">{item.product_name}</h3>
                   <p className="cartPage-itemWeight">{item.weight}</p>
