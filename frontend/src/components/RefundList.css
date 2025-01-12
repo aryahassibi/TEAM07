@@ -290,4 +290,25 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(24, 9, 78, 0.5);
   }
+
+  .orders-page__back-btn {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    cursor: pointer;
+    color:#222;
+    z-index: 10;
+  }
+  
+  .orders-page__back-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  
+  .orders-page__back-btn:hover .orders-page__back-icon {
+    transform: scale(1.1);
+  }
+  
   

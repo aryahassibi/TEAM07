@@ -51,9 +51,9 @@ const RefundReject = ({ Refund, isOpen, onClose  }) => {
 
   const handleRejectRefund = (refundId, reason, Refund) => {
 
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
     axios.post(`http://localhost:5001/order/refund/${refundId}/reject`, {reject_reason: reason , product_name: Refund.product_name, refund_date: Refund.created_at, refund_quantity : Refund.quantity , refund_price : Refund.price_at_purchase, refund_weight: Refund.weight }, {
-          headers: {  'Authorization': `Bearer ${token}`  }
+          // headers: {  'Authorization': `Bearer ${token}`  }
       })
       .then(response => {
         

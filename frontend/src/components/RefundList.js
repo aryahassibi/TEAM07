@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import RefundChart from './RefundChart';
 import RefundReject from './RefundReject';
 import Toast from './Toast';
+import backIcon from '../assets/images/icons/back.png'; 
 
 const RefundList = () => {
   const [refunds, setRefunds] = useState([]);
@@ -32,17 +33,15 @@ const RefundList = () => {
   useEffect(() => {
     const fetchRefunds = async () => {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token');
 
-      if (!token) {
-        navigate('/login');
-        return;
-      }              
+      // if (!token) {
+      //   navigate('/login');
+      //   return;
+      // }              
 
       try {            
-        const response = await axios.get('http://localhost:5001/order/getrefunds', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get('http://localhost:5001/order/getrefunds');
         setRefunds(response.data.refunds);
       } catch (error) {
         console.error('Failed to fetch refunds:', error);
@@ -60,9 +59,9 @@ const RefundList = () => {
   };
 
   const handleAcceptRefund = (refundId, Refund) => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
     axios.post(`http://localhost:5001/order/refund/${refundId}/approve`, { product_name: Refund.product_name, refund_date: Refund.created_at, refund_quantity : Refund.quantity , refund_price : Refund.price_at_purchase, refund_weight: Refund.weight}, {
-          headers: {  'Authorization': `Bearer ${token}`  }
+          
       })
       .then(response => {
           
@@ -156,6 +155,10 @@ const RefundList = () => {
 
   return (
     <div>
+
+      <div className="orders-page__back-btn" onClick={() => navigate('/admin/sales_management')}>
+        <img src={backIcon} alt="Back" className="orders-page__back-icon" />
+      </div>
       <RefundChart/>
       
       {/* Filter Bar */}

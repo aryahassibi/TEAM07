@@ -26,19 +26,19 @@ const InvoiceOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
-      const token = localStorage.getItem('token'); 
+      // const token = localStorage.getItem('token'); 
 
       const today = new Date();
       const formattedDate = today.toISOString().split('T')[0];
       setEndDate(formattedDate);
-      if (!token) {
-        navigate('/login');   
-        return;
-      }
+      // if (!token) {
+      //   navigate('/login');   
+      //   return;
+      // }
 
       try {
         const response = await axios.get('http://localhost:5001/order/getallorders', { 
-          headers: { Authorization: `Bearer ${token}` } 
+          // headers: { Authorization: `Bearer ${token}` } 
         });
         setOrders(response.data.orders);
         setFilteredOrders(response.data.orders); // Initialize filtered orders
@@ -60,13 +60,12 @@ const InvoiceOrders = () => {
   const handleDownloadInvoice = async (orderId) => {
     setDownloadLoading(true);
     setDownloadError('');
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.get(`http://localhost:5001/order/getinvoice/${orderId}`, { 
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob' 
-      });
+      const response = await axios.get(`http://localhost:5001/order/getinvoice/${orderId}`
+    
+      );
 
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
@@ -132,7 +131,7 @@ const InvoiceOrders = () => {
   return (
     <div className="invoice-orders-page__container">
       {/* Back Icon */}
-      <div className="orders-page__back-btn" onClick={() => navigate('/')}>
+      <div className="orders-page__back-btn" onClick={() => navigate('/admin/sales_management')}>
         <img src={backIcon} alt="Back" className="orders-page__back-icon" />
       </div>
 

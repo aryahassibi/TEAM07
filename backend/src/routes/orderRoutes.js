@@ -6,19 +6,19 @@ const router = express.Router();
 
 router.get('/getorders', authMiddleware, orderController.getOrders);
 
-router.get('/getallorders', authMiddleware, orderController.getAllOrders);
+router.get('/getallorders', orderController.getAllOrders);
 
 router.get('/getinvoice/:orderId', authMiddleware ,orderController.getInvoice);
 
 router.put('/cancel/:orderId', authMiddleware ,orderController.cancelOrder);
 
-router.get('/getrefunds' ,authMiddleware, orderController.getRefunds);
+router.get('/getrefunds' , orderController.getRefunds);
 
 router.post('/refund-request',authMiddleware ,orderController.createRefund);
 
-router.post('/refund/:id/approve',authMiddleware ,orderController.approveRefund );
+router.post('/refund/:id/approve',orderController.approveRefund );
 
-router.post('/refund/:id/reject',authMiddleware ,orderController.rejectRefund );
+router.post('/refund/:id/reject',orderController.rejectRefund );
 
 
 module.exports = router;
