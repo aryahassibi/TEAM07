@@ -10,11 +10,12 @@ router.get('/featuredproducts', (req, res) => {
       p.name,
       COALESCE(AVG(average_rating), 0) AS rating,
       MIN(v.price) AS price,
-      i.image_url AS image
+      ANY_VALUE(i.image_url) AS image,
+      ANY_VALUE(i.variant_id) AS variantId
     FROM Products p
     JOIN Product_Variant v ON p.product_id = v.product_id
     JOIN Product_Images i ON v.variant_id = i.variant_id
-    GROUP BY p.product_id, i.image_url
+    GROUP BY p.product_id, p.name
     ORDER BY p.product_id ASC
     LIMIT 4;
   `;

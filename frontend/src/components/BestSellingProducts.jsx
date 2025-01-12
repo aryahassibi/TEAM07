@@ -41,15 +41,13 @@ const BestSellingProducts = () => {
       <div className="bestselling-list">
         {products.map((product) => (
           <div className="bestselling-product-card" key={product.id}>
-            <a href="#" onClick={(event) => event.preventDefault()} className="bestselling-image-link">
-              <div
+            <div
                 className="bestselling-image-wrapper"
                 style={{ backgroundImage: `url(${product.image})` }}
-              ></div>
-            </a>
+            ></div>
             <div className="bestselling-product-info">
               <p className="bestselling-name">
-                <a href="#" onClick={(event) => event.preventDefault()}>{product.name}</a>
+                <Link to={`/product/${product.variantId}`}>{product.name}</Link>
               </p>
               <p className="bestselling-rating">
                 <img 
