@@ -177,12 +177,14 @@ exports.getOrders = (req, res) => {
             postal_code: row.postal_code,
             country: row.country
           },
+
           customer_id: row.customer_id,
           order_items: []
         };
       }
 
       ordersMap[row.order_id].order_items.push({
+
         product_id: row.product_id,
         name: row.product_name,
         weight_grams: row.weight_grams,
