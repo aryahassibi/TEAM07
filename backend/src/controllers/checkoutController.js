@@ -3,7 +3,17 @@ const fs = require('fs');
 const { generateInvoicePdf, sendInvoiceEmail } = require('./invoiceMail');
 
 
-const dbPool = require('../config/promise/promise_db.js');
+const checkoutPool = require('../config/promise/promise_db.js');
+
+// Test the connection pool
+checkoutPool.getConnection()
+    .then(connection => {
+        connection.release();
+    })
+    .catch(err => {
+        console.error('Error connecting to Checkout MySQL pool:', err);
+    });
+
 
 
 const checkout=  async (req, res) => {
@@ -19,16 +29,16 @@ const checkout=  async (req, res) => {
 
     try {
         // Get a connection from the checkout pool
-        connection = await dbPool.getConnection();
+        connection = await checkoutPool.getConnection();
 
         // Start transaction
         await connection.beginTransaction();
 
         // Insert into Orders table
         const [orderResult] = await connection.execute(
-            `INSERT INTO Orders (user_id, total_price, status, delivery_option_id)
-             VALUES (?, ?, 'processing', ?)`,
-            [user_id, +parseFloat(totalPrice).toFixed(2), 1 ] 
+            `INSERT INTO Orders (user_id, total_price, status, delivery_option_id,created_at)
+             VALUES (?, ?, 'delivered', ?,?)`,
+            [user_id, +parseFloat(totalPrice).toFixed(2), 1 ,'2025-01-04 00:00:00'] 
         );
         
         const order_id = orderResult.insertId;
@@ -71,6 +81,14 @@ const checkout=  async (req, res) => {
         }
 
      
+        await connection.execute(
+            `INSERT INTO Address (order_id, address_line, city, phone_number, postal_code, country)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [order_id, address.address, address.city, address.phonenumber, address.zipcode, address.country]
+        );
+
+
+
      const invoicePdfPath = await generateInvoicePdf(order_id, cartItems, address, totalPrice);
 
      

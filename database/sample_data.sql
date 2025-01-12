@@ -268,16 +268,16 @@ VALUES
 (36, 36, "/assets/images/products/product20.png", "Ecuadorian High Spirits 500g");
 
 
-INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
-VALUES
-(1, 1, "İstiklal Cad. No:1", "İstanbul", "İstanbul", "34433", "Turkey"),
-(2, 2, "Atatürk Bulvarı No:45", "Ankara", "Ankara", "06690", "Turkey"),
-(3, 3, "Çankaya Sok. No:12", "İzmir", "İzmir", "35210", "Turkey"),
-(4, 4, "Fatih Mah. No:7", "Bursa", "Bursa", "16010", "Turkey"),
-(5, 5, "Merkez Cad. No:5", "Antalya", "Antalya", "07020", "Turkey"),
-(6, 6, "Bağdat Cad. No:8", "İstanbul", "İstanbul", "34726", "Turkey"),
-(7, 7, "Kızılay Meydanı No:3", "Ankara", "Ankara", "06420", "Turkey"),
-(8, 8, "Konak Cad. No:10", "İzmir", "İzmir", "35220", "Turkey");
+-- INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
+-- VALUES
+-- (1, 1, "İstiklal Cad. No:1", "İstanbul", "İstanbul", "34433", "Turkey"),
+-- (2, 2, "Atatürk Bulvarı No:45", "Ankara", "Ankara", "06690", "Turkey"),
+-- (3, 3, "Çankaya Sok. No:12", "İzmir", "İzmir", "35210", "Turkey"),
+-- (4, 4, "Fatih Mah. No:7", "Bursa", "Bursa", "16010", "Turkey"),
+-- (5, 5, "Merkez Cad. No:5", "Antalya", "Antalya", "07020", "Turkey"),
+-- (6, 6, "Bağdat Cad. No:8", "İstanbul", "İstanbul", "34726", "Turkey"),
+-- (7, 7, "Kızılay Meydanı No:3", "Ankara", "Ankara", "06420", "Turkey"),
+-- (8, 8, "Konak Cad. No:10", "İzmir", "İzmir", "35220", "Turkey");
 
 -- Insert into ShoppingCart for Registered Users
 INSERT INTO ShoppingCart (cart_id, user_id, session_id, created_at, updated_at)
@@ -367,18 +367,18 @@ VALUES
 (8, 8, 6, "2024-12-02 13:45:00", 600.00, "Ecem Akın", AES_ENCRYPT("4555555555555555", "encryption_key"), "2024-09-01", AES_ENCRYPT("345", "encryption_key")),
 (9, 9, 8, "2024-12-06 17:30:00", 900.00, "Cemal Yılmaz", AES_ENCRYPT("4666666666666666", "encryption_key"), "2026-10-01", AES_ENCRYPT("678", "encryption_key"));
 
-INSERT INTO RefundRequests (refund_request_id, order_id, user_id, request_date, status, notes)
-VALUES
-(1, 2, 1, "2024-11-20 10:00:00", "approved", "Product arrived damaged."),
-(2, 4, 2, "2024-12-10 12:00:00", "pending", "Wrong product delivered."),
-(3, 7, 6, "2024-10-30 09:30:00", "rejected", "No reason provided.");
+-- INSERT INTO RefundRequests (refund_request_id, order_id, user_id, request_date, status, notes)
+-- VALUES
+-- (1, 2, 1, "2024-11-20 10:00:00", "approved", "Product arrived damaged."),
+-- (2, 4, 2, "2024-12-10 12:00:00", "pending", "Wrong product delivered."),
+-- (3, 7, 6, "2024-10-30 09:30:00", "rejected", "No reason provided.");
 
 
-INSERT INTO ReturnItems (return_item_id, refund_request_id, product_id, quantity, price_at_purchase, reason)
-VALUES
-(1, 1, 3, 1, 600.00, "Damaged packaging."),
-(2, 2, 6, 2, 520.00, "Incorrect variant received."),
-(3, 3, 12, 1, 575.00, "Did not like the taste.");
+-- INSERT INTO ReturnItems (return_item_id, refund_request_id, product_id, quantity, price_at_purchase, reason)
+-- VALUES
+-- (1, 1, 3, 1, 600.00, "Damaged packaging."),
+-- (2, 2, 6, 2, 520.00, "Incorrect variant received."),
+-- (3, 3, 12, 1, 575.00, "Did not like the taste.");
 
 INSERT INTO Invoices (invoice_id, order_id, user_id, invoice_pdf, created_at)
 VALUES
