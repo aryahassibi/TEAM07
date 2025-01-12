@@ -12,54 +12,6 @@ const db = require('../config/db');
 const router = express.Router();
 const usersController = new UsersController(); 
 
-// Middleware for validating user input
-
-
-// Registration Endpoint
-// router.post('/register', async (req, res) => {
-//     const { first_name, last_name, email, password, phone_number } = req.body;
-  
-  
-//     try {
-    
-//       db.query(
-//         'SELECT * FROM Users WHERE email = ? OR phone_number = ?',
-//         [email, phone_number],
-//         async (err, results) => {
-//           if (err) {
-//             console.error('Database error:', err);
-//             return res.status(500).json({ error: 'Database error' });
-//           }
-  
-//           if (results.length > 0) {
-//             return res.status(400).json({ error: 'Email or Phone number already exists' });
-//           }
-  
-//           const passwordString = String(password);
-//           const salt = await bcrypt.genSalt(10);
-//           const hashedPassword = await bcrypt.hash(passwordString, salt);
-  
-          
-//           db.query(
-//             'INSERT INTO Users (first_name, last_name, email, phone_number, password_hash) VALUES (?, ?, ?, ?, ?)',
-//             [first_name, last_name, email, phone_number, hashedPassword],
-//             (insertErr, result) => {
-//               if (insertErr) {
-//                 console.error('Insert error:', insertErr);
-//                 return res.status(500).json({ error: 'Failed to register user' });
-//               }
-  
-              
-//               res.status(201).json({ message: 'User registered successfully', userId: result.insertId });
-//             }
-//           );
-//         }
-//       );
-//     } catch (err) {
-//       console.error('Error:', err);
-//       res.status(500).json({ error: 'Server error' });
-//     }
-//   });
 
 router.post('/register', async (req, res) => {
     const { first_name, last_name, email, password, phone_number } = req.body;
@@ -81,8 +33,7 @@ router.post('/register', async (req, res) => {
           }
   
           const passwordString = String(password);
-          const salt = await bcrypt.genSalt(10);
-          const hashedPassword = await bcrypt.hash(passwordString, salt);
+          const hashedPassword = crypto.createHash("sha256").update(passwordString).digest("hex");
   
           
           db.query(
@@ -192,10 +143,12 @@ router.post("/login", async (req, res) => {
           }
 
           const user = userResults[0];
-          const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
 
-          if (!isPasswordMatch) {
-              console.error("Password mismatch for user:", email);
+          const passwordString = String(password);
+        
+          const hashedPassword = crypto.createHash("sha256").update(passwordString).digest("hex");
+          
+          if (hashedPassword != user.password_hash) {
               return res.status(401).json({ error: "Invalid email or password" });
           }
 
