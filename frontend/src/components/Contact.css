@@ -1,22 +1,117 @@
-.admin-contact-description {
-    color: black;
-    font-size: 2rem; /* Adjust the size as needed */
-    line-height: 1.6; /* Improve readability */
-    margin-bottom: 1rem; /* Add spacing between paragraphs */
-    margin-left: 2rem; /* Add space to the left */
-    margin-right: 2rem; /* Add space to the right */
+/* General container styles */
+.admin-contact-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  align-items: center; /* Center the entire content */
+}
+
+/* Contact section styles */
+.admin-contact-1,
+.admin-contact-2 {
+  width: 100%;
+  max-width: 800px; /* Restrict max width */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Admin contact title styles */
+.admin-contact-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Admin-contact-boxes layout */
+.admin-contact-boxes {
+  display: flex;
+  gap: 20px;
+  justify-content: center; /* Center the boxes horizontally */
+  flex-wrap: wrap; /* Wrap boxes if needed on smaller screens */
+}
+
+/* Individual admin-contact-box styles */
+.admin-contact-box {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  flex: 1;
+  min-width: 200px; /* Minimum width for each box */
+  max-width: 250px; /* Maximum width for each box */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Box headers and content styles */
+.admin-contact-box-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.admin-contact-box-info {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .admin-contact-box {
+      width: 100%; /* Stack boxes vertically on smaller screens */
   }
-  
-  .admin-contact-title {
-    color: darkgrey;
-    font-size: 2.5rem; /* Adjust the size as needed */
-    font-weight: bold;
-    margin-top: 1.5rem; /* Add some spacing below the title */
-    margin-bottom: 1.5rem; /* Add some spacing below the title */
-    margin-left: 2rem; /* Add space to the left */
-    margin-right: 2rem; /* Add space to the right */
-  }
-  
-  .admin-contact-container {
-    padding: 2rem; /* Add some padding for the container */
-  }
+}
+
+/* Form styles inside admin-contact-2 */
+.admin-message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px; /* Restrict max width */
+  margin: 0 auto; /* Center the form */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center; /* Center the labels */
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+input, textarea {
+  width: 100%;
+  max-width: 300px; /* Restrict input width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto; /* Center the button */
+  padding: 10px 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #555;
+}
