@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
 const mysql = require("mysql2");
+const {authMiddleware} = require('../middleware/authMiddleware');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Database connection
@@ -164,6 +165,37 @@ router.post("/login", async (req, res) => {
       });
   });
 });
+
+
+router.get('/user-name', authMiddleware, (req, res) => {
+  const userId = req.user.user_id; 
+  
+  if (!userId) {
+      return res.status(400).send('User ID not found');
+  }
+
+ 
+  const query = 'SELECT first_name, last_name FROM Users WHERE user_id = ?';
+
+  db.query(query, [userId], (err, results) => {
+      if (err) {
+          console.error('Database query error:', err);
+          return res.status(500).send('Server error');
+      }
+
+      if (results.length === 0) {
+          return res.status(404).send('User not found');
+      }
+
+      // Format the full name
+      const fullName = `${results[0].first_name} ${results[0].last_name}`;
+
+      // Send the response
+      res.json({ full_name: fullName });
+  });
+});
+
+
 
 
 
