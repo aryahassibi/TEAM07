@@ -2,8 +2,9 @@
     padding: 20px;
     background-color: #f9f9f9;
 }
-.go-back-button, .save-button {
-    background-color: #4CAF50;
+.set-prices-container .go-back-button,
+.save-button {
+    background-color: #4caf50;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -11,34 +12,36 @@
     margin: 10px 0;
     border-radius: 5px;
 }
-.go-back-button:hover, .save-button:hover {
+.set-prices-container .go-back-button:hover,
+.save-button:hover {
     background-color: #45a049;
 }
-h1, p {
+.set-prices-container h1,
+.set-prices-container p {
     margin-bottom: 20px;
 }
-.product-table-container {
+.set-prices-container .product-table-container {
     overflow-x: auto;
 }
-.table {
+.set-prices-container .table {
     width: 100%;
     border-collapse: collapse;
 }
-.table th, .table td {
+.set-prices-container .table th,
+.set-prices-container .table td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-input {
+.set-prices-container input {
     width: 100px;
     padding: 5px;
     margin: 0;
     border: 1px solid #ccc;
     border-radius: 3px;
-} 
+}
 
-
-.orders-page__back-btn {
+.set-prices-container .orders-page__back-btn {
     display: flex;
     align-items: center;
     position: absolute;
@@ -53,37 +56,37 @@ input {
     cursor: pointer;
     transition: all 0.3s ease; /* Smooth transitions for hover effects */
     z-index: 10;
-  }
-  
-  .orders-page__back-icon {
+}
+
+.set-prices-container .orders-page__back-icon {
     width: 20px; /* Adjusted size for a balanced look */
     height: 20px;
     margin-right: 10px; /* Space between the icon and text */
     object-fit: contain;
     transition: transform 0.3s ease;
-  }
-  
-  .orders-page__back-btn:hover {
+}
+
+.set-prices-container .orders-page__back-btn:hover {
     background-color: #e0e0e0; /* Slightly darker background on hover */
     transform: translateY(-2px); /* Lift the button slightly on hover */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-  }
-  
-  .orders-page__back-btn:hover .orders-page__back-icon {
+}
+
+.set-prices-container .orders-page__back-btn:hover .orders-page__back-icon {
     transform: scale(1.2); /* Larger scaling for the icon on hover */
-  }
-  
-  .orders-page__back-btn span {
+}
+
+.set-prices-container .orders-page__back-btn span {
     font-size: 14px; /* Small and clean font size */
     font-weight: 500; /* Medium font weight for readability */
     color: #555; /* Subtle text color */
-  }
-  
-  .set-prices-title-container {
+}
+
+.set-prices-container .set-prices-title-container {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center horizontally */
     height: 20vh; /* Take the full viewport height */
     text-align: center; /* Center the text alignment */
     margin: 0; /* Remove any extra margins */
-  }
+}
