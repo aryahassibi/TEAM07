@@ -280,7 +280,7 @@ const AddProductPage = () => {
                         <div className="image-input-group">
                             <label>Image URL:</label>
                             <input
-                                type="url"
+                                type="text"
                                 name="image_url"
                                 value={image.image_url}
                                 onChange={(e) => handleImageChange(index, e)}

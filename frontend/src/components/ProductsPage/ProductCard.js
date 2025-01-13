@@ -118,7 +118,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                         {average_rating}
                     </div>
                     <img
-                        src={`http://localhost:5001${images[0]?.image_url}`}
+                        src={images[0]?.image_url && images[0]?.image_url.startsWith("http") ? images[0]?.image_url : `http://localhost:5001${images[0]?.image_url}`}
                         alt={images[0]?.alt_text || name}
                         className="product-image"
                         onError={handleImageError}

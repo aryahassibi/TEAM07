@@ -30,8 +30,13 @@ const ProductImagesCarousel = ({ images, currentImageIndex, setCurrentImageIndex
     };
 
     const handleImageError = (event) => {
-       
-        event.target.src = `http://localhost:5001${defaultImage.url}`;
+        console.log("Image error: ", event.target.src);
+        // IF THE the iamge does not start with https  then we will add the localhost:5001
+        if (!defaultImage.url.startsWith("http")) {
+            event.target.src = `http://localhost:5001${defaultImage.url}`;
+        } else {
+            event.target.src = defaultImage.url;
+        }
 
         event.target.alt = defaultImage.alt;
     };
@@ -41,7 +46,7 @@ const ProductImagesCarousel = ({ images, currentImageIndex, setCurrentImageIndex
             <div className="main-image">
 
                 <img
-                    src={`http://localhost:5001${images[currentImageIndex].url}`}
+                    src={images[currentImageIndex].url.startsWith("http") ? images[currentImageIndex].url : `http://localhost:5001${images[currentImageIndex].url}`}
                     alt={images[currentImageIndex].alt || "Product Image"}
                     onError={handleImageError}
                 />
