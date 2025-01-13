@@ -63,9 +63,10 @@ const InvoiceOrders = () => {
     // const token = localStorage.getItem('token');
 
     try {
-      const response = await axios.get(`http://localhost:5001/order/getinvoice/${orderId}`
-    
-      );
+      const response = await axios.get(`http://localhost:5001/order/getinvoice/${orderId}`, {
+        // headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob',
+      });
 
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');

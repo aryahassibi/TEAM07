@@ -123,11 +123,11 @@ const OrdersPage = () => {
   const handleDownloadInvoice = async (orderId) => {
     setDownloadLoading(true);
     setDownloadError('');
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     try {
       const response = await axios.get(`http://localhost:5001/order/getinvoice/${orderId}`, { 
-        headers: { Authorization: `Bearer ${token}` },
+        // headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob' 
       });
 

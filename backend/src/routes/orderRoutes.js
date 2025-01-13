@@ -8,7 +8,7 @@ router.get('/getorders', authMiddleware, orderController.getOrders);
 
 router.get('/getallorders', orderController.getAllOrders);
 
-router.get('/getinvoice/:orderId', authMiddleware ,orderController.getInvoice);
+router.get('/getinvoice/:orderId' ,orderController.getInvoice);
 
 router.put('/cancel/:orderId', authMiddleware ,orderController.cancelOrder);
 
