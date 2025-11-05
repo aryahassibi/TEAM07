@@ -3,15 +3,12 @@ USE ecommerce_db;
 -- Note: Passwords are all "password"
 INSERT INTO Users (user_id, first_name, last_name, email, phone_number, tax_id, password_hash)
 VALUES
-(1, "Arya", "Hassibi", "arya.hassibi@sabanciuniv.com", "+905301234567", "12345678901", SHA2("password", 256)),
-(2, "Beste", "Bayhan", "bestebayhan@sabanciuniv.edu", "+905302345678", "23456789012", SHA2("password", 256)),
-(3, "Mustafa", "Topcu", "mustafatopcu@sabanciuniv.com", "+905303456789", "34567890123", SHA2("password", 256)),
-(4, "Orhun Ege", "Ozpay", "orhun@sabanciuniv.com", "+905304567890", "45678901234", SHA2("password", 256)),
-(5, "Eid", "Alhamali", "eid@sabanciuniv.com", "+905305678901", "56789012345", SHA2("password", 256)),
-(6, "Ecem", "Akın", "ecem@sabanciuniv.com", "+905306789012", "67890123456", SHA2("password", 256)),
-(7, "Zeynep", "Işık", "zeynep.isik@sabanciuniv.com", "+905307890123", "78901234567", SHA2("password", 256)),
-(8, "Cemal", "Yılmaz", "cemal.yilmaz@sabanciuniv.com", "+905308901234", "89012345678", SHA2("password", 256)),
-(9, "Test", "User", "test@sabanciuniv.com", "+905309012345", "90123456789", SHA2("password", 256));
+(2, "Beste", "Bayhan", "bestebayhan@user.com", "+905302345678", "23456789012", SHA2("password", 256)),
+(3, "Mustafa", "Topcu", "mustafatopcu@user.com", "+905303456789", "34567890123", SHA2("password", 256)),
+(4, "Orhun Ege", "Ozpay", "orhun@user.com", "+905304567890", "45678901234", SHA2("password", 256)),
+(5, "Eid", "Alhamali", "eid@user.com", "+905305678901", "56789012345", SHA2("password", 256)),
+(6, "Ecem", "Akın", "ecem@user.com", "+905306789012", "67890123456", SHA2("password", 256)),
+(9, "Test", "User", "test@user.com", "+905309012345", "90123456789", SHA2("password", 256));
 
 -- Note: Passwords are all "password"
 INSERT INTO Managers (manager_id, first_name, last_name, email, password_hash, role)
@@ -22,8 +19,6 @@ VALUES
 (4, "Orhun", "Ege Ozpay", "orhun@manager.com", SHA2("admin12345", 256), "product_manager"),
 (5, "Eid", "Alhamali", "eid@manager.com", SHA2("admin12345", 256), "sales_manager"),
 (6, "Ecem", "Akın", "ecem@manager.com", SHA2("admin12345", 256), "product_manager"),
-(7, "Zeynep", "Işık", "zeynep@manager.com", SHA2("admin12345", 256), "product_manager"),
-(8, "Cemal", "Yılmaz", "cemal@manager.com", SHA2("admin12345", 256), "product_manager"),
 (9, "Sales", "Manager", "sales@manager.com", SHA2("admin12345", 256), "sales_manager"),
 (10, "Product", "Manager", "product@manager.com", SHA2("admin12345", 256), "product_manager")
 ON DUPLICATE KEY UPDATE 
