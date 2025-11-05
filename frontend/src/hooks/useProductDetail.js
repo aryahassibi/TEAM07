@@ -17,7 +17,7 @@ const useProductDetail = (variant_id) => {
     useEffect(() => {
         const fetchProductData = async () => {
             try {
-                // Fetch product details
+                // 1. Fetch product details
                 const productResponse = await axios.get(
                     `http://localhost:5001/api/product/variants/${variant_id}`
                 );
@@ -31,9 +31,12 @@ const useProductDetail = (variant_id) => {
                 // Ensure price is a number
                 productData.price = Number(productData.price);
                 
+                // Use the pre-calculated average_rating from the database
+                setAverageRating(Number(productData.average_rating));
+
                 setProduct(productData);
 
-                // Fetch all variants for the product
+                // 2. Fetch all variants for the product
                 const variantsResponse = await axios.get(
                     `http://localhost:5001/api/products/${productData.product_id}/variants`
                 );
@@ -43,20 +46,13 @@ const useProductDetail = (variant_id) => {
                 }));
                 setVariants(formattedVariants);
 
-                // Fetch reviews and calculate average rating
+                // 3. Fetch reviews
                 const reviewsResponse = await axios.get(
                     `http://localhost:5001/api/reviews/${productData.product_id}`
                 );
                 const reviewsData = reviewsResponse.data.reviews || [];
                 setReviews(reviewsData);
 
-                if (reviewsData.length > 0) {
-                    const totalRating = reviewsData.reduce(
-                        (sum, review) => sum + review.rating,
-                        0
-                    );
-                    setAverageRating(totalRating / reviewsData.length);
-                }
             } catch (error) {
                 console.error("Error fetching product data:", error);
                 setError("Failed to load product details. Please try again.");

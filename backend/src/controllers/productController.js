@@ -464,6 +464,7 @@ exports.getProductDetailsByVariant = (req, res) => {
             p.description, 
             p.warranty_status,
             p.distributor_info,
+            p.average_rating,
             pv.variant_id, 
             pv.serial_number,
             pv.weight_grams, 
