@@ -227,6 +227,51 @@ CREATE TABLE IF NOT EXISTS ShoppingCartItems (
     FOREIGN KEY (variant_id) REFERENCES Product_Variant(variant_id) ON DELETE CASCADE
 );
 
+DELIMITER $$
+
+CREATE TRIGGER trg_after_comment_insert
+AFTER INSERT ON Comments
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET average_rating = (
+        SELECT IFNULL(AVG(rating), 0)
+        FROM Comments
+        WHERE product_id = NEW.product_id
+    )
+    WHERE product_id = NEW.product_id;
+END$$
+
+CREATE TRIGGER trg_after_comment_update
+AFTER UPDATE ON Comments
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET average_rating = (
+        SELECT IFNULL(AVG(rating), 0)
+        FROM Comments
+        WHERE product_id = NEW.product_id
+    )
+    WHERE product_id = NEW.product_id;
+END$$
+
+CREATE TRIGGER trg_after_comment_delete
+AFTER DELETE ON Comments
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET average_rating = (
+        SELECT IFNULL(AVG(rating), 0)
+        FROM Comments
+        WHERE product_id = OLD.product_id
+    )
+    WHERE product_id = OLD.product_id;
+END$$
+
+DELIMITER ;
+
+
+
 GRANT ALL PRIVILEGES ON ecommerce_db.* TO 'root'@'%';
 FLUSH PRIVILEGES;
 
