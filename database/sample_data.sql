@@ -390,11 +390,11 @@ VALUES
 
 INSERT INTO Discounts (discount_id, discount_type, value, start_date, end_date, variant_id, active)
 VALUES
-(1, "percentage", 10.00, "2024-12-01", "2025-12-31", 1, FALSE),
-(2, "fixed", 50.00, "2024-11-15", "2025-11-30", 5, FALSE),
+(1, "percentage", 10.00, "2024-12-01", "2025-12-31", 13, TRUE),
+(2, "fixed", 50.00, "2024-11-15", "2025-11-30", 4, TRUE),
 (3, "percentage", 15.00, "2024-10-01", "2025-10-31", 9, FALSE),
-(4, "fixed", 100.00, "2024-12-05", "2025-12-20", 28, FALSE),
-(5, "percentage", 5.00, "2024-12-10", "2025-12-25", 16, FALSE);
+(4, "fixed", 100.00, "2024-12-05", "2025-12-20", 27, TRUE),
+(5, "percentage", 5.00, "2024-12-10", "2025-12-25", 16, TRUE);
 
 INSERT INTO Wishlist (wishlist_id, user_id, created_at)
 VALUES
