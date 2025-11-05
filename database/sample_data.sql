@@ -333,30 +333,39 @@ VALUES
 (7, 7, 7, 5, "Delightful and aromatic.", TRUE, "2024-12-07 18:30:00"),
 (8, 8, 8, 4, "Good quality coffee.", TRUE, "2024-12-08 19:45:00");
 
--- INSERT INTO Orders (order_id, user_id, total_price, status, delivery_option_id, created_at, updated_at)
--- VALUES
--- -- Orders for User 1
--- (1, 1, 1500.00, "delivered", 1, "2024-11-01 10:00:00", "2024-11-05 15:00:00"),
--- (2, 1, 800.00, "delivered", 2, "2024-11-15 12:30:00", "2024-11-17 18:00:00"),
--- (3, 1, 300.00, "delivered", 1, "2024-12-01 09:45:00", "2024-12-06 14:30:00"),
-
--- -- Orders for User 2
--- (4, 2, 500.00, "in-transit", 1, "2024-12-05 11:20:00", "2024-12-05 11:20:00"),
-
--- -- Orders for User 3
--- (5, 3, 2500.00, "processing", 3, "2024-12-07 08:15:00", "2024-12-07 08:15:00"),
-
--- -- Orders for User 5
--- (6, 5, 750.00, "delivered", 2, "2024-11-20 14:50:00", "2024-11-23 16:00:00"),
-
--- -- Orders for User 6
--- (7, 6, 1200.00, "delivered", 1, "2024-10-25 16:30:00", "2024-10-30 10:00:00"),
--- (8, 6, 600.00, "in-transit", 2, "2024-12-02 13:40:00", "2024-12-02 13:40:00"),
-
--- -- Orders for User 8
--- (9, 8, 900.00, "processing", 3, "2024-12-06 17:25:00", "2024-12-06 17:25:00");
 
 
+INSERT INTO Orders (order_id,user_id, total_price, status, delivery_option_id, created_at, updated_at)
+VALUES
+-- Order 1 by Arya Hassibi
+(1, 1, 1350.00, 'processing', 1, '2025-01-10 10:15:00', '2025-01-10 10:15:00'),
+(2, 1, 2250.00, 'in-transit', 2, '2025-01-11 14:30:00', '2025-01-12 09:45:00'),
+(3, 1, 1200.00, 'delivered', 3, '2024-11-09 08:20:00', '2025-01-11 16:50:00'),
+(4, 1, 950.00, 'canceled', 1, '2025-01-12 11:00:00', '2025-01-12 12:00:00'),
+(5, 1, 1275.00, 'delivered', 2, '2025-01-13 09:10:00', '2025-01-13 09:10:00');
+
+INSERT INTO OrderItems (order_id, variant_id, quantity, price_at_purchase)
+VALUES
+-- OrderItems for Order 1
+(1, 1, 1, 500.00),   -- Variant 1: ETH-YIR-250
+(1, 5, 1, 850.00),   -- Variant 5: COL-SUP-500),
+
+-- OrderItems for Order 2
+(2, 10, 1, 1100.00), -- Variant 10: SUM-MAN-500
+(2, 22, 1, 1150.00), -- Variant 22: TAN-PEA-500),
+
+-- OrderItems for Order 3
+(3, 19, 1, 1200.00), -- Variant 34: YEM-MOH-500
+
+-- OrderItems for Order 4
+(4, 2, 1, 950.00),    -- Variant 2: ETH-YIR-500
+
+-- OrderItems for Order 5
+(5, 12, 1, 575.00),   -- Variant 21: TAN-PEA-250
+(5, 28, 1, 700.00);   -- Variant 28: PAN-GEI-250
+
+
+-- The Following data insertions are commented out to avoid conflicts since they are dynamicly generated in the application.
 -- INSERT INTO Payments (payment_id, order_id, user_id, payment_date, amount, card_holder_name, card_number, card_expiration, cvv)
 -- VALUES
 -- (1, 1, 1, "2024-11-01 10:05:00", 1500.00, "Arya Hassibi", AES_ENCRYPT("4111111111111111", "encryption_key"), "2026-05-01", AES_ENCRYPT("123", "encryption_key")),
@@ -374,7 +383,6 @@ VALUES
 -- (1, 2, 1, "2024-11-20 10:00:00", "approved", "Product arrived damaged."),
 -- (2, 4, 2, "2024-12-10 12:00:00", "pending", "Wrong product delivered."),
 -- (3, 7, 6, "2024-10-30 09:30:00", "rejected", "No reason provided.");
-
 
 -- INSERT INTO ReturnItems (return_item_id, refund_request_id, product_id, quantity, price_at_purchase, reason)
 -- VALUES
