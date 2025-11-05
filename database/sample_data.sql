@@ -42,88 +42,88 @@ VALUES
 (2, "Express Shipping", 59.99, "Delivery in 2-3 business days."),
 (3, "Overnight Shipping", 119.99, "Next business day delivery.");
 
-INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info, average_rating)
+INSERT INTO Products (product_id, name, origin, roast_level, bean_type, grind_type, flavor_profile, processing_method, caffeine_content, category_id, description, warranty_status, distributor_info)
 VALUES
-(1, "Sunrise Over the Serengeti", "Tanzania", "Light", "Arabica", "Whole Bean", "Citrus and floral whispers", "Washed", "High", 1, 
+(1, "Product C | Sunrise Over the Serengeti", "Tanzania", "Light", "Arabica", "Whole Bean", "Citrus and floral whispers", "Washed", "High", 1, 
     "Like the first light kissing the vast plains of the Serengeti, this coffee feels alive. Notes of citrus and delicate florals bloom with every sip, reminding you of new beginnings and untamed beauty.", 
-    FALSE, "Tanzanian Treasures Ltd.", 4.7),
+    FALSE, "Tanzanian Treasures Ltd."),
 
-(2, "Bolivian Echoes", "Bolivia", "Medium", "Blend", "Ground", "Nutty with a whisper of cocoa", "Honey-processed", "Half-Caf", 2, 
+(2, "Product B | Bolivian Echoes", "Bolivia", "Medium", "Blend", "Ground", "Nutty with a whisper of cocoa", "Honey-processed", "Half-Caf", 2, 
     "A quiet symphony that lingers in the soul like the echoes of Andean pan flutes. Its nutty richness and subtle cocoa notes evoke mountain trails and misty mornings.", 
-    TRUE, "Bolivia Bean Collective", 4.5),
+    TRUE, "Bolivia Bean Collective"),
 
-(3, "The Midnight Drifter", "Ethiopia", "Espresso", "Arabica", "Ground", "Dark chocolate and blackberry", "Natural", "High", 3, 
+(3, "Product A | The Midnight Drifter", "Ethiopia", "Espresso", "Arabica", "Ground", "Dark chocolate and blackberry", "Natural", "High", 3, 
     "A bold companion for sleepless nights and untold stories. Its intense dark chocolate depth and blackberry intrigue feel like wandering under a canopy of stars.", 
-    FALSE, "Ethiopian Coffee Routes", 4.8),
+    FALSE, "Ethiopian Coffee Routes"),
 
 (4, "Costa Rican Summer", "Costa Rica", "Light", "Arabica", "Ground", "Citrus and honeydew", "Washed", "High", 3, 
     "The brightness of citrus and a soft hint of honeydew carry you to endless beaches and golden sunsets. A sip is a reminder of warmth and carefree days.", 
-    TRUE, "Costa Rica Coffee & Co.", 4.6),
+    TRUE, "Costa Rica Coffee & Co."),
 
 (5, "Guatemalan Volcano Heart", "Guatemala", "Dark", "Blend", "Whole Bean", "Caramel and red wine", "Natural", "High", 5, 
     "Forged in the heart of volcanic soil, this coffee ignites the senses with rich caramel sweetness and a red wine finish. A tribute to the land's fiery soul.", 
-    FALSE, "Guatemala Coffee Legends", 4.7),
+    FALSE, "Guatemala Coffee Legends"),
 
 (6, "Cuban Memory Lane", "Cuba", "Espresso", "Robusta", "Whole Bean", "Cocoa and brown sugar", "Washed", "High", 4, 
     "A rich, nostalgic blend that whispers of Havana's cobbled streets and sunlit afternoons. Hints of cocoa and brown sugar evoke the rhythm of a simpler time.", 
-    TRUE, "Havana Coffee Roasters", 4.5),
+    TRUE, "Havana Coffee Roasters"),
 
 (7, "Indonesian Silk", "Indonesia", "Medium", "Arabica", "Whole Bean", "Velvety with soft spice", "Honey-processed", "Half-Caf", 4, 
     "Soft and smooth, like the flowing silk of ancient Java. Subtle spices weave through each sip, leaving an impression as graceful as it is unforgettable.", 
-    FALSE, "Indo Luxe Beans", 4.6),
+    FALSE, "Indo Luxe Beans"),
 
 (8, "Misty Hills of Rwanda", "Rwanda", "Light", "Blend", "Ground", "Blackberry and jasmine", "Washed", "Decaf", 3, 
     "Ethereal and serene, this blend transports you to rolling mist-covered hills. Its delicate blackberry and jasmine notes whisper peace and stillness.", 
-    TRUE, "Rwanda Bean Collective", 4.8),
+    TRUE, "Rwanda Bean Collective"),
 
 (9, "Santiago at Dusk", "Chile", "Dark", "Liberica", "Whole Bean", "Earthy with a molasses finish", "Natural", "High", 1, 
     "Deep and grounding, like the fading light on Santiago's streets. Its earthy warmth and molasses undertone linger, wrapping you in twilight's embrace.", 
-    FALSE, "Chilean Coffee Routes", 4.3),
+    FALSE, "Chilean Coffee Routes"),
 
 (10, "Panama Geisha Dream", "Panama", "Light", "Arabica", "Whole Bean", "Jasmine and tropical fruit", "Washed", "High", 3, 
     "An ethereal experience. Jasmine notes entwined with tropical fruit sweetness make this a coffee to savor slowly, like a daydream slipping into reality.", 
-    TRUE, "Panama Coffee Treasures", 4.9),
+    TRUE, "Panama Coffee Treasures"),
 
 (11, "Mexican Firewood", "Mexico", "French", "Blend", "Ground", "Smoke and spiced chocolate", "Other", "Half-Caf", 1, 
     "A robust brew that feels like sitting by a crackling fire in the Mexican highlands. Smoke and spiced chocolate warmth make this a grounding companion.", 
-    FALSE, "Mexican Coffee Collective", 4.4),
+    FALSE, "Mexican Coffee Collective"),
 
 (12, "Peruvian Secret Garden", "Peru", "Medium", "Arabica", "Whole Bean", "Floral and honey", "Washed", "Decaf", 2, 
     "Soft as the petals of an unseen bloom, this coffee whispers of a hidden garden. Its floral and honey notes unfold gently, like secrets in the air.", 
-    TRUE, "Peruvian Heritage Beans", 4.7),
+    TRUE, "Peruvian Heritage Beans"),
 
 (13, "Yemen Desert Mirage", "Yemen", "Dark", "Blend", "Whole Bean", "Chocolate and fig", "Natural", "High", 5, 
     "Like a rare vision in the shifting sands, this coffee is a treasure of chocolate richness and fig sweetness. A mirage worth chasing.", 
-    FALSE, "Yemeni Coffee Routes", 4.8),
+    FALSE, "Yemeni Coffee Routes"),
 
 (14, "Vietnamese Bold Horizon", "Vietnam", "French", "Robusta", "Ground", "Bold with caramel undertones", "Washed", "High", 1, 
     "A daring blend that pushes boundaries. Its boldness and caramel undertones embody the resilience and spirit of Vietnam.", 
-    FALSE, "Vietnam Coffee Collective", 4.3),
+    FALSE, "Vietnam Coffee Collective"),
 
 (15, "Kenyan Red Sunset", "Kenya", "Dark", "Arabica", "Ground", "Berry and wine", "Natural", "High", 5, 
     "Rich as a Kenyan sunset fading to red, this coffee's berry and wine notes evoke a boldness that commands attention.", 
-    FALSE, "Kenyan Bean Collective", 4.7),
+    FALSE, "Kenyan Bean Collective"),
 
 (16, "Honduran Stargazer", "Honduras", "Medium", "Arabica", "Whole Bean", 
     "Sweet and herbal", "Washed", "Decaf", 4, 
     "A coffee for quiet nights under infinite skies. Sweetness and herbal notes blend in harmony, like constellations above.", 
-    TRUE, "Honduran Coffee Routes", 4.4),
+    TRUE, "Honduran Coffee Routes"),
 
 (17, "Laos Whispering Rain", "Laos", "Medium", "Blend", "Whole Bean", "Nutty with soft spice", "Natural", "Half-Caf", 4, 
     "Gentle as rain on lush green fields, this coffee offers nutty warmth with a touch of spice. It feels like a quiet conversation with nature.", 
-    TRUE, "Laos Coffee Collective", 4.5),
+    TRUE, "Laos Coffee Collective"),
 
 (18, "Turkish Caravan Tale", "Turkey", "French", "Blend", "Ground", "Cardamom and dark chocolate", "Other", "High", 2, 
     "Rich, spiced, and complex as the tales of caravans crossing ancient lands. Cardamom and dark chocolate transport you to a world of wonder.", 
-    FALSE, "Turkish Coffee Routes", 4.8),
+    FALSE, "Turkish Coffee Routes"),
 
 (19, "Colombian Daybreak", "Colombia", "Light", "Arabica", "Ground", "Bright and citrusy", "Washed", "High", 2, 
     "Fresh as dawn breaking over Colombian hills, this coffee's brightness awakens the senses and inspires hope for the day ahead.", 
-    TRUE, "Colombian Coffee Legends", 4.6),
+    TRUE, "Colombian Coffee Legends"),
 
 (20, "Ecuadorian High Spirits", "Ecuador", "Medium", "Blend", "Whole Bean", "Cocoa and citrus", "Natural", "High", 4, 
     "Uplifting and bright, this coffee's cocoa depth and citrus zing feel like a celebration in a cup. A tribute to life's vibrant highs.", 
-    TRUE, "Ecuadorian Coffee Routes", 4.7);
+    TRUE, "Ecuadorian Coffee Routes");
 
 INSERT INTO Product_Variant (variant_id, product_id, weight_grams, price, stock, sku)
 VALUES
