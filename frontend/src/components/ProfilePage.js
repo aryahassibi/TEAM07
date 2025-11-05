@@ -52,14 +52,14 @@ const ProfilePage = () => {
           },
         });
   
-        const { user_id, first_name, last_name, email, phone_number, addresses } = response.data;
+        const { first_name, last_name, email, phone_number, addresses, tax_id } = response.data;
         
         setProfile({
           picture: '/profile_dark.png', 
           role: `${first_name} ${last_name}`,
           email: email,
           phone: phone_number,
-          taxId: user_id,
+          taxId: tax_id,
         });
         
         setAddresses(addresses);

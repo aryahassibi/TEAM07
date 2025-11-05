@@ -10,7 +10,7 @@ exports.getProfile = (req, res) => {
 
     // Query to fetch user details
     const userQuery = `
-        SELECT user_id, first_name, last_name, email, phone_number
+        SELECT user_id, first_name, last_name, email, phone_number, tax_id
         FROM Users
         WHERE user_id = ? 
     `;
@@ -48,7 +48,8 @@ exports.getProfile = (req, res) => {
                 last_name: user.last_name,
                 email: user.email,
                 phone_number: user.phone_number,
-                addresses: addressResult // This will be an array of address objects
+                addresses: addressResult,// This will be an array of address objects
+                tax_id: user.tax_id
             };
 
             res.json(response);
