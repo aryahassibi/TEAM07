@@ -3,6 +3,7 @@ USE ecommerce_db;
 -- Note: Passwords are all "password"
 INSERT INTO Users (user_id, first_name, last_name, email, phone_number, tax_id, password_hash)
 VALUES
+(1, "Arya", "Hassibi", "arya@user.com", "+905301234567", "12345678901", SHA2("password", 256)),
 (2, "Beste", "Bayhan", "bestebayhan@user.com", "+905302345678", "23456789012", SHA2("password", 256)),
 (3, "Mustafa", "Topcu", "mustafatopcu@user.com", "+905303456789", "34567890123", SHA2("password", 256)),
 (4, "Orhun Ege", "Ozpay", "orhun@user.com", "+905304567890", "45678901234", SHA2("password", 256)),
