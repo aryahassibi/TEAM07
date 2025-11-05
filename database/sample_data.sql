@@ -264,16 +264,22 @@ VALUES
 (36, 36, "/assets/images/products/product20.png", "Ecuadorian High Spirits 500g");
 
 
--- INSERT INTO Address (address_id, user_id, address_line, city, state, postal_code, country)
--- VALUES
--- (1, 1, "İstiklal Cad. No:1", "İstanbul", "İstanbul", "34433", "Turkey"),
--- (2, 2, "Atatürk Bulvarı No:45", "Ankara", "Ankara", "06690", "Turkey"),
--- (3, 3, "Çankaya Sok. No:12", "İzmir", "İzmir", "35210", "Turkey"),
--- (4, 4, "Fatih Mah. No:7", "Bursa", "Bursa", "16010", "Turkey"),
--- (5, 5, "Merkez Cad. No:5", "Antalya", "Antalya", "07020", "Turkey"),
--- (6, 6, "Bağdat Cad. No:8", "İstanbul", "İstanbul", "34726", "Turkey"),
--- (7, 7, "Kızılay Meydanı No:3", "Ankara", "Ankara", "06420", "Turkey"),
--- (8, 8, "Konak Cad. No:10", "İzmir", "İzmir", "35220", "Turkey");
+INSERT INTO Address (address_name, user_id, order_id, address_line, city, phone_number, postal_code, country) 
+VALUES 
+('Home Address 1', 1, NULL, '1234 Elm St', 'Istanbul', '555-1234', '34000', 'Turkey'),
+('Work Address 1', 1, NULL, '4567 Oak St', 'Ankara', '555-5678', '06000', 'Turkey'),
+('Home Address 2', 2, NULL, '7890 Pine St', 'Izmir', '555-8765', '35000', 'Turkey'),
+('Work Address 2', 2, NULL, '2345 Maple St', 'Bursa', '555-4321', '16000', 'Turkey'),
+('Home Address 3', 3, NULL, '9876 Birch St', 'Antalya', '555-2345', '07000', 'Turkey'),
+('Work Address 3', 3, NULL, '3456 Cedar St', 'Konya', '555-6789', '42000', 'Turkey'),
+('Home Address 4', 4, NULL, '6789 Redwood St', 'Mersin', '555-1357', '33000', 'Turkey'),
+('Work Address 4', 4, NULL, '5432 Palm St', 'Adana', '555-2468', '01000', 'Turkey'),
+('Home Address 5', 5, NULL, '1122 Cherry St', 'Gaziantep', '555-3579', '27000', 'Turkey'),
+('Work Address 5', 5, NULL, '2233 Fir St', 'Kayseri', '555-4680', '38000', 'Turkey'),
+('Home Address 1', 1, 4, '1234 Elm St', 'Istanbul', '555-1234', '34000', 'Turkey'),
+('Home Address 1', 1, 3, '1234 Elm St', 'Istanbul', '555-1234', '34000', 'Turkey'),
+('Home Address 1', 1, 1, '1234 Elm St', 'Istanbul', '555-1234', '34000', 'Turkey'),
+('Home Address 1', 1, 2, '1234 Elm St', 'Istanbul', '555-1234', '34000', 'Turkey');
 
 -- Insert into ShoppingCart for Registered Users
 INSERT INTO ShoppingCart (cart_id, user_id, session_id, created_at, updated_at)
