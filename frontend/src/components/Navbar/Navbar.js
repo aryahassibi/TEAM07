@@ -54,7 +54,7 @@ const Navbar = () => {
   // Handle admin logout
   const handleAdminLogout = () => {
     sessionStorage.clear();
-    navigate("/");
+    navigate("/admin");
   };
 
   // Handle back to user page
