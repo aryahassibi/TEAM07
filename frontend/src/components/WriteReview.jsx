@@ -53,7 +53,7 @@ const WriteReview = () => {
                 }
             );
             alert("Your review has been submitted!");
-            navigate(`/product/${product_id}`); // Redirect to the product detail page
+            navigate(`/products`); // Redirect to products pages
         } catch (error) {
             console.error("Error submitting review:", error);
             alert("Failed to submit the review. Please try again.");
