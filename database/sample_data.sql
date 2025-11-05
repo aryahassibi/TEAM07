@@ -130,14 +130,14 @@ VALUES
 -- Product 1 Variants
 (1, 1, 250, 500.00, 100, "ETH-YIR-250"),
 (2, 1, 500, 950.00, 1, "ETH-YIR-500"),          -- Only 1 left in stock
-(3, 1, 1000, 1800.00, 4, "ETH-YIR-1000"),       -- Only 1 left in stock
+(3, 1, 1000, 1800.00, 4, "ETH-YIR-1000"),       
 
 -- Product 2 Variants
-(4, 2, 250, 450.00, 200, "COL-SUP-250"),
-(5, 2, 500, 850.00, 80, "COL-SUP-500"),
+(4, 2, 250, 450.00, 1, "COL-SUP-250"),          -- Only 1 left in stock
+(5, 2, 500, 850.00, 1, "COL-SUP-500"),          -- Only 1 left in stock
 
 -- Product 3 Variants
-(6, 3, 250, 600.00, 150, "BRA-SAN-250"),
+(6, 3, 250, 600.00, 0, "BRA-SAN-250"),          -- Out of stock
 
 -- Product 4 Variants
 (7, 4, 250, 550.00, 0, "KEN-AA-250"),           -- Out of stock
