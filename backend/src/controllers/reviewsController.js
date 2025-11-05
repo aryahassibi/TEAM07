@@ -73,7 +73,7 @@ exports.addReview = (req, res) => {
         SET average_rating = (
             SELECT AVG(rating)
             FROM Comments
-            WHERE product_id = ? AND approved = TRUE
+            WHERE product_id = ? 
         )
         WHERE product_id = ?
     `;
